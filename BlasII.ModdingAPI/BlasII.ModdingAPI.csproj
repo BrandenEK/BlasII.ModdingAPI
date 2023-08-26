@@ -10,57 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BlasII.ModdingReferences" Version="1.0.5" />
     <PackageReference Include="Il2CppInterop.Runtime" Version="1.4.5" />
     <PackageReference Include="LavaGang.MelonLoader" Version="0.6.1" />
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2Cppmscorlib">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppPlayMaker">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Il2CppPlayMaker.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppRewired_Core">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Il2CppRewired_Core.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppTGK.Framework">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Il2CppTGK.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppTGK.Game">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Il2CppTGK.Game.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppTGK.Game.Playmaker">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Il2CppTGK.Game.Playmaker.dll</HintPath>
-    </Reference>
-    <Reference Include="Il2CppTGK.Test">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Il2CppTGK.Test.dll</HintPath>
-    </Reference>
-    <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\Unity.TextMeshPro.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\UnityEngine.InputLegacyModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.InputModule">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\UnityEngine.InputModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\Modding Dev\MelonLoader\Il2CppAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>
