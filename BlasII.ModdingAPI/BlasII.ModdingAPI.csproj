@@ -59,25 +59,10 @@
 
   <Target Name="AddGeneratedFile" BeforeTargets="BeforeCompile;CoreCompile" Inputs="$(MSBuildAllProjects)" Outputs="$(IntermediateOutputPath)GeneratedFile.cs">
     
-    <!-- Get relevant data and create ModInfo class -->
+    <!-- Create ModInfo class from relevant data -->
     <PropertyGroup>
-      <ModId>$(AssemblyName)</ModId>
-      <ModName>$(Product)</ModName>
-      <ModAuthor>$(Company)</ModAuthor>
-      <ModVersion>$(Version)</ModVersion>
       <GeneratedText>
-        <![CDATA[
-namespace $(RootNamespace)
-{
-    public static class ModInfo
-    {
-        public const string MOD_ID = "$(ModId)"%3B
-        public const string MOD_NAME = "$(ModName)"%3B
-        public const string MOD_AUTHOR = "$(ModAuthor)"%3B
-        public const string MOD_VERSION = "$(ModVersion)"%3B
-    }
-}
-      ]]>
+        <![CDATA[ namespace $(RootNamespace) { public static class ModInfo { public const string MOD_ID = "$(AssemblyName)"%3B public const string MOD_NAME = "$(Product)"%3B public const string MOD_AUTHOR = "$(Company)"%3B public const string MOD_VERSION = "$(Version)"%3B } } ]]>
       </GeneratedText>
       <GeneratedFilePath>$(IntermediateOutputPath)ModInfo.cs</GeneratedFilePath>
     </PropertyGroup>

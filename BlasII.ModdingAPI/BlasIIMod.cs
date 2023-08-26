@@ -10,6 +10,9 @@ namespace BlasII.ModdingAPI
         private readonly string name;
         internal string Name => name;
 
+        private readonly string author;
+        internal string Author => author;
+
         private readonly string version;
         internal string Version => version;
 
@@ -33,10 +36,11 @@ namespace BlasII.ModdingAPI
 
         public void LogCustom(object message, Color color) => Main.LogCustom(Name, message, color);
 
-        public BlasIIMod(string id, string name, string version)
+        public BlasIIMod(string id, string name, string author, string version)
         {
             this.id = id;
             this.name = name;
+            this.author = author;
             this.version = version;
             Main.ModLoader.RegisterMod(this);
         }
