@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace BlasII.ModdingAPI
 {
     internal class ModdingAPI : BlasIIMod
     {
-        public ModdingAPI() : base("BlasII.ModdingAPI", "Modding API", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString()) { }
+        public override string Name => "Modding API";
 
         protected internal override void OnInitialize()
         {
@@ -27,27 +22,6 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnUpdate()
         {
-            //if (Time.frameCount % 120 == 0)
-            //{
-            //    MelonLogger.Error("Test mod update");
-            //}
-
-            //if (Input.GetKeyDown(KeyCode.Backslash))
-            //{
-            //    if (Main.cm == null)
-            //    {
-            //        MelonLogger.Error("No cm");
-            //    }
-            //    else
-            //    {
-            //        Main.cm.Toggle();
-            //    }
-            //    //for (int i = 0; i < 100; i++)
-            //    //{
-            //    //    GameManager gm = Singleton<Core>.Instance.GetManager(i);
-            //    //    MelonLogger.Warning(i + ": " + gm?.Name ?? "none");
-            //    //}
-            //}
 
         }
 

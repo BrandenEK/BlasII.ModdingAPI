@@ -70,6 +70,7 @@ namespace BlasII.ModdingAPI
                     return;
             }
 
+            Main.Log("Mod Loader", "Registering mod: " + mod.Id);
             mods.Add(mod);
             // Do something else to register the mod?
         }

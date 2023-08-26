@@ -35,11 +35,6 @@ namespace BlasII.ModdingAPI
 
             if (sceneName == "LandingScene" || sceneName == "MainMenu")
             {
-                foreach (CanvasScaler scaler in Object.FindObjectsOfType<CanvasScaler>())
-                {
-                    MelonLogger.Error(scaler.name);
-                }
-
                 AddModListToTitleScreen();
                 ModLoader.SceneLoaded("MainMenu");
             }

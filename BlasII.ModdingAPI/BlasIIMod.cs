@@ -1,20 +1,16 @@
-﻿
+﻿using System.Reflection;
+
 namespace BlasII.ModdingAPI
 {
-    public class BlasIIMod
+    public abstract class BlasIIMod
     {
-        internal string Id { get; private set; }
+        private readonly string id = Assembly.GetExecutingAssembly().GetName().Name;
+        internal string Id => id;
 
-        internal string Name { get; private set; }
+        private readonly string version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+        internal string Version => version;
 
-        internal string Version { get; private set; }
-
-        public BlasIIMod(string id, string name, string version)
-        {
-            Id = id;
-            Name = name;
-            Version = version;
-        }
+        public abstract string Name { get; }
 
         protected internal virtual void OnInitialize() { }
 
