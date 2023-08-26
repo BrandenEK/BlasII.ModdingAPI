@@ -1,17 +1,17 @@
 ﻿using System.Drawing;
-using System.Reflection;
 
 namespace BlasII.ModdingAPI
 {
     public abstract class BlasIIMod
     {
-        private readonly string id = Assembly.GetExecutingAssembly().GetName().Name;
+        private readonly string id;
         internal string Id => id;
 
-        private readonly string version = Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
-        internal string Version => version;
+        private readonly string name;
+        internal string Name => name;
 
-        public abstract string Name { get; }
+        private readonly string version;
+        internal string Version => version;
 
         protected internal virtual void OnInitialize() { }
 
@@ -33,8 +33,11 @@ namespace BlasII.ModdingAPI
 
         public void LogCustom(object message, Color color) => Main.LogCustom(Name, message, color);
 
-        public BlasIIMod()
+        public BlasIIMod(string id, string name, string version)
         {
+            this.id = id;
+            this.name = name;
+            this.version = version;
             Main.ModLoader.RegisterMod(this);
         }
     }

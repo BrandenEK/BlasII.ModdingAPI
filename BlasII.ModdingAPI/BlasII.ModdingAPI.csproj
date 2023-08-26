@@ -6,7 +6,8 @@
     <Nullable>disable</Nullable>
 
     <TargetName>ModdingAPI</TargetName>
-    <DisplayName>Modding API</DisplayName>
+    <Product>Modding API</Product>
+    <Company>Damocles</Company>
     <Version>0.1.0</Version>
   </PropertyGroup>
 
@@ -25,9 +26,9 @@
     </PropertyGroup>
     <ItemGroup>
       <DataDlls Include="$(ResourcesFolder)data\*" />
-      <DataFiles Include="$(ResourcesFolder)data\$(DisplayName)\*" />
+      <DataFiles Include="$(ResourcesFolder)data\$(Product)\*" />
       <Keybindings Include="$(ResourcesFolder)keybindings\*" />
-      <Levels Include="$(ResourcesFolder)levels\$(DisplayName)\*" />
+      <Levels Include="$(ResourcesFolder)levels\$(Product)\*" />
       <Localization Include="$(ResourcesFolder)localization\*" />
     </ItemGroup>
 
@@ -36,11 +37,10 @@
       <DevFolder>C:\Program Files (x86)\Steam\steamapps\common\Blasphemous 2\Modding\</DevFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DevFolder)plugins" />
-    <Copy SourceFiles="@(Config)" DestinationFolder="$(DevFolder)config" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(DevFolder)data" />
-    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(DisplayName)" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(Product)" />
     <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(DevFolder)keybindings" />
-    <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(DisplayName)" />
+    <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(DevFolder)localization" />
 
     <!-- Export & zip all mod files -->
@@ -48,14 +48,47 @@
       <ExportFolder>$(SolutionDir)publish\$(TargetName)\</ExportFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
-    <Copy SourceFiles="@(Config)" DestinationFolder="$(ExportFolder)config" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
-    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(DisplayName)" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(Product)" />
     <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
-    <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(DisplayName)" />
+    <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
     <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />
 
+  </Target>
+
+  <Target Name="AddGeneratedFile" BeforeTargets="BeforeCompile;CoreCompile" Inputs="$(MSBuildAllProjects)" Outputs="$(IntermediateOutputPath)GeneratedFile.cs">
+    
+    <!-- Get relevant data and create ModInfo class -->
+    <PropertyGroup>
+      <ModId>$(AssemblyName)</ModId>
+      <ModName>$(Product)</ModName>
+      <ModAuthor>$(Company)</ModAuthor>
+      <ModVersion>$(Version)</ModVersion>
+      <GeneratedText>
+        <![CDATA[
+namespace $(RootNamespace)
+{
+    public static class ModInfo
+    {
+        public const string MOD_ID = "$(ModId)"%3B
+        public const string MOD_NAME = "$(ModName)"%3B
+        public const string MOD_AUTHOR = "$(ModAuthor)"%3B
+        public const string MOD_VERSION = "$(ModVersion)"%3B
+    }
+}
+      ]]>
+      </GeneratedText>
+      <GeneratedFilePath>$(IntermediateOutputPath)ModInfo.cs</GeneratedFilePath>
+    </PropertyGroup>
+    
+    <!-- Write ModInfo data to intermediate output -->
+    <ItemGroup>
+      <Compile Include="$(GeneratedFilePath)" />
+      <FileWrites Include="$(GeneratedFilePath)" />
+    </ItemGroup>
+    <WriteLinesToFile Lines="$(GeneratedText)" File="$(GeneratedFilePath)" WriteOnlyWhenDifferent="true" Overwrite="true" />
+    
   </Target>
   
 </Project>

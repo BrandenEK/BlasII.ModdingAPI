@@ -3,7 +3,7 @@ namespace BlasII.ModdingAPI
 {
     internal class ModdingAPI : BlasIIMod
     {
-        public override string Name => "Modding API";
+        public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_VERSION) { }
 
         protected internal override void OnInitialize()
         {
