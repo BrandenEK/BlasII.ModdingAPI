@@ -6,6 +6,7 @@
     <Nullable>disable</Nullable>
 
     <TargetName>ModdingAPI</TargetName>
+    <DisplayName>Modding API</DisplayName>
     <Version>0.1.0</Version>
   </PropertyGroup>
 
@@ -16,4 +17,44 @@
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
   </ItemGroup>
 
+  <Target Name="Development" AfterTargets="PostBuildEvent">
+
+    <!-- Get resource files -->
+    <PropertyGroup>
+      <ResourcesFolder>$(SolutionDir)resources\</ResourcesFolder>
+    </PropertyGroup>
+    <ItemGroup>
+      <DataDlls Include="$(ResourcesFolder)data\*" />
+      <DataFiles Include="$(ResourcesFolder)data\$(DisplayName)\*" />
+      <Keybindings Include="$(ResourcesFolder)keybindings\*" />
+      <Levels Include="$(ResourcesFolder)levels\$(DisplayName)\*" />
+      <Localization Include="$(ResourcesFolder)localization\*" />
+    </ItemGroup>
+
+    <!-- Copy plugin & resources to development folder -->
+    <PropertyGroup>
+      <DevFolder>C:\Program Files (x86)\Steam\steamapps\common\Blasphemous 2\Modding\</DevFolder>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DevFolder)plugins" />
+    <Copy SourceFiles="@(Config)" DestinationFolder="$(DevFolder)config" />
+    <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(DevFolder)data" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(DisplayName)" />
+    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(DevFolder)keybindings" />
+    <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(DisplayName)" />
+    <Copy SourceFiles="@(Localization)" DestinationFolder="$(DevFolder)localization" />
+
+    <!-- Export & zip all mod files -->
+    <PropertyGroup>
+      <ExportFolder>$(SolutionDir)publish\$(TargetName)\</ExportFolder>
+    </PropertyGroup>
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
+    <Copy SourceFiles="@(Config)" DestinationFolder="$(ExportFolder)config" />
+    <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
+    <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(DisplayName)" />
+    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
+    <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(DisplayName)" />
+    <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
+    <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />
+
+  </Target>
 </Project>
