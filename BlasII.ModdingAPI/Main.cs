@@ -1,10 +1,6 @@
-﻿using HarmonyLib;
-using Il2CppTGK.Game;
-using Il2CppTGK.Game.Managers;
-using Il2CppTMPro;
+﻿using Il2CppTMPro;
 using MelonLoader;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI
@@ -24,10 +20,13 @@ namespace BlasII.ModdingAPI
             ModLoader.RegisterMod(new Randomizer());
         }
 
-        public static void Log(object message)
-        {
-            MelonLogger.Msg(message);
-        }
+
+        public static void Log(string modName, object message) => MelonLogger.Msg(message);
+
+        public static void LogWarning(string modName, object warning) => MelonLogger.Warning(warning);
+
+        public static void LogError(string modName, object error) => MelonLogger.Error(error);
+
 
         public override void OnUpdate() => ModLoader.Update();
 

@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Il2CppInterop.Runtime.InteropTypes;
 using Il2CppTGK.Framework;
 using Il2CppTGK.Framework.Managers;
 using Il2CppTGK.Game;
-using MelonLoader;
 using UnityEngine;
 
 namespace BlasII.ModdingAPI
@@ -54,6 +55,12 @@ namespace BlasII.ModdingAPI
         protected internal virtual void OnSceneLoaded(string sceneName) { }
 
         protected internal virtual void OnSceneUnloaded(string sceneName) { }
+
+        public void Log(object message) => Main.Log(Name, message);
+
+        public void LogWarning(object warning) => Main.LogWarning(Name, warning);
+
+        public void LogError(object error) => Main.LogError(Name, error);
     }
 
     public class TestMod : BlasIIMod
@@ -62,17 +69,17 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            MelonLogger.Warning("Test mod initialize");
+            LogWarning("Test mod initialize");
         }
 
         protected internal override void OnAllInitialized()
         {
-            MelonLogger.Warning("Test mod all initialized");
+            LogWarning("Test mod all initialized");
         }
 
         protected internal override void OnDispose()
         {
-            MelonLogger.Warning("Test mod dispose");
+            LogWarning("Test mod dispose");
         }
 
         protected internal override void OnUpdate()
@@ -82,21 +89,33 @@ namespace BlasII.ModdingAPI
             //    MelonLogger.Error("Test mod update");
             //}
 
-            if (Input.GetKeyDown(KeyCode.Backslash))
-            {
-                //CoreCache.ConsoleManager.Toggle();
-                Singleton<Core>.Instance.GetManager<ConsoleManager>().Toggle();
-            }
+            //if (Input.GetKeyDown(KeyCode.Backslash))
+            //{
+            //    if (Main.cm == null)
+            //    {
+            //        MelonLogger.Error("No cm");
+            //    }
+            //    else
+            //    {
+            //        Main.cm.Toggle();
+            //    }
+            //    //for (int i = 0; i < 100; i++)
+            //    //{
+            //    //    GameManager gm = Singleton<Core>.Instance.GetManager(i);
+            //    //    MelonLogger.Warning(i + ": " + gm?.Name ?? "none");
+            //    //}
+            //}
+
         }
 
         protected internal override void OnSceneLoaded(string sceneName)
         {
-            MelonLogger.Error("Test mod scene loaded: " + sceneName);
+            LogError("Test mod scene loaded: " + sceneName);
         }
 
         protected internal override void OnSceneUnloaded(string sceneName)
         {
-            MelonLogger.Error("Test mod scene unloaded: " + sceneName);
+            LogError("Test mod scene unloaded: " + sceneName);
         }
     }
 
