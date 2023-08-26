@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Drawing;
 using System.Reflection;
 
 namespace BlasII.ModdingAPI
@@ -31,6 +31,6 @@ namespace BlasII.ModdingAPI
 
         public void LogError(object error) => Main.LogError(Name, error);
 
-        public void LogCustom(object message, ConsoleColor color) => Main.LogCustom(Name, message, color);
+        public void LogCustom(object message, Color color) => Main.LogCustom(Name, message, color);
     }
 }

@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace BlasII.ModdingAPI
@@ -73,7 +73,7 @@ namespace BlasII.ModdingAPI
                     return;
             }
 
-            Main.LogCustom("Mod Loader", "Registering mod: " + mod.Id, ConsoleColor.Green);
+            Main.LogCustom("Mod Loader", "Registering mod: " + mod.Id, Color.Green);
             mods.Add(mod);
             // Do something else to register the mod?
         }

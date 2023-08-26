@@ -7,17 +7,17 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            LogWarning("Initialize");
+            LogError("Initialize");
         }
 
         protected internal override void OnAllInitialized()
         {
-            LogWarning("All initialized");
+            LogError("All initialized");
         }
 
         protected internal override void OnDispose()
         {
-            LogWarning("Dispose");
+            LogError("Dispose");
         }
 
         protected internal override void OnUpdate()
