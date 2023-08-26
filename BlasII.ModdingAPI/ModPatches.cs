@@ -1,8 +1,5 @@
 ﻿using HarmonyLib;
 using Il2CppTGK.Game.Managers;
-using Il2CppTGK.Game;
-using MelonLoader;
-using UnityEngine;
 
 namespace BlasII.ModdingAPI
 {
@@ -24,18 +21,15 @@ namespace BlasII.ModdingAPI
         public static void Postfix() => Main.ModLoader.Dispose();
     }
 
-    //[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnUpdate))]
-    //class Mod_Update_Patch
-    //{
-    //    public static void Postfix()
-    //    {
-    //        //if (Time.frameCount % 120 == 0)
-    //        //    MelonLogger.Error("Manager update");
-    //        //Main.TestMod.OnUpdate();
-    //        if (Input.GetKeyDown(KeyCode.P))
-    //        {
-    //            MelonLogger.Error("Key down");
-    //        }
-    //    }
-    //}
+    [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnGlobalRoomLoaded))]
+    class Mod_SceneLoaded_Patch
+    {
+        public static void Postfix(Room newRoom) => Main.ModLoader.SceneLoaded(newRoom?.Name ?? string.Empty);
+    }
+
+    [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnGlobalBeforeChangeRoom))]
+    class Mod_SceneUnloaded_Patch
+    {
+        public static void Postfix(Room oldRoom) => Main.ModLoader.SceneUnloaded(oldRoom?.Name ?? string.Empty);
+    }
 }

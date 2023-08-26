@@ -21,6 +21,7 @@ namespace BlasII.ModdingAPI
             instance ??= this;
 
             ModLoader.RegisterMod(new TestMod());
+            ModLoader.RegisterMod(new Randomizer());
         }
 
         public static void Log(object message)
@@ -34,20 +35,34 @@ namespace BlasII.ModdingAPI
         {
             MelonLogger.Warning("Scene loaded: " + sceneName);
 
-            if (sceneName != "MainMenu")
-                return;
+            if (sceneName == "LandingScene" || sceneName == "MainMenu")
+            {
+                foreach (CanvasScaler scaler in Object.FindObjectsOfType<CanvasScaler>())
+                {
+                    MelonLogger.Error(scaler.name);
+                }
 
+                AddModListToTitleScreen();
+                ModLoader.SceneLoaded("MainMenu");
+            }
+        }
+
+        private void AddModListToTitleScreen()
+        {
             // Do this better
             CanvasScaler canvas = Object.FindObjectOfType<CanvasScaler>();
+            if (canvas == null)
+            {
+                MelonLogger.Msg("Canvas was null");
+                return;
+            }
+
             foreach (TextMeshProUGUI childText in canvas.gameObject.GetComponentsInChildren<TextMeshProUGUI>())
             {
                 if (childText.text.Contains("1.0.5"))
                 {
                     childText.text += ModLoader.CalculateModListText();
-                    foreach (Component c in childText.gameObject.GetComponents<Component>())
-                    {
-                        MelonLogger.Warning("Version compoentn: " + c.ToString());
-                    }
+                    childText.alignment = TextAlignmentOptions.TopRight;
                 }
             }
         }
@@ -65,16 +80,5 @@ namespace BlasII.ModdingAPI
         //        DisplayChildren(child, level + 1);
         //    }
         //}
-    }
-
-    [HarmonyPatch(typeof(RoomManager), nameof(RoomManager.SendActivationEvents))]
-    class test
-    {
-        public static void Postfix(RoomManager __instance)
-        {
-            Main.Log("Sending activation");
-            Room room = __instance.CurrentRoom;
-            Main.ModLoader.SceneLoaded(room?.Name ?? "Empty room");
-        }
     }
 }

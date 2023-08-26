@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Il2CppTGK.Framework;
+using Il2CppTGK.Framework.Managers;
+using Il2CppTGK.Game;
 using MelonLoader;
 using UnityEngine;
 
@@ -74,20 +77,31 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnUpdate()
         {
-            if (Time.frameCount % 120 == 0)
+            //if (Time.frameCount % 120 == 0)
+            //{
+            //    MelonLogger.Error("Test mod update");
+            //}
+
+            if (Input.GetKeyDown(KeyCode.Backslash))
             {
-                MelonLogger.Error("Test mod update");
+                //CoreCache.ConsoleManager.Toggle();
+                Singleton<Core>.Instance.GetManager<ConsoleManager>().Toggle();
             }
         }
 
         protected internal override void OnSceneLoaded(string sceneName)
         {
-            MelonLogger.Warning("Test mod scene loaded: " + sceneName);
+            MelonLogger.Error("Test mod scene loaded: " + sceneName);
         }
 
         protected internal override void OnSceneUnloaded(string sceneName)
         {
-            MelonLogger.Warning("Test mod scene unloaded: " + sceneName);
+            MelonLogger.Error("Test mod scene unloaded: " + sceneName);
         }
+    }
+
+    public class Randomizer : BlasIIMod
+    {
+        public Randomizer() : base("BlasII.Randomizer", "Randomizer", "1.2.1") { }
     }
 }
