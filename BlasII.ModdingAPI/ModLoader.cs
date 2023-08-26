@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace BlasII.ModdingAPI
@@ -48,6 +49,8 @@ namespace BlasII.ModdingAPI
 
         public void SceneLoaded(string sceneName)
         {
+            Main.LogSpecial("Mod Loader", "Loaded scene: " + sceneName);
+
             foreach (var mod in mods)
             {
                 mod.OnSceneLoaded(sceneName);
@@ -70,7 +73,7 @@ namespace BlasII.ModdingAPI
                     return;
             }
 
-            Main.Log("Mod Loader", "Registering mod: " + mod.Id);
+            Main.LogCustom("Mod Loader", "Registering mod: " + mod.Id, ConsoleColor.Green);
             mods.Add(mod);
             // Do something else to register the mod?
         }

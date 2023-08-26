@@ -27,12 +27,12 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnSceneLoaded(string sceneName)
         {
-            LogError("Scene loaded: " + sceneName);
+            //LogError("Scene loaded: " + sceneName);
         }
 
         protected internal override void OnSceneUnloaded(string sceneName)
         {
-            LogError("Scene unloaded: " + sceneName);
+            //LogError("Scene unloaded: " + sceneName);
         }
     }
 }

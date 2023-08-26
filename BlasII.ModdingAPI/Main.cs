@@ -1,6 +1,7 @@
 ﻿using Il2CppTMPro;
 using MelonLoader;
-using UnityEngine;
+using System;
+using System.Text;
 using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI
@@ -26,6 +27,23 @@ namespace BlasII.ModdingAPI
 
         public static void LogError(string modName, object error) => MelonLogger.Error(error);
 
+        public static void LogCustom(string modName, object message, ConsoleColor color) => MelonLogger.Msg(color, message);
+
+        public static void LogSpecial(string modName, string message)
+        {
+            int length = message.Length;
+            var sb = new StringBuilder();
+            for (int i = 0; i < length; i++)
+                sb.Append('-');
+            string line = sb.ToString();
+
+            LogCustom(modName, string.Empty, System.ConsoleColor.White);
+            LogCustom(modName, line, System.ConsoleColor.White);
+            LogCustom(modName, message, System.ConsoleColor.White);
+            LogCustom(modName, line, System.ConsoleColor.White);
+            LogCustom(modName, string.Empty, System.ConsoleColor.White);
+        }
+
 
         public override void OnUpdate() => ModLoader.Update();
 
@@ -43,7 +61,7 @@ namespace BlasII.ModdingAPI
         private void AddModListToTitleScreen()
         {
             // Do this better
-            CanvasScaler canvas = Object.FindObjectOfType<CanvasScaler>();
+            CanvasScaler canvas = UnityEngine.Object.FindObjectOfType<CanvasScaler>();
             if (canvas == null)
             {
                 MelonLogger.Msg("Canvas was null");
