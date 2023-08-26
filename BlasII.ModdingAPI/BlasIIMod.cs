@@ -32,5 +32,10 @@ namespace BlasII.ModdingAPI
         public void LogError(object error) => Main.LogError(Name, error);
 
         public void LogCustom(object message, Color color) => Main.LogCustom(Name, message, color);
+
+        public BlasIIMod()
+        {
+            Main.ModLoader.RegisterMod(this);
+        }
     }
 }

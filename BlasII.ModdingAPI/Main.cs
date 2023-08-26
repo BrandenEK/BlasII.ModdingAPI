@@ -14,6 +14,7 @@ namespace BlasII.ModdingAPI
         private static Main instance;
 
         public static ModLoader ModLoader { get; private set; }
+        public static ModdingAPI ModdingAPI { get; private set; }
 
         public override void OnInitializeMelon()
         {
@@ -21,7 +22,7 @@ namespace BlasII.ModdingAPI
             instance ??= this;
 
             ModLoader = new ModLoader();
-            ModLoader.RegisterMod(new ModdingAPI());
+            ModdingAPI = new ModdingAPI();
         }
 
 

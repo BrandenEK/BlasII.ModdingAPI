@@ -57,4 +57,5 @@
     <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />
 
   </Target>
+  
 </Project>

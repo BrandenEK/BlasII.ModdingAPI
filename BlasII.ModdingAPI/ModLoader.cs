@@ -70,12 +70,14 @@ namespace BlasII.ModdingAPI
             foreach (BlasIIMod m in mods)
             {
                 if (m.Id == mod.Id)
+                {
+                    Main.LogError("Mod Loader", $"Mod with id '{mod.Id}' already exists!");
                     return;
+                }
             }
 
-            Main.LogCustom("Mod Loader", "Registering mod: " + mod.Id, Color.Green);
+            Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", Color.Green);
             mods.Add(mod);
-            // Do something else to register the mod?
         }
 
         public string CalculateModListText()
