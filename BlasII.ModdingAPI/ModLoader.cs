@@ -49,7 +49,7 @@ namespace BlasII.ModdingAPI
 
         public void SceneLoaded(string sceneName)
         {
-            Main.LogSpecial("Mod Loader", "Loaded scene: " + sceneName);
+            Main.LogSpecial("Modding API", "Loaded scene: " + sceneName);
 
             foreach (var mod in mods)
             {

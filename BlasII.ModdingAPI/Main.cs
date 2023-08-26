@@ -1,6 +1,8 @@
 ﻿using Il2CppTMPro;
 using MelonLoader;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using UnityEngine.UI;
 
@@ -14,9 +16,10 @@ namespace BlasII.ModdingAPI
 
         public override void OnInitializeMelon()
         {
-            ModLoader = new ModLoader();
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
             instance ??= this;
 
+            ModLoader = new ModLoader();
             ModLoader.RegisterMod(new ModdingAPI());
         }
 
@@ -76,6 +79,13 @@ namespace BlasII.ModdingAPI
                     childText.alignment = TextAlignmentOptions.TopRight;
                 }
             }
+        }
+
+        private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
+        {
+            string assemblyPath = Path.GetFullPath($"Modding\\data\\{args.Name[..args.Name.IndexOf(",")]}.dll");
+            LogWarning("Modding API", "Loading missing assembly: " + args.Name);
+            return File.Exists(assemblyPath) ? Assembly.LoadFrom(assemblyPath) : null;
         }
 
 
