@@ -76,18 +76,18 @@ namespace BlasII.ModdingAPI
         {
             if (Time.frameCount % 120 == 0)
             {
-                MelonLogger.Warning("Test mod update");
+                MelonLogger.Error("Test mod update");
             }
         }
 
         protected internal override void OnSceneLoaded(string sceneName)
         {
-            MelonLogger.Warning("Test mod scene loaded");
+            MelonLogger.Warning("Test mod scene loaded: " + sceneName);
         }
 
         protected internal override void OnSceneUnloaded(string sceneName)
         {
-            MelonLogger.Warning("Test mod scene unloaded");
+            MelonLogger.Warning("Test mod scene unloaded: " + sceneName);
         }
     }
 }
