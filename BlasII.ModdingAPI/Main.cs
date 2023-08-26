@@ -16,8 +16,7 @@ namespace BlasII.ModdingAPI
             ModLoader = new ModLoader();
             instance ??= this;
 
-            ModLoader.RegisterMod(new TestMod());
-            ModLoader.RegisterMod(new Randomizer());
+            ModLoader.RegisterMod(new ModdingAPI());
         }
 
 
