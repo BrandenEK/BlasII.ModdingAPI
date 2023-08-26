@@ -1,6 +1,7 @@
 ﻿using Il2CppTMPro;
 using MelonLoader;
 using System;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -13,6 +14,7 @@ namespace BlasII.ModdingAPI
         private static Main instance;
 
         public static ModLoader ModLoader { get; private set; }
+        public static ModdingAPI ModdingAPI { get; private set; }
 
         public override void OnInitializeMelon()
         {
@@ -20,17 +22,17 @@ namespace BlasII.ModdingAPI
             instance ??= this;
 
             ModLoader = new ModLoader();
-            ModLoader.RegisterMod(new ModdingAPI());
+            ModdingAPI = new ModdingAPI();
         }
 
 
-        public static void Log(string modName, object message) => MelonLogger.Msg(message);
+        public static void Log(string modName, object message) => MelonLogger.Msg(modName, message);
 
-        public static void LogWarning(string modName, object warning) => MelonLogger.Warning(warning);
+        public static void LogWarning(string modName, object warning) => MelonLogger.Warning(modName, warning);
 
-        public static void LogError(string modName, object error) => MelonLogger.Error(error);
+        public static void LogError(string modName, object error) => MelonLogger.Error(modName, error);
 
-        public static void LogCustom(string modName, object message, ConsoleColor color) => MelonLogger.Msg(color, message);
+        public static void LogCustom(string modName, object message, Color color) => MelonLogger.Msg(color, modName, message);
 
         public static void LogSpecial(string modName, string message)
         {
@@ -40,11 +42,11 @@ namespace BlasII.ModdingAPI
                 sb.Append('-');
             string line = sb.ToString();
 
-            LogCustom(modName, string.Empty, System.ConsoleColor.White);
-            LogCustom(modName, line, System.ConsoleColor.White);
-            LogCustom(modName, message, System.ConsoleColor.White);
-            LogCustom(modName, line, System.ConsoleColor.White);
-            LogCustom(modName, string.Empty, System.ConsoleColor.White);
+            LogCustom(modName, string.Empty, Color.White);
+            LogCustom(modName, line, Color.White);
+            LogCustom(modName, message, Color.White);
+            LogCustom(modName, line, Color.White);
+            LogCustom(modName, string.Empty, Color.White);
         }
 
 
@@ -52,7 +54,7 @@ namespace BlasII.ModdingAPI
 
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
-            MelonLogger.Warning("Scene loaded: " + sceneName);
+            //MelonLogger.Warning("Scene loaded: " + sceneName);
 
             if (sceneName == "LandingScene" || sceneName == "MainMenu")
             {

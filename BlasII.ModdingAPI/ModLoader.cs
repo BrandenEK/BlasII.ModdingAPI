@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 
 namespace BlasII.ModdingAPI
@@ -70,12 +70,14 @@ namespace BlasII.ModdingAPI
             foreach (BlasIIMod m in mods)
             {
                 if (m.Id == mod.Id)
+                {
+                    Main.LogError("Mod Loader", $"Mod with id '{mod.Id}' already exists!");
                     return;
+                }
             }
 
-            Main.LogCustom("Mod Loader", "Registering mod: " + mod.Id, ConsoleColor.Green);
+            Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", Color.Green);
             mods.Add(mod);
-            // Do something else to register the mod?
         }
 
         public string CalculateModListText()

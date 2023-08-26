@@ -3,21 +3,21 @@ namespace BlasII.ModdingAPI
 {
     internal class ModdingAPI : BlasIIMod
     {
-        public override string Name => "Modding API";
+        public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
         protected internal override void OnInitialize()
         {
-            LogWarning("Initialize");
+            LogError("Initialize");
         }
 
         protected internal override void OnAllInitialized()
         {
-            LogWarning("All initialized");
+            LogError("All initialized");
         }
 
         protected internal override void OnDispose()
         {
-            LogWarning("Dispose");
+            LogError("Dispose");
         }
 
         protected internal override void OnUpdate()
