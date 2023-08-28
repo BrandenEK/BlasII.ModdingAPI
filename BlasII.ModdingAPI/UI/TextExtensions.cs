@@ -19,7 +19,7 @@ namespace BlasII.ModdingAPI.UI
 
         public static string DisplayProperties(this TextMeshProUGUI text)
         {
-            var sb = new StringBuilder('\n');
+            var sb = new StringBuilder("\n\n");
             sb.AppendLine("Contents: " + text.text);
             sb.AppendLine("Color: " + text.color);
             sb.AppendLine("Font size: " + text.fontSize);

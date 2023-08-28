@@ -1,4 +1,5 @@
-﻿using Il2CppTGK.Game;
+﻿using BlasII.ModdingAPI.UI;
+using Il2CppTGK.Game;
 using Il2CppTMPro;
 using System.Text;
 using UnityEngine;
@@ -34,6 +35,7 @@ namespace BlasII.ModdingAPI
         {
             if (sceneName == "MainMenu")
             {
+                StoreDefaultUI();
                 DisplayModListOnMenu();
             }
         }
@@ -43,87 +45,32 @@ namespace BlasII.ModdingAPI
             
         }
 
+        private void StoreDefaultUI()
+        {
+            UIModder.DefaultParent = Object.FindObjectOfType<CanvasScaler>()?.GetComponent<RectTransform>();
+            UIModder.DefaultFont = Object.FindObjectOfType<TextMeshProUGUI>()?.font;
+        }
+
         private void DisplayModListOnMenu()
         {
-            // Do this better
+            // Calculate mod list text
+            var sb = new StringBuilder();
+            foreach (var mod in Main.ModLoader.AllMods)
+            {
+                sb.AppendLine($"{mod.Name} v{mod.Version}");
+            }
 
-            //TextMeshProUGUI[] textObjects = Object.FindObjectsOfType<TextMeshProUGUI>();
-            //GameObject textObject = textObjects[^1].gameObject;
-
-            var tmp = Object.FindObjectOfType<TextMeshProUGUI>();
-            LogWarning("Size: " + tmp.fontSize);
-            LogWarning("Color: " + tmp.color); 
-            TMP_FontAsset font = tmp.font;
-            LogWarning("Min: " + tmp.rectTransform.anchorMin);
-            LogWarning("Max: " + tmp.rectTransform.anchorMax);
-            LogWarning("Pos: " + tmp.rectTransform.anchoredPosition);
-
-            GameObject textObject = new GameObject("Text");
-
-            var rect = textObject.AddComponent<RectTransform>();
-            rect.SetParent(tmp.transform.parent, false);
-            rect.anchorMin = new Vector2(0, 1);
-            rect.anchorMax = new Vector2(0, 1);
-            rect.anchoredPosition = new Vector2(-100, 200);
-            LogWarning("Min: " + rect.anchorMin);
-            LogWarning("Max: " + rect.anchorMax);
-            LogWarning("Pos: " + rect.anchoredPosition);
-
-            var text = textObject.AddComponent<TextMeshProUGUI>();
-            text.font = font;
-            text.text = "Test";
-            text.fontSize = tmp.fontSize;
-            text.color = tmp.color;
-
-            var image = textObject.AddComponent<Image>();
-
-
-            //GameObject newText = Object.Instantiate(textObject, textObject.transform.parent);
-            //(newText.transform as RectTransform).anchoredPosition -= Vector2.right * 200;
-
-            //foreach (TextMeshProUGUI obj in Object.FindObjectsOfType<TextMeshProUGUI>())
-            //{
-            //    if (obj.text.Contains("1.0.5"))
-            //    {
-            //        obj.rectTransform.anchoredPosition += Vector2.left * 200;
-            //    }
-            //}
-
-            //GameObject versionText = GetVersionText();
-            //(versionText.transform as RectTransform).anchoredPosition -= Vector2.right * 200;
-
-            //foreach (TextMeshProUGUI obj in Object.FindObjectsOfType<TextMeshProUGUI>())
-            //{
-            //    if (obj.name == "textUnder" && obj.text.Contains("1.0.5"))
-            //        LogWarning(obj.transform.parent.name);
-            //}
-
-            // Find the version text object
-            //GameObject versionText = FindVersionText();
-            //if (versionText == null)
-            //    return;
-
-            //RectTransform r = versionText.transform as RectTransform;
-            //LogWarning("Min: " + r.anchorMin);
-            //LogWarning("Max: " + r.anchorMax);
-            //LogWarning("Pos: " + r.anchoredPosition);
-
-            //// Calculate menu text
-            //var sb = new StringBuilder("\n\n");
-            //foreach (var mod in Main.ModLoader.AllMods)
-            //{
-            //    sb.AppendLine($"{mod.Name} v{mod.Version}");
-            //}
-
-            //// Create copy of version text
-            //GameObject modText = Object.Instantiate(versionText, versionText.transform.parent);
-
-            //RectTransform rect = modText.transform as RectTransform;
-            //rect.anchoredPosition -= Vector2.right * 100;
-
-            //TextMeshProUGUI text = modText.GetComponent<TextMeshProUGUI>();
-            //text.text = sb.ToString();
-            //text.alignment = TextAlignmentOptions.TopLeft;
+            // Create text object for mod list
+            UIModder.CreateText("ModList")
+                .SetContents(sb.ToString())
+                .SetAlignment(TextAlignmentOptions.TopLeft)
+                .SetFontSize(40)
+                .rectTransform
+                .SetXRange(0, 0)
+                .SetYRange(1, 1)
+                .SetPivot(0, 1)
+                .SetSize(400, 100)
+                .SetPosition(30, -20);
         }
     }
 }

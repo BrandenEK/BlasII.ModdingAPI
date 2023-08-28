@@ -20,8 +20,8 @@ namespace BlasII.ModdingAPI.UI
         public static RectTransform ResetToDefault(this RectTransform rect)
         {
             return rect
-                .SetXRange(0, 1)
-                .SetYRange(0, 1)
+                .SetXRange(0.5f, 0.5f)
+                .SetYRange(0.5f, 0.5f)
                 .SetPivot(0.5f, 0.5f)
                 .SetPosition(0, 0)
                 .SetSize(100, 100);
@@ -29,7 +29,7 @@ namespace BlasII.ModdingAPI.UI
 
         public static string DisplayProperties(this RectTransform rect)
         {
-            var sb = new StringBuilder('\n');
+            var sb = new StringBuilder("\n\n");
             sb.AppendLine("X range: " + new Vector2(rect.anchorMin.x, rect.anchorMax.x));
             sb.AppendLine("Y range: " + new Vector2(rect.anchorMin.y, rect.anchorMax.y));
             sb.AppendLine("Pivot: " + rect.pivot);

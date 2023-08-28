@@ -15,7 +15,7 @@ namespace BlasII.ModdingAPI.UI
 
         public static string DisplayProperties(this Image image)
         {
-            var sb = new StringBuilder('\n');
+            var sb = new StringBuilder("\n\n");
             sb.AppendLine("Sprite: " + image.sprite?.name ?? "null");
             sb.AppendLine("Color: " + image.color);
             return sb.ToString();
