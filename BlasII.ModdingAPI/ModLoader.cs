@@ -59,7 +59,7 @@ namespace BlasII.ModdingAPI
         {
             if (inLevel) return;
 
-            Main.LogSpecial("Modding API", "Loaded scene: " + sceneName);
+            Main.LogSpecial(ModInfo.MOD_NAME, "Loaded scene: " + sceneName);
             inLevel = true;
 
             foreach (var mod in mods)
