@@ -1,4 +1,5 @@
 ﻿using Il2CppTMPro;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -24,6 +25,17 @@ namespace BlasII.ModdingAPI.UI
                 .SetPivot(0.5f, 0.5f)
                 .SetPosition(0, 0)
                 .SetSize(100, 100);
+        }
+
+        public static string DisplayProperties(this RectTransform rect)
+        {
+            var sb = new StringBuilder('\n');
+            sb.AppendLine("X range: " + new Vector2(rect.anchorMin.x, rect.anchorMax.x));
+            sb.AppendLine("Y range: " + new Vector2(rect.anchorMin.y, rect.anchorMax.y));
+            sb.AppendLine("Pivot: " + rect.pivot);
+            sb.AppendLine("Position: " + rect.anchoredPosition);
+            sb.AppendLine("Size: " + rect.sizeDelta);
+            return sb.ToString();
         }
 
 

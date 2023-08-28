@@ -1,4 +1,5 @@
 ﻿using Il2CppTMPro;
+using System.Text;
 using UnityEngine;
 
 namespace BlasII.ModdingAPI.UI
@@ -14,6 +15,18 @@ namespace BlasII.ModdingAPI.UI
                 .SetAlignment(TextAlignmentOptions.Center)
                 .SetOverflow(TextOverflowModes.Overflow)
                 .SetFont(UIModder.DefaultFont);
+        }
+
+        public static string DisplayProperties(this TextMeshProUGUI text)
+        {
+            var sb = new StringBuilder('\n');
+            sb.AppendLine("Contents: " + text.text);
+            sb.AppendLine("Color: " + text.color);
+            sb.AppendLine("Font size: " + text.fontSize);
+            sb.AppendLine("Alignment: " + text.alignment);
+            sb.AppendLine("Overflow: " + text.overflowMode);
+            sb.AppendLine("Font: " + text.font?.name ?? "null");
+            return sb.ToString();
         }
 
         public static TextMeshProUGUI SetContents(this TextMeshProUGUI text, string contents)

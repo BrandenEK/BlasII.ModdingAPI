@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Text;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI.UI
@@ -10,6 +11,14 @@ namespace BlasII.ModdingAPI.UI
             return image
                 .SetSprite(null)
                 .SetColor(Color.white);
+        }
+
+        public static string DisplayProperties(this Image image)
+        {
+            var sb = new StringBuilder('\n');
+            sb.AppendLine("Sprite: " + image.sprite?.name ?? "null");
+            sb.AppendLine("Color: " + image.color);
+            return sb.ToString();
         }
 
         public static Image SetSprite(this Image image, Sprite sprite)
