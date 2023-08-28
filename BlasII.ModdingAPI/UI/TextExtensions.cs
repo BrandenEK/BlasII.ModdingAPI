@@ -12,7 +12,8 @@ namespace BlasII.ModdingAPI.UI
                 .SetColor(Color.white)
                 .SetFontSize(16)
                 .SetAlignment(TextAlignmentOptions.Center)
-                .SetOverflow(TextOverflowModes.Overflow);
+                .SetOverflow(TextOverflowModes.Overflow)
+                .SetFont(UIModder.DefaultFont);
         }
 
         public static TextMeshProUGUI SetContents(this TextMeshProUGUI text, string contents)
@@ -42,6 +43,12 @@ namespace BlasII.ModdingAPI.UI
         public static TextMeshProUGUI SetOverflow(this TextMeshProUGUI text, TextOverflowModes overflow)
         {
             text.overflowMode = overflow;
+            return text;
+        }
+
+        public static TextMeshProUGUI SetFont(this TextMeshProUGUI text, TMP_FontAsset font)
+        {
+            text.font = font;
             return text;
         }
     }

@@ -26,12 +26,6 @@ namespace BlasII.ModdingAPI.UI
                 .SetSize(100, 100);
         }
 
-        public static RectTransform SetParent(this RectTransform rect, Transform parent)
-        {
-            rect.SetParent(parent, false);
-            return rect;
-        }
-
 
         public static RectTransform SetXRange(this RectTransform rect, Vector2 range)
         {
