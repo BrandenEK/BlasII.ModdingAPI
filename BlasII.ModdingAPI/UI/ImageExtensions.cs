@@ -5,6 +5,13 @@ namespace BlasII.ModdingAPI.UI
 {
     public static class ImageExtensions
     {
+        public static Image ResetToDefault(this Image image)
+        {
+            return image
+                .SetSprite(null)
+                .SetColor(Color.white);
+        }
+
         public static Image SetSprite(this Image image, Sprite sprite)
         {
             image.sprite = sprite;

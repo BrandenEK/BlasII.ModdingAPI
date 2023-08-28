@@ -5,6 +5,16 @@ namespace BlasII.ModdingAPI.UI
 {
     public static class TextExtensions
     {
+        public static TextMeshProUGUI ResetToDefault(this TextMeshProUGUI text)
+        {
+            return text
+                .SetContents(string.Empty)
+                .SetColor(Color.white)
+                .SetFontSize(16)
+                .SetAlignment(TextAlignmentOptions.Center)
+                .SetOverflow(TextOverflowModes.Overflow);
+        }
+
         public static TextMeshProUGUI SetContents(this TextMeshProUGUI text, string contents)
         {
             text.text = contents;

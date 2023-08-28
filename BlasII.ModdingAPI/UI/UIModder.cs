@@ -8,26 +8,20 @@ namespace BlasII.ModdingAPI.UI
     {
         public static RectTransform CreateRect(string name)
         {
-            var obj = new GameObject(name);
-            
-            var rect = obj.AddComponent<RectTransform>();
+            var rect = new GameObject(name).AddComponent<RectTransform>().ResetToDefault();
             return rect;
         }
 
         public static Image CreateImage(string name)
         {
             var rect = CreateRect(name);
-
-            var image = rect.gameObject.AddComponent<Image>();
-            return image;
+            return rect.AddImage();
         }
 
         public static TextMeshProUGUI CreateText(string name)
         {
             var rect = CreateRect(name);
-
-            var text = rect.gameObject.AddComponent<TextMeshProUGUI>();
-            return text;
+            return rect.AddText();
         }
     }
 }
