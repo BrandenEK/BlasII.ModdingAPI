@@ -1,4 +1,9 @@
-﻿
+﻿using Il2CppTGK.Game;
+using Il2CppTMPro;
+using System.Text;
+using UnityEngine;
+using UnityEngine.UI;
+
 namespace BlasII.ModdingAPI
 {
     internal class ModdingAPI : BlasIIMod
@@ -7,17 +12,17 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            LogError("Initialize");
+            
         }
 
         protected internal override void OnAllInitialized()
         {
-            LogError("All initialized");
+            
         }
 
         protected internal override void OnDispose()
         {
-            LogError("Dispose");
+            
         }
 
         protected internal override void OnUpdate()
@@ -27,12 +32,41 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnSceneLoaded(string sceneName)
         {
-            //LogError("Scene loaded: " + sceneName);
+            if (sceneName == "MainMenu")
+            {
+                DisplayModListOnMenu();
+            }
         }
 
         protected internal override void OnSceneUnloaded(string sceneName)
         {
-            //LogError("Scene unloaded: " + sceneName);
+            
+        }
+
+        private void DisplayModListOnMenu()
+        {
+            // Do this better
+
+            // Find canvas object
+            CanvasScaler canvas = UnityEngine.Object.FindObjectOfType<CanvasScaler>();
+            if (canvas == null) return;
+
+            // Calculate menu text
+            var sb = new StringBuilder("\n\n");
+            foreach (var mod in Main.ModLoader.AllMods)
+            {
+                sb.AppendLine($"{mod.Name} v{mod.Version}");
+            }
+
+            // Find the version text and add to it
+            foreach (TextMeshProUGUI childText in canvas.gameObject.GetComponentsInChildren<TextMeshProUGUI>())
+            {
+                if (childText.text.Contains("1.0.5"))
+                {
+                    childText.text += sb.ToString();
+                    childText.alignment = TextAlignmentOptions.TopRight;
+                }
+            }
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Text;
 
 namespace BlasII.ModdingAPI
 {
@@ -8,10 +7,15 @@ namespace BlasII.ModdingAPI
     {
         private readonly List<BlasIIMod> mods = new();
 
+        public IEnumerable<BlasIIMod> AllMods => mods;
+
         private bool initialized = false;
+        private bool inLevel = false;
 
         public void Initialize()
         {
+            Main.Log(ModInfo.MOD_NAME, "Initializing mods...");
+
             foreach (var mod in mods)
             {
                 mod.OnInitialize();
@@ -24,6 +28,8 @@ namespace BlasII.ModdingAPI
             {
                 mod.OnAllInitialized();
             }
+
+            Main.Log(ModInfo.MOD_NAME, "All mods initialized!");
             initialized = true;
         }
 
@@ -33,6 +39,8 @@ namespace BlasII.ModdingAPI
             {
                 mod.OnDispose();
             }
+
+            Main.Log(ModInfo.MOD_NAME, "All mods diposed!");
             initialized = false;
         }
 
@@ -49,7 +57,10 @@ namespace BlasII.ModdingAPI
 
         public void SceneLoaded(string sceneName)
         {
+            if (inLevel) return;
+
             Main.LogSpecial("Modding API", "Loaded scene: " + sceneName);
+            inLevel = true;
 
             foreach (var mod in mods)
             {
@@ -63,6 +74,14 @@ namespace BlasII.ModdingAPI
             {
                 mod.OnSceneUnloaded(sceneName);
             }
+
+            inLevel = false;
+        }
+
+        public void UnitySceneLoaded(string sceneName)
+        {
+            if (sceneName == "Empty")
+                inLevel = false;
         }
 
         public void RegisterMod(BlasIIMod mod)
@@ -78,19 +97,6 @@ namespace BlasII.ModdingAPI
 
             Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", Color.Green);
             mods.Add(mod);
-        }
-
-        public string CalculateModListText()
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine("\n");
-
-            foreach (var mod in mods)
-            {
-                sb.AppendLine($"{mod.Name} v{mod.Version}");
-            }
-
-            return sb.ToString();
         }
     }
 }
