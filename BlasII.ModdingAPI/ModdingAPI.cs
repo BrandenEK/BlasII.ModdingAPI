@@ -60,17 +60,31 @@ namespace BlasII.ModdingAPI
                 sb.AppendLine($"{mod.Name} v{mod.Version}");
             }
 
-            // Create text object for mod list
-            UIModder.CreateText("ModList")
+            // Create underneath text object
+            UIModder.CreateText("Mods under")
                 .SetContents(sb.ToString())
                 .SetAlignment(TextAlignmentOptions.TopLeft)
                 .SetFontSize(40)
+                .SetColor(new Color(0.004f, 0.008f, 0.008f))
                 .rectTransform
                 .SetXRange(0, 0)
                 .SetYRange(1, 1)
                 .SetPivot(0, 1)
                 .SetSize(400, 100)
                 .SetPosition(30, -20);
+
+            // Create overhead text object
+            UIModder.CreateText("Mods over")
+                .SetContents(sb.ToString())
+                .SetAlignment(TextAlignmentOptions.TopLeft)
+                .SetFontSize(40)
+                .SetColor(new Color(0.773f, 0.451f, 0.314f))
+                .rectTransform
+                .SetXRange(0, 0)
+                .SetYRange(1, 1)
+                .SetPivot(0, 1)
+                .SetSize(400, 100)
+                .SetPosition(30, -16);
         }
     }
 }
