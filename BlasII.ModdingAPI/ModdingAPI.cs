@@ -125,45 +125,5 @@ namespace BlasII.ModdingAPI
             //text.text = sb.ToString();
             //text.alignment = TextAlignmentOptions.TopLeft;
         }
-
-        private GameObject GetVersionText()
-        {
-            //foreach (TextMeshProUGUI obj in Object.FindObjectsOfType<TextMeshProUGUI>())
-            //{
-            //    if (obj.text.Contains("1.0.5"))
-            //    {
-            //        LogWarning(obj.transform.parent.name);
-            //        return obj.gameObject;
-            //    }
-            //}
-            return GameObject.Find("version");
-            return null;
-        }
-
-        //private GameObject FindVersionText()
-        //{
-        //    Log("Finding");
-        //    // Find canvas object
-        //    //CanvasScaler canvas = Object.FindObjectOfType<CanvasScaler>();
-        //    //if (canvas == null)
-        //    //    return null;
-
-        //    //// Find the version text
-        //    //foreach (TextMeshProUGUI childText in canvas.gameObject.GetComponentsInChildren<TextMeshProUGUI>())
-        //    //{
-        //    //    //Log(childText.rectTransform.anchoredPosition);
-        //    //    //if (childText.text.Contains("1.0.5"))
-        //    //        return childText.gameObject;
-        //    //}
-
-        //    foreach (TextMeshProUGUI text in Object.FindObjectsOfType<TextMeshProUGUI>())
-        //    {
-        //        //LogError(text.name + ": " + text.text);
-        //        if (text.text.Contains("1.0.5"))
-        //            return text.gameObject;
-        //    }
-
-        //    return null;
-        //}
     }
 }
