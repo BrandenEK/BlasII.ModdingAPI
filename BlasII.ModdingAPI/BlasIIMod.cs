@@ -16,6 +16,9 @@ namespace BlasII.ModdingAPI
         private readonly string version;
         internal string Version => version;
 
+        private readonly FileHandler fileHandler;
+        public FileHandler FileHandler => fileHandler;
+
         protected internal virtual void OnInitialize() { }
 
         protected internal virtual void OnAllInitialized() { }
@@ -38,10 +41,16 @@ namespace BlasII.ModdingAPI
 
         public BlasIIMod(string id, string name, string author, string version)
         {
+            // Set data
             this.id = id;
             this.name = name;
             this.author = author;
             this.version = version;
+
+            // Set handlers
+            fileHandler = new FileHandler(this);
+
+            // Register mod
             Main.ModLoader.RegisterMod(this);
         }
     }
