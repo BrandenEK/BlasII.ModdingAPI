@@ -13,7 +13,7 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            
+
         }
 
         protected internal override void OnAllInitialized()
