@@ -39,6 +39,12 @@ namespace BlasII.ModdingAPI.UI
             }
         }
 
+        public static RectTransform CanvasParent => DefaultParent;
+
+        public static RectTransform MainMenuParent => DefaultParent?.Find("Interfaces/MainMenuWindow_prefab(Clone)")?.GetComponent<RectTransform>();
+
+        public static RectTransform GameLogicParent => DefaultParent?.Find("InGame/InGameWindow_prefab(Clone)")?.GetComponent<RectTransform>();
+
         public static RectTransform CreateRect(string name, RectTransform parent)
         {
             var rect = new GameObject(name).AddComponent<RectTransform>();

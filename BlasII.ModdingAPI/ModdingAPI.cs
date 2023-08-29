@@ -61,7 +61,7 @@ namespace BlasII.ModdingAPI
             }
 
             // Create underneath text object
-            UIModder.CreateText("Mods under")
+            UIModder.CreateText("Mods under", UIModder.MainMenuParent)
                 .SetContents(sb.ToString())
                 .SetAlignment(TextAlignmentOptions.TopLeft)
                 .SetFontSize(40)
@@ -74,7 +74,7 @@ namespace BlasII.ModdingAPI
                 .SetPosition(30, -20);
 
             // Create overhead text object
-            UIModder.CreateText("Mods over")
+            UIModder.CreateText("Mods over", UIModder.MainMenuParent)
                 .SetContents(sb.ToString())
                 .SetAlignment(TextAlignmentOptions.TopLeft)
                 .SetFontSize(40)
