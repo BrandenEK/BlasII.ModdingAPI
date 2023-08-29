@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
 
 namespace BlasII.ModdingAPI
@@ -31,5 +32,11 @@ namespace BlasII.ModdingAPI
     class Mod_SceneUnloaded_Patch
     {
         public static void Postfix(Room oldRoom) => Main.ModLoader.SceneUnloaded(oldRoom?.Name ?? string.Empty);
+    }
+
+    [HarmonyPatch(typeof(MainMenuWindowLogic), nameof(MainMenuWindowLogic.OnShow))]
+    class Mod_LoadMenu_Patch
+    {
+        public static void Postfix() => Main.ModLoader.SceneLoaded("MainMenu");
     }
 }

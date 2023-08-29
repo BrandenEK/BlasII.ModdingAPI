@@ -1,4 +1,10 @@
-﻿
+﻿using BlasII.ModdingAPI.UI;
+using Il2CppTGK.Game;
+using Il2CppTMPro;
+using System.Text;
+using UnityEngine;
+using UnityEngine.UI;
+
 namespace BlasII.ModdingAPI
 {
     internal class ModdingAPI : BlasIIMod
@@ -7,17 +13,17 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            LogError("Initialize");
+            
         }
 
         protected internal override void OnAllInitialized()
         {
-            LogError("All initialized");
+            
         }
 
         protected internal override void OnDispose()
         {
-            LogError("Dispose");
+            
         }
 
         protected internal override void OnUpdate()
@@ -27,12 +33,58 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnSceneLoaded(string sceneName)
         {
-            //LogError("Scene loaded: " + sceneName);
+            if (sceneName == "MainMenu")
+            {
+                StoreDefaultUI();
+                DisplayModListOnMenu();
+            }
         }
 
         protected internal override void OnSceneUnloaded(string sceneName)
         {
-            //LogError("Scene unloaded: " + sceneName);
+            
+        }
+
+        private void StoreDefaultUI()
+        {
+            UIModder.DefaultParent = Object.FindObjectOfType<CanvasScaler>()?.GetComponent<RectTransform>();
+            UIModder.DefaultFont = Object.FindObjectOfType<TextMeshProUGUI>()?.font;
+        }
+
+        private void DisplayModListOnMenu()
+        {
+            // Calculate mod list text
+            var sb = new StringBuilder();
+            foreach (var mod in Main.ModLoader.AllMods)
+            {
+                sb.AppendLine($"{mod.Name} v{mod.Version}");
+            }
+
+            // Create underneath text object
+            UIModder.CreateText("Mods under", UIModder.MainMenuParent)
+                .SetContents(sb.ToString())
+                .SetAlignment(TextAlignmentOptions.TopLeft)
+                .SetFontSize(40)
+                .SetColor(new Color(0.004f, 0.008f, 0.008f))
+                .rectTransform
+                .SetXRange(0, 0)
+                .SetYRange(1, 1)
+                .SetPivot(0, 1)
+                .SetSize(400, 100)
+                .SetPosition(30, -20);
+
+            // Create overhead text object
+            UIModder.CreateText("Mods over", UIModder.MainMenuParent)
+                .SetContents(sb.ToString())
+                .SetAlignment(TextAlignmentOptions.TopLeft)
+                .SetFontSize(40)
+                .SetColor(new Color(0.773f, 0.451f, 0.314f))
+                .rectTransform
+                .SetXRange(0, 0)
+                .SetYRange(1, 1)
+                .SetPivot(0, 1)
+                .SetSize(400, 100)
+                .SetPosition(30, -16);
         }
     }
 }
