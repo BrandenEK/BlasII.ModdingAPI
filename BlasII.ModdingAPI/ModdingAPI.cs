@@ -13,7 +13,9 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
+            AbilityStorage.Initialize();
             ItemStorage.Initialize();
+            StatStorage.Initialize();
             WeaponStorage.Initialize();
         }
 
