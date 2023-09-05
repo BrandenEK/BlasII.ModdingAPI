@@ -30,8 +30,17 @@ namespace BlasII.ModdingAPI
         private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
         {
             string assemblyPath = Path.GetFullPath($"Modding\\data\\{args.Name[..args.Name.IndexOf(",")]}.dll");
-            LogWarning("Modding API", "Loading missing assembly: " + args.Name);
-            return File.Exists(assemblyPath) ? Assembly.LoadFrom(assemblyPath) : null;
+
+            if (File.Exists(assemblyPath))
+            {
+                LogWarning("Modding API", "Successfully loaded missing assembly: " + args.Name);
+                return Assembly.LoadFrom(assemblyPath);
+            }
+            else
+            {
+                LogWarning("Modding API", "Failed to load missing assembly: " + args.Name);
+                return null;
+            }
         }
 
         public static void Log(string modName, object message) => MelonLogger.Msg(modName, message);

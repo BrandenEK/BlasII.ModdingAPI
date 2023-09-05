@@ -3,13 +3,14 @@ using BlasII.ModdingAPI.UI;
 using Il2CppTMPro;
 using System.Text;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI
 {
     internal class ModdingAPI : BlasIIMod
     {
         public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
+
+        private bool _initializedUI = false;
 
         protected internal override void OnInitialize()
         {
@@ -28,7 +29,13 @@ namespace BlasII.ModdingAPI
         {
             if (sceneName == "MainMenu")
             {
-                StoreDefaultUI();
+                if (!_initializedUI)
+                {
+                    UIModder.Fonts.Initialize();
+                    UIModder.Parents.Initialize();
+                    _initializedUI = true;
+                }
+
                 DisplayModListOnMenu();
             }
         }
@@ -36,12 +43,6 @@ namespace BlasII.ModdingAPI
         protected internal override void OnSceneUnloaded(string sceneName)
         {
             
-        }
-
-        private void StoreDefaultUI()
-        {
-            UIModder.DefaultParent = Object.FindObjectOfType<CanvasScaler>()?.GetComponent<RectTransform>();
-            UIModder.DefaultFont = Object.FindObjectOfType<TextMeshProUGUI>()?.font;
         }
 
         private void DisplayModListOnMenu()
@@ -54,30 +55,30 @@ namespace BlasII.ModdingAPI
             }
 
             // Create underneath text object
-            UIModder.CreateText("Mods under", UIModder.MainMenuParent)
-                .SetContents(sb.ToString())
-                .SetAlignment(TextAlignmentOptions.TopLeft)
-                .SetFontSize(40)
-                .SetColor(new Color(0.004f, 0.008f, 0.008f))
-                .rectTransform
+            UIModder.CreateRect("Mods under", UIModder.Parents.MainMenu.GetChild(0))
                 .SetXRange(0, 0)
                 .SetYRange(1, 1)
                 .SetPivot(0, 1)
                 .SetSize(400, 100)
-                .SetPosition(30, -20);
+                .SetPosition(30, -20)
+                .AddText()
+                .SetContents(sb.ToString())
+                .SetAlignment(TextAlignmentOptions.TopLeft)
+                .SetFontSize(40)
+                .SetColor(new Color(0.004f, 0.008f, 0.008f));
 
             // Create overhead text object
-            UIModder.CreateText("Mods over", UIModder.MainMenuParent)
-                .SetContents(sb.ToString())
-                .SetAlignment(TextAlignmentOptions.TopLeft)
-                .SetFontSize(40)
-                .SetColor(new Color(0.773f, 0.451f, 0.314f))
-                .rectTransform
+            UIModder.CreateRect("Mods over", UIModder.Parents.MainMenu.GetChild(0))
                 .SetXRange(0, 0)
                 .SetYRange(1, 1)
                 .SetPivot(0, 1)
                 .SetSize(400, 100)
-                .SetPosition(30, -16);
+                .SetPosition(30, -16)
+                .AddText()
+                .SetContents(sb.ToString())
+                .SetAlignment(TextAlignmentOptions.TopLeft)
+                .SetFontSize(40)
+                .SetColor(new Color(0.773f, 0.451f, 0.314f));
         }
     }
 }

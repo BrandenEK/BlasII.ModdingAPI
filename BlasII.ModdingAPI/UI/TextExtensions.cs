@@ -14,7 +14,7 @@ namespace BlasII.ModdingAPI.UI
                 .SetFontSize(16)
                 .SetAlignment(TextAlignmentOptions.Center)
                 .SetOverflow(TextOverflowModes.Overflow)
-                .SetFont(UIModder.DefaultFont);
+                .SetFont(UIModder.Fonts.Default);
         }
 
         public static string DisplayProperties(this TextMeshProUGUI text)
