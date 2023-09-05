@@ -4,11 +4,17 @@ using Il2CppTGK.Inventory;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace BlasII.ModdingAPI.Items
+namespace BlasII.ModdingAPI.Storage
 {
-    public static class ItemModder
+    public static class ItemStorage
     {
-        // Inventory
+        internal static void Initialize()
+        {
+            AssetLoader.LoadObjectsOfType(_rosaryBeads);
+            AssetLoader.LoadObjectsOfType(_prayers);
+            AssetLoader.LoadObjectsOfType(_figures);
+            AssetLoader.LoadObjectsOfType(_questItems);
+        }
 
         private static InventoryComponent _playerInventory;
         public static InventoryComponent PlayerInventory
@@ -16,7 +22,7 @@ namespace BlasII.ModdingAPI.Items
             get
             {
                 if (_playerInventory == null)
-                    _playerInventory = CoreCache.PlayerSpawn.PlayerInstance.GetComponent<InventoryComponent>();
+                    _playerInventory = CoreCache.PlayerSpawn?.PlayerInstance?.GetComponent<InventoryComponent>();
                 return _playerInventory;
             }
         }
@@ -28,21 +34,6 @@ namespace BlasII.ModdingAPI.Items
         public static bool TryGetRosaryBead(string id, out RosaryBeadItemID bead) => _rosaryBeads.TryGetValue(id, out bead);
 
         public static IEnumerable<RosaryBeadItemID> GetAllRosaryBeads() => _rosaryBeads.OrderBy(x => x.Key).Select(x => x.Value);
-
-        public static bool AddRosaryBead(string beadId) => AddRosaryBead(TryGetRosaryBead(beadId, out RosaryBeadItemID bead) ? bead : null);
-
-        public static bool AddRosaryBead(RosaryBeadItemID bead)
-        {
-            if (bead == null)
-                return false;
-
-            InventoryComponent inv = PlayerInventory;
-            if (inv == null)
-                return false;
-
-            inv.AddRosaryBeadAsync(bead, 0, 0, true);
-            return true;
-        }
 
         // Prayers
 
