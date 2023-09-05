@@ -1,5 +1,5 @@
-﻿using BlasII.ModdingAPI.UI;
-using Il2CppTGK.Game;
+﻿using BlasII.ModdingAPI.Storage;
+using BlasII.ModdingAPI.UI;
 using Il2CppTMPro;
 using System.Text;
 using UnityEngine;
@@ -13,17 +13,10 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-
-        }
-
-        protected internal override void OnAllInitialized()
-        {
-            
-        }
-
-        protected internal override void OnDispose()
-        {
-            
+            AbilityStorage.Initialize();
+            ItemStorage.Initialize();
+            StatStorage.Initialize();
+            WeaponStorage.Initialize();
         }
 
         protected internal override void OnUpdate()
