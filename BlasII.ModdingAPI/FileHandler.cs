@@ -15,7 +15,7 @@ namespace BlasII.ModdingAPI
 
         internal FileHandler(BlasIIMod mod)
         {
-            rootPath = $"{Directory.GetCurrentDirectory()}\\"; // Change to get full path
+            rootPath = $"{Directory.GetCurrentDirectory()}\\";
             configPath = Path.GetFullPath($"Modding\\config\\{mod.Name}.cfg");
             dataPath = Path.GetFullPath($"Modding\\data\\{mod.Name}\\");
             keybindingsPath = Path.GetFullPath($"Modding\\keybindings\\{mod.Name}.txt");
@@ -70,6 +70,9 @@ namespace BlasII.ModdingAPI
 
         public void SaveConfig<T>(T config)
         {
+            string configDir = "Modding\\config";
+            if (!Directory.Exists(configDir))
+                Directory.CreateDirectory(configDir);
             File.WriteAllText(configPath, JsonConvert.SerializeObject(config, Formatting.Indented));
         }
 
