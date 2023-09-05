@@ -49,7 +49,7 @@ namespace BlasII.ModdingAPI.Storage
 
         public static bool TryGetFigure(string id, out FigureItemID figure) => _figures.TryGetValue(id, out figure);
 
-        public static IEnumerable<KeyValuePair<string, FigureItemID>> GetAllFigurines() => _figures.OrderBy(x => x.Key);
+        public static IEnumerable<KeyValuePair<string, FigureItemID>> GetAllFigures() => _figures.OrderBy(x => x.Key);
 
         // Quest items
 
