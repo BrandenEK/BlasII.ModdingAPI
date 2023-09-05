@@ -15,6 +15,7 @@ namespace BlasII.ModdingAPI.Storage
             }
         }
 
+        // Don't use this
         public static void LoadObjectsOfType<T>(Dictionary<string, T> storage, Dictionary<string, string> lookup) where T : ScriptableObject
         {
             storage.Clear();

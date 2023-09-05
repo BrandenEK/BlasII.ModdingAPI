@@ -33,7 +33,7 @@ namespace BlasII.ModdingAPI.Storage
 
         public static bool TryGetRosaryBead(string id, out RosaryBeadItemID bead) => _rosaryBeads.TryGetValue(id, out bead);
 
-        public static IEnumerable<RosaryBeadItemID> GetAllRosaryBeads() => _rosaryBeads.OrderBy(x => x.Key).Select(x => x.Value);
+        public static IEnumerable<KeyValuePair<string, RosaryBeadItemID>> GetAllRosaryBeads() => _rosaryBeads.OrderBy(x => x.Key);
 
         // Prayers
 
@@ -41,7 +41,7 @@ namespace BlasII.ModdingAPI.Storage
 
         public static bool TryGetPrayer(string id, out PrayerItemID prayer) => _prayers.TryGetValue(id, out prayer);
 
-        public static IEnumerable<PrayerItemID> GetAllPrayers() => _prayers.OrderBy(x => x.Key).Select(x => x.Value);
+        public static IEnumerable<KeyValuePair<string, PrayerItemID>> GetAllPrayers() => _prayers.OrderBy(x => x.Key);
 
         // Figures
 
@@ -49,7 +49,7 @@ namespace BlasII.ModdingAPI.Storage
 
         public static bool TryGetFigure(string id, out FigureItemID figure) => _figures.TryGetValue(id, out figure);
 
-        public static IEnumerable<FigureItemID> GetAllFigurines() => _figures.OrderBy(x => x.Key).Select(x => x.Value);
+        public static IEnumerable<KeyValuePair<string, FigureItemID>> GetAllFigurines() => _figures.OrderBy(x => x.Key);
 
         // Quest items
 
@@ -57,6 +57,6 @@ namespace BlasII.ModdingAPI.Storage
 
         public static bool TryGetQuestItem(string id, out QuestItemID questItem) => _questItems.TryGetValue(id, out questItem);
 
-        public static IEnumerable<QuestItemID> GetAllQuestItems() => _questItems.OrderBy(x => x.Key).Select(x => x.Value);
+        public static IEnumerable<KeyValuePair<string, QuestItemID>> GetAllQuestItems() => _questItems.OrderBy(x => x.Key);
     }
 }
