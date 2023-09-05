@@ -45,7 +45,7 @@ namespace BlasII.ModdingAPI.UI
 
         public static RectTransform GameLogicParent => DefaultParent?.Find("InGame/InGameWindow_prefab(Clone)")?.GetComponent<RectTransform>();
 
-        public static RectTransform CreateRect(string name, RectTransform parent)
+        public static RectTransform CreateRect(string name, Transform parent)
         {
             var rect = new GameObject(name).AddComponent<RectTransform>();
             rect.SetParent(parent, false);
@@ -56,7 +56,7 @@ namespace BlasII.ModdingAPI.UI
         public static RectTransform CreateRect(string name) => CreateRect(name, DefaultParent);
 
 
-        public static Image CreateImage(string name, RectTransform parent)
+        public static Image CreateImage(string name, Transform parent)
         {
             var rect = CreateRect(name, parent);
             return rect.AddImage();
@@ -65,7 +65,7 @@ namespace BlasII.ModdingAPI.UI
         public static Image CreateImage(string name) => CreateImage(name, DefaultParent);
 
 
-        public static TextMeshProUGUI CreateText(string name, RectTransform parent)
+        public static TextMeshProUGUI CreateText(string name, Transform parent)
         {
             var rect = CreateRect(name, parent);
             return rect.AddText();

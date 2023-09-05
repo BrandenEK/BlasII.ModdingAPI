@@ -54,30 +54,30 @@ namespace BlasII.ModdingAPI
             }
 
             // Create underneath text object
-            UIModder.CreateText("Mods under", UIModder.MainMenuParent)
-                .SetContents(sb.ToString())
-                .SetAlignment(TextAlignmentOptions.TopLeft)
-                .SetFontSize(40)
-                .SetColor(new Color(0.004f, 0.008f, 0.008f))
-                .rectTransform
+            UIModder.CreateRect("Mods under", UIModder.MainMenuParent.GetChild(0))
                 .SetXRange(0, 0)
                 .SetYRange(1, 1)
                 .SetPivot(0, 1)
                 .SetSize(400, 100)
-                .SetPosition(30, -20);
+                .SetPosition(30, -20)
+                .AddText()
+                .SetContents(sb.ToString())
+                .SetAlignment(TextAlignmentOptions.TopLeft)
+                .SetFontSize(40)
+                .SetColor(new Color(0.004f, 0.008f, 0.008f));
 
             // Create overhead text object
-            UIModder.CreateText("Mods over", UIModder.MainMenuParent)
-                .SetContents(sb.ToString())
-                .SetAlignment(TextAlignmentOptions.TopLeft)
-                .SetFontSize(40)
-                .SetColor(new Color(0.773f, 0.451f, 0.314f))
-                .rectTransform
+            UIModder.CreateRect("Mods over", UIModder.MainMenuParent.GetChild(0))
                 .SetXRange(0, 0)
                 .SetYRange(1, 1)
                 .SetPivot(0, 1)
                 .SetSize(400, 100)
-                .SetPosition(30, -16);
+                .SetPosition(30, -16)
+                .AddText()
+                .SetContents(sb.ToString())
+                .SetAlignment(TextAlignmentOptions.TopLeft)
+                .SetFontSize(40)
+                .SetColor(new Color(0.773f, 0.451f, 0.314f));
         }
     }
 }
