@@ -98,5 +98,7 @@ namespace BlasII.ModdingAPI
             Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", Color.Green);
             mods.Add(mod);
         }
+
+        public bool IsLevelLoaded() => inLevel;
     }
 }

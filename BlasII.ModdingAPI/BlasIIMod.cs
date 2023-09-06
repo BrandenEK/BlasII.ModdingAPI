@@ -16,6 +16,8 @@ namespace BlasII.ModdingAPI
         private readonly string version;
         internal string Version => version;
 
+        public bool InGame => Main.ModLoader.IsLevelLoaded();
+
         private readonly FileHandler fileHandler;
         public FileHandler FileHandler => fileHandler;
 
