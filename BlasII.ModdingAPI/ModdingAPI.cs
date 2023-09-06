@@ -22,7 +22,7 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnUpdate()
         {
-            LogError(InGame.ToString());
+
         }
 
         protected internal override void OnSceneLoaded(string sceneName)
