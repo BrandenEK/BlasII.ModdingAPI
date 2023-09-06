@@ -30,7 +30,7 @@ namespace BlasII.ModdingAPI.Storage
         {
             storage.Clear();
             var objects = Resources.FindObjectsOfTypeAll<T>().OrderBy(x => x.name);
-            int idx = 0;
+            int idx = 1;
             foreach (T obj in objects)
             {
                 storage.Add(prefix + idx.ToString("00"), obj);
