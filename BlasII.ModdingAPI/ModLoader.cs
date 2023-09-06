@@ -10,7 +10,8 @@ namespace BlasII.ModdingAPI
         public IEnumerable<BlasIIMod> AllMods => mods;
 
         private bool initialized = false;
-        private bool inLevel = false;
+
+        private LoadStatus status = LoadStatus.Unloaded;
 
         public void Initialize()
         {
@@ -57,10 +58,10 @@ namespace BlasII.ModdingAPI
 
         public void SceneLoaded(string sceneName)
         {
-            if (inLevel) return;
+            if (status == LoadStatus.LoadedAny) return;
 
             Main.LogSpecial(ModInfo.MOD_NAME, "Loaded scene: " + sceneName);
-            inLevel = true;
+            status = sceneName == "MainMenu" ? LoadStatus.LoadedMainMenu : LoadStatus.LoadedGame;
 
             foreach (var mod in mods)
             {
@@ -75,13 +76,13 @@ namespace BlasII.ModdingAPI
                 mod.OnSceneUnloaded(sceneName);
             }
 
-            inLevel = false;
+            status = LoadStatus.Unloaded;
         }
 
         public void UnitySceneLoaded(string sceneName)
         {
             if (sceneName == "Empty")
-                inLevel = false;
+                status = LoadStatus.Unloaded;
         }
 
         public void RegisterMod(BlasIIMod mod)
@@ -98,5 +99,7 @@ namespace BlasII.ModdingAPI
             Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", Color.Green);
             mods.Add(mod);
         }
+
+        public LoadStatus GetLoadStatus() => status;
     }
 }
