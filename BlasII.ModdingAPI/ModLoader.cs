@@ -9,9 +9,10 @@ namespace BlasII.ModdingAPI
 
         public IEnumerable<BlasIIMod> AllMods => mods;
 
-        private bool initialized = false;
+        private bool _initialized = false;
 
-        private LoadStatus status = LoadStatus.Unloaded;
+        private string _currentScene = string.Empty;
+        public string CurrentScene => _currentScene;
 
         public void Initialize()
         {
@@ -31,7 +32,7 @@ namespace BlasII.ModdingAPI
             }
 
             Main.Log(ModInfo.MOD_NAME, "All mods initialized!");
-            initialized = true;
+            _initialized = true;
         }
 
         public void Dispose()
@@ -42,12 +43,12 @@ namespace BlasII.ModdingAPI
             }
 
             Main.Log(ModInfo.MOD_NAME, "All mods diposed!");
-            initialized = false;
+            _initialized = false;
         }
 
         public void Update()
         {
-            if (!initialized)
+            if (!_initialized)
                 return;
 
             foreach (var mod in mods)
@@ -58,10 +59,10 @@ namespace BlasII.ModdingAPI
 
         public void SceneLoaded(string sceneName)
         {
-            if (status == LoadStatus.LoadedAny) return;
+            if (_currentScene != string.Empty) return;
 
             Main.LogSpecial(ModInfo.MOD_NAME, "Loaded scene: " + sceneName);
-            status = sceneName == "MainMenu" ? LoadStatus.LoadedMainMenu : LoadStatus.LoadedGame;
+            _currentScene = sceneName;
 
             foreach (var mod in mods)
             {
@@ -76,13 +77,13 @@ namespace BlasII.ModdingAPI
                 mod.OnSceneUnloaded(sceneName);
             }
 
-            status = LoadStatus.Unloaded;
+            _currentScene = string.Empty;
         }
 
         public void UnitySceneLoaded(string sceneName)
         {
             if (sceneName == "Empty")
-                status = LoadStatus.Unloaded;
+                _currentScene = string.Empty;
         }
 
         public void RegisterMod(BlasIIMod mod)
@@ -99,7 +100,5 @@ namespace BlasII.ModdingAPI
             Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", Color.Green);
             mods.Add(mod);
         }
-
-        public LoadStatus GetLoadStatus() => status;
     }
 }
