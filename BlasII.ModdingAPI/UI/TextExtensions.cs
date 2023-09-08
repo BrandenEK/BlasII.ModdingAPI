@@ -13,7 +13,7 @@ namespace BlasII.ModdingAPI.UI
                 .SetColor(Color.white)
                 .SetFontSize(16)
                 .SetAlignment(TextAlignmentOptions.Center)
-                .SetOverflow(TextOverflowModes.Overflow)
+                .SetWrapping(false)
                 .SetFont(UIModder.Fonts.Default);
         }
 
@@ -53,9 +53,16 @@ namespace BlasII.ModdingAPI.UI
             return text;
         }
 
+        [System.Obsolete("This did the wrong thing.  Use SetWrapping instead")]
         public static TextMeshProUGUI SetOverflow(this TextMeshProUGUI text, TextOverflowModes overflow)
         {
             text.overflowMode = overflow;
+            return text;
+        }
+
+        public static TextMeshProUGUI SetWrapping(this TextMeshProUGUI text, bool wordWrap)
+        {
+            text.enableWordWrapping = wordWrap;
             return text;
         }
 
