@@ -11,7 +11,7 @@ namespace BlasII.ModdingAPI.Storage
             storage.Clear();
             foreach (T obj in Resources.FindObjectsOfTypeAll<T>())
             {
-                storage.Add(obj.name, obj);
+                storage.Add(obj.name.Replace(" ", ""), obj);
             }
         }
 
