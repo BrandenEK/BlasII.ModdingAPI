@@ -86,6 +86,38 @@ namespace BlasII.ModdingAPI
                 _currentScene = string.Empty;
         }
 
+        public void NewGame(int slot)
+        {
+            foreach (var mod in mods)
+            {
+                mod.OnNewGame(slot);
+            }
+        }
+
+        public void SaveGame(int slot)
+        {
+            foreach (var mod in mods)
+            {
+                mod.OnSaveGame(slot);
+            }
+        }
+
+        public void LoadGame(int slot)
+        {
+            foreach (var mod in mods)
+            {
+                mod.OnLoadGame(slot);
+            }
+        }
+
+        public void ResetGame()
+        {
+            foreach (var mod in mods)
+            {
+                mod.OnResetGame();
+            }
+        }
+
         public void RegisterMod(BlasIIMod mod)
         {
             foreach (BlasIIMod m in mods)

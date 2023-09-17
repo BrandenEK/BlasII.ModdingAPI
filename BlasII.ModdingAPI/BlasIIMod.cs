@@ -44,13 +44,13 @@ namespace BlasII.ModdingAPI
 
         // Persistence
 
-        protected internal virtual void NewGame(int slot) { }
+        protected internal virtual void OnNewGame(int slot) { }
 
-        protected internal virtual void SaveGame(int slot) { }
+        protected internal virtual void OnSaveGame(int slot) { }
 
-        protected internal virtual void LoadGame(int slot) { }
+        protected internal virtual void OnLoadGame(int slot) { }
 
-        protected internal virtual void ResetGame() { }
+        protected internal virtual void OnResetGame() { }
 
         // Logging
 
