@@ -1,9 +1,13 @@
 ﻿using HarmonyLib;
+using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
+using Il2CppTGK.Persistence;
 
 namespace BlasII.ModdingAPI
 {
+    // Events
+
     [HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnInitialize))]
     class Mod_Initialize_Patch
     {
@@ -38,5 +42,31 @@ namespace BlasII.ModdingAPI
     class Mod_LoadMenu_Patch
     {
         public static void Postfix() => Main.ModLoader.SceneLoaded("MainMenu");
+    }
+
+    // Persistence
+
+    [HarmonyPatch(typeof(MainMenuWindowLogic), nameof(MainMenuWindowLogic.NewGame))]
+    class Mod_New_Patch
+    {
+        public static void Postfix(int slot) => Main.ModLoader.NewGame(slot);
+    }
+
+    [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.BuildCurrentPersistentState), typeof(PersistentData))]
+    class Mod_Save_Patch
+    {
+        public static void Postfix() => Main.ModLoader.SaveGame(CoreCache.SaveData.CurrentSaveSlot);
+    }
+
+    [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.SetCurrentPersistentState))]
+    class Mod_Load_Patch
+    {
+        public static void Postfix() => Main.ModLoader.LoadGame(CoreCache.SaveData.CurrentSaveSlot);
+    }
+
+    [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.ResetPersistence))]
+    class Mod_Reset_Patch
+    {
+        public static void Postfix() => Main.ModLoader.ResetGame();
     }
 }

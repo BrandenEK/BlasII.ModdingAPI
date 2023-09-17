@@ -42,6 +42,16 @@ namespace BlasII.ModdingAPI
 
         protected internal virtual void OnSceneUnloaded(string sceneName) { }
 
+        // Persistence
+
+        protected internal virtual void OnNewGame(int slot) { }
+
+        protected internal virtual void OnSaveGame(int slot) { }
+
+        protected internal virtual void OnLoadGame(int slot) { }
+
+        protected internal virtual void OnResetGame() { }
+
         // Logging
 
         public void Log(object message) => Main.Log(Name, message);

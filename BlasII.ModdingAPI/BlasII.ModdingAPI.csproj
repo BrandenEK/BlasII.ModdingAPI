@@ -8,7 +8,7 @@
     <TargetName>ModdingAPI</TargetName>
     <Product>Modding API</Product>
     <Company>Damocles</Company>
-    <Version>0.2.1</Version>
+    <Version>0.3.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
