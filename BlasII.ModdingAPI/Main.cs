@@ -9,15 +9,12 @@ namespace BlasII.ModdingAPI
 {
     internal class Main : MelonMod
     {
-        private static Main instance;
-
         public static ModLoader ModLoader { get; private set; }
         public static ModdingAPI ModdingAPI { get; private set; }
 
         public override void OnInitializeMelon()
         {
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(LoadMissingAssemblies);
-            instance ??= this;
 
             ModLoader = new ModLoader();
             ModdingAPI = new ModdingAPI();

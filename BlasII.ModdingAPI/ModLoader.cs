@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BlasII.ModdingAPI.Persistence;
+using System.Collections.Generic;
 using System.Drawing;
 
 namespace BlasII.ModdingAPI
@@ -86,27 +87,39 @@ namespace BlasII.ModdingAPI
                 _currentScene = string.Empty;
         }
 
-        public void NewGame(int slot)
+        public void NewGame()
         {
             foreach (var mod in mods)
             {
-                mod.OnNewGame(slot);
+                mod.OnNewGameStarted();
             }
         }
 
         public void SaveGame(int slot)
         {
+            var data = new Dictionary<string, SaveData>();
+
             foreach (var mod in mods)
             {
-                mod.OnSaveGame(slot);
+                if (mod is IPersistentMod persistentMod)
+                {
+                    data.Add(mod.Id, persistentMod.SaveGame());
+                }
             }
+
+            SaveData.SaveDataToFile(slot, data);
         }
 
         public void LoadGame(int slot)
         {
+            var data = SaveData.LoadDataFromFile(slot);
+
             foreach (var mod in mods)
             {
-                mod.OnLoadGame(slot);
+                if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
+                {
+                    persistentMod.LoadGame(save);
+                }
             }
         }
 
@@ -114,7 +127,10 @@ namespace BlasII.ModdingAPI
         {
             foreach (var mod in mods)
             {
-                mod.OnResetGame();
+                if (mod is IPersistentMod persistentMod)
+                {
+                    persistentMod.ResetGame();
+                }
             }
         }
 
