@@ -4,6 +4,7 @@ using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
 using Il2CppTGK.Persistence;
+using System.Reflection;
 
 namespace BlasII.ModdingAPI
 {
@@ -53,8 +54,19 @@ namespace BlasII.ModdingAPI
 
     // Persistence
 
+    [HarmonyPatch]
+    class Mod_Save1_Patch
+    {
+        public static MethodInfo TargetMethod()
+        {
+            return AccessTools.Method(typeof(GuiltManager), nameof(GuiltManager.BuildCurrentPersistentState), System.Array.Empty<System.Type>());
+        }
+
+        public static void Postfix() => Main.ModLoader.SaveGame(CoreCache.SaveData.CurrentSaveSlot);
+    }
+
     [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.BuildCurrentPersistentState), typeof(PersistentData))]
-    class Mod_Save_Patch
+    class Mod_Save2_Patch
     {
         public static void Postfix() => Main.ModLoader.SaveGame(CoreCache.SaveData.CurrentSaveSlot);
     }
