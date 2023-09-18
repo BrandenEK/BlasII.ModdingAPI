@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using BlasII.ModdingAPI.Persistence;
+using HarmonyLib;
 using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
@@ -44,13 +45,13 @@ namespace BlasII.ModdingAPI
         public static void Postfix() => Main.ModLoader.SceneLoaded("MainMenu");
     }
 
-    // Persistence
-
     [HarmonyPatch(typeof(MainMenuWindowLogic), nameof(MainMenuWindowLogic.NewGame))]
     class Mod_New_Patch
     {
-        public static void Postfix(int slot) => Main.ModLoader.NewGame(slot);
+        public static void Postfix() => Main.ModLoader.NewGame();
     }
+
+    // Persistence
 
     [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.BuildCurrentPersistentState), typeof(PersistentData))]
     class Mod_Save_Patch
@@ -68,5 +69,11 @@ namespace BlasII.ModdingAPI
     class Mod_Reset_Patch
     {
         public static void Postfix() => Main.ModLoader.ResetGame();
+    }
+
+    [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.DeleteSlot))]
+    class Mod_Delete_Patch
+    {
+        public static void Postfix(int slot) => SaveData.DeleteDataFromFile(slot);
     }
 }
