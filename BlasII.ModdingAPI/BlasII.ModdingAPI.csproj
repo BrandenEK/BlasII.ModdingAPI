@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
 
@@ -9,14 +10,21 @@
     <Product>Modding API</Product>
     <Company>Damocles</Company>
     <Version>0.3.0</Version>
+    <Configurations>Game1.0;Game2.0</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BlasII.ModdingReferences" Version="1.0.5.3" />
     <PackageReference Include="Il2CppInterop.Runtime" Version="1.4.5" />
     <PackageReference Include="LavaGang.MelonLoader" Version="0.6.1" />
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Game1.0' ">
+    <PackageReference Include="BlasII.ModdingReferences" Version="1.1.0" />
+  </ItemGroup>
+  <ItemGroup Condition=" '$(Configuration)' == 'Game2.0' ">
+    <PackageReference Include="BlasII.ModdingReferences" Version="1.1.0" />
   </ItemGroup>
 
   <Target Name="Development" AfterTargets="PostBuildEvent">
@@ -46,7 +54,7 @@
 
     <!-- Export & zip all mod files -->
     <PropertyGroup>
-      <ExportFolder>$(SolutionDir)publish\$(TargetName)\</ExportFolder>
+      <ExportFolder>$(SolutionDir)publish\$(TargetName)_$(Configuration)\</ExportFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
@@ -54,7 +62,7 @@
     <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
     <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
-    <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />
+    <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName)_$(Configuration).zip" Overwrite="true" />
 
   </Target>
 

@@ -32,8 +32,6 @@ namespace BlasII.ModdingAPI
 
         protected internal virtual void OnInitialize() { }
 
-        protected internal virtual void OnAllInitialized() { }
-
         protected internal virtual void OnDispose() { }
 
         protected internal virtual void OnUpdate() { }

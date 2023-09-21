@@ -23,8 +23,11 @@ jobs:
     - name: Restore
       run: dotnet restore
       
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
+    - name: Build 1.0
+      run: dotnet build --configuration Game1.0 --no-restore
+      
+    #- name: Build 2.0
+    #  run: dotnet build --configuration Game2.0 --no-restore
       
     - name: Export
       run: |
@@ -35,10 +38,18 @@ jobs:
         BUILD_DATE=$(date +'%Y-%m-%d')
         echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
       
-    - name: Upload
+    - name: Upload 1.0
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.MOD_NAME }} v${{ env.MOD_VERSION }} (${{ env.BUILD_DATE }})
-        path: publish/${{ env.MOD_NAME }}/
+        name: ${{ env.MOD_NAME }}_Game1.0 v${{ env.MOD_VERSION }} (${{ env.BUILD_DATE }})
+        path: publish/${{ env.MOD_NAME }}_Game1.0/
         retention-days: 30
         if-no-files-found: error
+        
+    #- name: Upload 2.0
+    #  uses: actions/upload-artifact@v3
+    #  with:
+    #    name: ${{ env.MOD_NAME }}_Game2.0 v${{ env.MOD_VERSION }} (${{ env.BUILD_DATE }})
+    #    path: publish/${{ env.MOD_NAME }}_Game2.0/
+    #    retention-days: 30
+    #    if-no-files-found: error
