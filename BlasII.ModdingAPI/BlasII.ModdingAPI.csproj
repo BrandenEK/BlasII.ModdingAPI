@@ -54,7 +54,7 @@
 
     <!-- Export & zip all mod files -->
     <PropertyGroup>
-      <ExportFolder>$(SolutionDir)publish\$(TargetName)\</ExportFolder>
+      <ExportFolder>$(SolutionDir)publish\$(TargetName)_$(Configuration)\</ExportFolder>
     </PropertyGroup>
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
@@ -62,7 +62,7 @@
     <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
     <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
-    <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />
+    <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName)_$(Configuration).zip" Overwrite="true" />
 
   </Target>
 
