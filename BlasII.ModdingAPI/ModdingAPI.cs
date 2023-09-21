@@ -18,6 +18,12 @@ namespace BlasII.ModdingAPI
             ItemStorage.Initialize();
             StatStorage.Initialize();
             WeaponStorage.Initialize();
+
+#if GAME1_0
+            LogWarning("Initialized API for game version 1.0");
+#elif GAME2_0
+            LogWarning("Initialized API for game version 2.0");
+#endif
         }
 
         protected internal override void OnSceneLoaded(string sceneName)
@@ -33,11 +39,6 @@ namespace BlasII.ModdingAPI
 
                 DisplayModListOnMenu();
             }
-        }
-
-        protected internal override void OnSceneUnloaded(string sceneName)
-        {
-            
         }
 
         private void DisplayModListOnMenu()
