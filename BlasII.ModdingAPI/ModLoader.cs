@@ -1,6 +1,6 @@
 ﻿using BlasII.ModdingAPI.Persistence;
 using System.Collections.Generic;
-using System.Drawing;
+using UnityEngine;
 
 namespace BlasII.ModdingAPI
 {
@@ -15,10 +15,16 @@ namespace BlasII.ModdingAPI
         private string _currentScene = string.Empty;
         public string CurrentScene => _currentScene;
 
+        private GameObject _modObject;
+        public GameObject ModObject => _modObject;
+
         public void Initialize()
         {
             if (_initialized)
                 return;
+
+            _modObject = new GameObject("Mod object");
+            Object.DontDestroyOnLoad(_modObject);
 
             Main.Log(ModInfo.MOD_NAME, "Initializing mods...");
 
@@ -139,7 +145,7 @@ namespace BlasII.ModdingAPI
                 }
             }
 
-            Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", Color.Green);
+            Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", System.Drawing.Color.Green);
             mods.Add(mod);
         }
     }
