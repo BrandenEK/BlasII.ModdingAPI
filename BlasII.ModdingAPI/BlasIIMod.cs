@@ -23,6 +23,8 @@ namespace BlasII.ModdingAPI
         private readonly LoadStatus loadStatus = new();
         public LoadStatus LoadStatus => loadStatus;
 
+        public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;
+
         // Handlers
 
         private readonly FileHandler fileHandler;

@@ -125,11 +125,20 @@ namespace BlasII.ModdingAPI
                     texture.filterMode = FilterMode.Point;
 
                 output = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, Vector4.zero);
+                RegisterSpriteOnObject(output);
+
                 return true;
             }
 
             output = null;
             return false;
+        }
+
+        private void RegisterSpriteOnObject(Sprite sprite)
+        {
+            var sr = Main.ModLoader.ModObject.AddComponent<SpriteRenderer>();
+            sr.sprite = sprite;
+            sr.enabled = false;
         }
 
         // Keybindings
