@@ -20,11 +20,6 @@ namespace BlasII.ModdingAPI
             WeaponStorage.Initialize();
         }
 
-        protected internal override void OnUpdate()
-        {
-
-        }
-
         protected internal override void OnSceneLoaded(string sceneName)
         {
             if (sceneName == "MainMenu")

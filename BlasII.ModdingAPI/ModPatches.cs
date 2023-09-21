@@ -10,16 +10,10 @@ namespace BlasII.ModdingAPI
 {
     // Events
 
-    [HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnInitialize))]
-    class Mod_Initialize_Patch
-    {
-        public static void Postfix() => Main.ModLoader.Initialize();
-    }
-
     [HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnAllInitialized))]
     class Mod_AllInitialized_Patch
     {
-        public static void Postfix() => Main.ModLoader.AllInitialized();
+        public static void Postfix() => Main.ModLoader.Initialize();
     }
 
     [HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnDispose))]

@@ -17,23 +17,18 @@ namespace BlasII.ModdingAPI
 
         public void Initialize()
         {
+            if (_initialized)
+                return;
+
             Main.Log(ModInfo.MOD_NAME, "Initializing mods...");
 
             foreach (var mod in mods)
             {
                 mod.OnInitialize();
             }
-        }
 
-        public void AllInitialized()
-        {
-            foreach (var mod in mods)
-            {
-                mod.OnAllInitialized();
-            }
-
-            Main.Log(ModInfo.MOD_NAME, "All mods initialized!");
             _initialized = true;
+            Main.Log(ModInfo.MOD_NAME, "All mods initialized!");
         }
 
         public void Dispose()
@@ -44,7 +39,6 @@ namespace BlasII.ModdingAPI
             }
 
             Main.Log(ModInfo.MOD_NAME, "All mods diposed!");
-            _initialized = false;
         }
 
         public void Update()
