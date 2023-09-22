@@ -30,7 +30,14 @@ namespace BlasII.ModdingAPI
 
             foreach (var mod in mods)
             {
-                mod.OnInitialize();
+                try
+                {
+                    mod.OnInitialize();
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
+                }
             }
 
             _initialized = true;
@@ -41,7 +48,14 @@ namespace BlasII.ModdingAPI
         {
             foreach (var mod in mods)
             {
-                mod.OnDispose();
+                try
+                {
+                    mod.OnDispose();
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
+                }
             }
 
             Main.Log(ModInfo.MOD_NAME, "All mods diposed!");
@@ -54,7 +68,14 @@ namespace BlasII.ModdingAPI
 
             foreach (var mod in mods)
             {
-                mod.OnUpdate();
+                try
+                {
+                    mod.OnUpdate();
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
+                }
             }
         }
 
@@ -67,7 +88,14 @@ namespace BlasII.ModdingAPI
 
             foreach (var mod in mods)
             {
-                mod.OnSceneLoaded(sceneName);
+                try
+                {
+                    mod.OnSceneLoaded(sceneName);
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
+                }
             }
         }
 
@@ -75,7 +103,14 @@ namespace BlasII.ModdingAPI
         {
             foreach (var mod in mods)
             {
-                mod.OnSceneUnloaded(sceneName);
+                try
+                {
+                    mod.OnSceneUnloaded(sceneName);
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
+                }
             }
 
             _currentScene = string.Empty;
@@ -91,7 +126,14 @@ namespace BlasII.ModdingAPI
         {
             foreach (var mod in mods)
             {
-                mod.OnNewGameStarted();
+                try
+                {
+                    mod.OnNewGameStarted();
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
+                }
             }
         }
 
@@ -101,9 +143,16 @@ namespace BlasII.ModdingAPI
 
             foreach (var mod in mods)
             {
-                if (mod is IPersistentMod persistentMod)
+                try
                 {
-                    data.Add(mod.Id, persistentMod.SaveGame());
+                    if (mod is IPersistentMod persistentMod)
+                    {
+                        data.Add(mod.Id, persistentMod.SaveGame());
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
                 }
             }
 
@@ -116,9 +165,16 @@ namespace BlasII.ModdingAPI
 
             foreach (var mod in mods)
             {
-                if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
+                try
                 {
-                    persistentMod.LoadGame(save);
+                    if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
+                    {
+                        persistentMod.LoadGame(save);
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
                 }
             }
         }
@@ -127,9 +183,16 @@ namespace BlasII.ModdingAPI
         {
             foreach (var mod in mods)
             {
-                if (mod is IPersistentMod persistentMod)
+                try
                 {
-                    persistentMod.ResetGame();
+                    if (mod is IPersistentMod persistentMod)
+                    {
+                        persistentMod.ResetGame();
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
                 }
             }
         }
