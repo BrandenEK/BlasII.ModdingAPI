@@ -37,5 +37,10 @@ namespace BlasII.ModdingAPI.Storage
                 idx++;
             }
         }
+
+        public static T[] LoadObjectsOfType<T>() where T : ScriptableObject
+        {
+            return Resources.FindObjectsOfTypeAll<T>();
+        }
     }
 }

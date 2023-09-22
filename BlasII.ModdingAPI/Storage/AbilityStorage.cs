@@ -1,4 +1,5 @@
 ﻿using Il2CppLightbug.Kinematic2D.Implementation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,14 +9,25 @@ namespace BlasII.ModdingAPI.Storage
     {
         internal static void Initialize()
         {
-            AssetLoader.LoadObjectsOfType(_abilities, "AB");
+            foreach (var ability in AssetLoader.LoadObjectsOfType<IAbilityTypeRef>())
+            {
+                string name = ability.name.Replace(" ", "")
+                    .Replace("Ability", "")
+                    .Replace("Type", "")
+                    .Replace("Ref", "");
+
+                if (Enum.TryParse(name, out AbilityType type))
+                {
+                    _abilities.Add(type, ability);
+                }
+            }
         }
 
-        private static readonly Dictionary<string, IAbilityTypeRef> _abilities = new();
+        private static readonly Dictionary<AbilityType, IAbilityTypeRef> _abilities = new();
 
-        public static bool TryGetAbility(string id, out IAbilityTypeRef ability) => _abilities.TryGetValue(id, out ability);
+        public static bool TryGetAbility(AbilityType id, out IAbilityTypeRef ability) => _abilities.TryGetValue(id, out ability);
 
-        public static IEnumerable<KeyValuePair<string, IAbilityTypeRef>> GetAllAbilities() => _abilities.OrderBy(x => x.Key);
+        public static IEnumerable<KeyValuePair<AbilityType, IAbilityTypeRef>> GetAllAbilities() => _abilities.OrderBy(x => x.Key);
     }
 
     public enum AbilityType
@@ -42,7 +54,7 @@ namespace BlasII.ModdingAPI.Storage
         Attack = 60,
         Crouch = 61,
         Dash = 62,
-        Flask = 63,
+        FlaskUse = 63,
         JumpDown = 64,
         Jump = 65,
         InteractableUse = 66,
