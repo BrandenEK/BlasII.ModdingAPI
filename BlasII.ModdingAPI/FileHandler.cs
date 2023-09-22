@@ -114,22 +114,88 @@ namespace BlasII.ModdingAPI
             return ReadFileLines(dataPath + fileName, out output);
         }
 
-        public bool LoadDataAsSprite(string fileName, int pixelsPerUnit, Vector2 pivot, bool usePointFilter, out Sprite output)
+        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
         {
-            if (ReadFileBytes(dataPath + fileName, out byte[] bytes))
+            if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
             {
-                var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-                texture.LoadImage(bytes, false);
-
-                if (usePointFilter)
-                    texture.filterMode = FilterMode.Point;
-
-                output = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, Vector4.zero);
-                return true;
+                output = null;
+                return false;
             }
 
-            output = null;
-            return false;
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            texture.LoadImage(bytes, false);
+
+            if (usePointFilter)
+                texture.filterMode = FilterMode.Point;
+
+            output = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
+            RegisterSpriteOnObject(output);
+
+            return true;
+        }
+
+        public bool LoadDataAsSprite(string fileName, out Sprite output)
+        {
+            return LoadDataAsSprite(fileName, out output, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
+        }
+
+        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter)
+        {
+            return LoadDataAsSprite(fileName, out output, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
+        }
+
+        public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
+        {
+            if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+            {
+                output = null;
+                return false;
+            }
+
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            texture.LoadImage(bytes, false);
+
+            if (usePointFilter)
+                texture.filterMode = FilterMode.Point;
+
+            int totalWidth = texture.width, totalHeight = texture.height, count = 0;
+            output = new Sprite[totalWidth * totalHeight / size / size];
+
+            for (int i = totalHeight - size; i >= 0; i -= size)
+            {
+                for (int j = 0; j < totalWidth; j += size)
+                {
+                    Sprite sprite = Sprite.Create(texture, new Rect(j, i, size, size), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
+                    RegisterSpriteOnObject(sprite);
+                    output[count] = sprite;
+                    count++;
+                }
+            }
+
+            return true;
+        }
+
+        public bool LoadDataAsTexture(string fileName, out Sprite[] output)
+        {
+            return LoadDataAsTexture(fileName, out output, 30, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
+        }
+
+        public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter)
+        {
+            return LoadDataAsTexture(fileName, out output, size, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
+        }
+
+        /// <summary>
+        /// Whenever a sprite is created, it gets dereferenced in the next scene, so add it to a persistent object to keep it around in memory
+        /// </summary>
+        private void RegisterSpriteOnObject(Sprite sprite)
+        {
+            var obj = new GameObject(sprite?.name ?? "Empty");
+            obj.transform.SetParent(Main.ModLoader.ModObject.transform);
+
+            var sr = obj.AddComponent<SpriteRenderer>();
+            sr.sprite = sprite;
+            sr.enabled = false;
         }
 
         // Keybindings
