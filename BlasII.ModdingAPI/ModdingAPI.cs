@@ -31,13 +31,12 @@ namespace BlasII.ModdingAPI
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                if (AbilityStorage.TryGetAbility(AbilityType.AirJump, out var ability))
+                if (AbilityStorage.TryGetAbility("AB02", out var ability))
                     CoreCache.AbilitiesUnlockManager.SetAbility(ability, true);
 
-                int count = 0;
                 foreach (var ab in AbilityStorage.GetAllAbilities())
                 {
-                    LogWarning(++count + ": " + ab.Value.name);
+                    LogWarning(ab.Key + ": " + ab.Value.name);
                 }
             }
         }
