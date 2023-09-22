@@ -15,17 +15,24 @@ namespace BlasII.ModdingAPI.Storage
             }
         }
 
-        // Don't use this
-        public static void LoadObjectsOfType<T>(Dictionary<string, T> storage, Dictionary<string, string> lookup) where T : ScriptableObject
+        public static void LoadObjectsOfType<T>(Dictionary<string, T> storage, string prefix, string[] names) where T : ScriptableObject
         {
             storage.Clear();
-            foreach (T obj in Resources.FindObjectsOfTypeAll<T>())
+            foreach (T obj in Resources.FindObjectsOfTypeAll<T>().OrderBy(x => x.name))
             {
-                if (lookup.TryGetValue(obj.name, out string id))
-                    storage.Add(id, obj);
+                string abilityName = obj.name.Replace(" ", "");
+                for (int i = 0; i < names.Length; i++)
+                {
+                    if (abilityName == names[i])
+                    {
+                        storage.Add(prefix + (i + 1).ToString("00"), obj);
+                        break;
+                    }
+                }
             }
         }
 
+        [System.Obsolete("Pass in a list of names to prevent ids from changing across versions")]
         public static void LoadObjectsOfType<T>(Dictionary<string, T> storage, string prefix) where T : ScriptableObject
         {
             storage.Clear();

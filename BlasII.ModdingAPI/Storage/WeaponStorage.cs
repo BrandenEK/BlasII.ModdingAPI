@@ -10,7 +10,7 @@ namespace BlasII.ModdingAPI.Storage
     {
         internal static void Initialize()
         {
-            AssetLoader.LoadObjectsOfType(_weapons, "WE");
+            AssetLoader.LoadObjectsOfType(_weapons, "WE", AllWeaponNames);
             AssetLoader.LoadObjectsOfType(_weaponMemories, "WM");
             AssetLoader.LoadObjectsOfType(_armors, "AR");
         }
@@ -38,5 +38,12 @@ namespace BlasII.ModdingAPI.Storage
         public static bool TryGetArmor(string id, out ArmorID armor) => _armors.TryGetValue(id, out armor);
 
         public static IEnumerable<KeyValuePair<string, ArmorID>> GetAllArmors() => _armors.OrderBy(x => x.Key);
+
+        private static string[] AllWeaponNames => new string[]
+        {
+            "Censer",
+            "RosaryBlade",
+            "Rapier",
+        };
     }
 }
