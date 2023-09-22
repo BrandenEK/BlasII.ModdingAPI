@@ -114,7 +114,7 @@ namespace BlasII.ModdingAPI
             return ReadFileLines(dataPath + fileName, out output);
         }
 
-        public bool LoadDataAsSprite(string fileName, int pixelsPerUnit, Vector2 pivot, bool usePointFilter, out Sprite output)
+        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
         {
             if (ReadFileBytes(dataPath + fileName, out byte[] bytes))
             {
@@ -124,7 +124,7 @@ namespace BlasII.ModdingAPI
                 if (usePointFilter)
                     texture.filterMode = FilterMode.Point;
 
-                output = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, Vector4.zero);
+                output = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
                 RegisterSpriteOnObject(output);
 
                 return true;
@@ -134,6 +134,19 @@ namespace BlasII.ModdingAPI
             return false;
         }
 
+        public bool LoadDataAsSprite(string fileName, out Sprite output)
+        {
+            return LoadDataAsSprite(fileName, out output, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
+        }
+
+        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter)
+        {
+            return LoadDataAsSprite(fileName, out output, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
+        }
+
+        /// <summary>
+        /// Whenever a sprite is created, it gets dereferenced in the next scene, so add it to a persistent object to keep it around in memory
+        /// </summary>
         private void RegisterSpriteOnObject(Sprite sprite)
         {
             var sr = Main.ModLoader.ModObject.AddComponent<SpriteRenderer>();
