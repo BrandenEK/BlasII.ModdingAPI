@@ -9,18 +9,19 @@ namespace BlasII.ModdingAPI.Storage
     {
         internal static void Initialize()
         {
-            foreach (var ability in AssetLoader.LoadObjectsOfType<IAbilityTypeRef>())
-            {
-                string name = ability.name.Replace(" ", "")
-                    .Replace("Ability", "")
-                    .Replace("Type", "")
-                    .Replace("Ref", "");
+            //foreach (var ability in AssetLoader.LoadObjectsOfType<IAbilityTypeRef>())
+            //{
+            //    string name = ability.name.Replace(" ", "")
+            //        .Replace("Ability", "")
+            //        .Replace("Type", "")
+            //        .Replace("Ref", "");
 
-                if (Enum.TryParse(name, out AbilityType type))
-                {
-                    _abilities.Add(type, ability);
-                }
-            }
+            //    if (Enum.TryParse(name, out AbilityType type))
+            //    {
+            //        _abilities.Add(type, ability);
+            //    }
+            //}
+            AssetLoader.LoadObjectsOfType(_abilities, new string[] { "Ability", "Type", "Ref" });
         }
 
         private static readonly Dictionary<AbilityType, IAbilityTypeRef> _abilities = new();

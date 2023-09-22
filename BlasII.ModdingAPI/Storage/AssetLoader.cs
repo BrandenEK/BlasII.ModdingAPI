@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -35,6 +36,25 @@ namespace BlasII.ModdingAPI.Storage
             {
                 storage.Add(prefix + idx.ToString("00"), obj);
                 idx++;
+            }
+        }
+
+        public static void LoadObjectsOfType<TKey, TValue>(Dictionary<TKey, TValue> storage, string[] replacements) where TKey : struct where TValue : ScriptableObject
+        {
+            storage.Clear();
+            foreach (TValue obj in Resources.FindObjectsOfTypeAll<TValue>())
+            {
+                string name = obj.name.Replace(" ", "");
+                if (replacements != null)
+                {
+                    foreach (string r in replacements)
+                        name = name.Replace(r, "");
+                }
+
+                if (Enum.TryParse(name, out TKey type))
+                {
+                    storage.Add(type, obj);
+                }
             }
         }
 

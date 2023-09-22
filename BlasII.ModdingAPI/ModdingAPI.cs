@@ -34,10 +34,10 @@ namespace BlasII.ModdingAPI
                 if (AbilityStorage.TryGetAbility(AbilityType.AirJump, out var ability))
                     CoreCache.AbilitiesUnlockManager.SetAbility(ability, true);
 
-                int count = 1;
+                int count = 0;
                 foreach (var ab in AbilityStorage.GetAllAbilities())
                 {
-                    LogWarning(count + ": " + ab.Value.name);
+                    LogWarning(++count + ": " + ab.Value.name);
                 }
             }
         }
