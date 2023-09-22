@@ -1,6 +1,5 @@
 ﻿using BlasII.ModdingAPI.Storage;
 using BlasII.ModdingAPI.UI;
-using Il2CppTGK.Game;
 using Il2CppTMPro;
 using System.Text;
 using UnityEngine;
@@ -25,20 +24,6 @@ namespace BlasII.ModdingAPI
 #elif GAME2_0
             LogWarning("Initialized API for game version 2.0");
 #endif
-        }
-
-        protected internal override void OnUpdate()
-        {
-            if (Input.GetKeyDown(KeyCode.Escape))
-            {
-                if (AbilityStorage.TryGetAbility("AB02", out var ability))
-                    CoreCache.AbilitiesUnlockManager.SetAbility(ability, true);
-
-                foreach (var ab in AbilityStorage.GetAllAbilities())
-                {
-                    LogWarning(ab.Key + ": " + ab.Value.name);
-                }
-            }
         }
 
         protected internal override void OnSceneLoaded(string sceneName)
