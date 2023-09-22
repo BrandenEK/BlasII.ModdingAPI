@@ -9,18 +9,6 @@ namespace BlasII.ModdingAPI.Storage
     {
         internal static void Initialize()
         {
-            //foreach (var ability in AssetLoader.LoadObjectsOfType<IAbilityTypeRef>())
-            //{
-            //    string name = ability.name.Replace(" ", "")
-            //        .Replace("Ability", "")
-            //        .Replace("Type", "")
-            //        .Replace("Ref", "");
-
-            //    if (Enum.TryParse(name, out AbilityType type))
-            //    {
-            //        _abilities.Add(type, ability);
-            //    }
-            //}
             AssetLoader.LoadObjectsOfType(_abilities, new string[] { "Ability", "Type", "Ref" });
         }
 
@@ -29,6 +17,11 @@ namespace BlasII.ModdingAPI.Storage
         public static bool TryGetAbility(AbilityType id, out IAbilityTypeRef ability) => _abilities.TryGetValue(id, out ability);
 
         public static IEnumerable<KeyValuePair<AbilityType, IAbilityTypeRef>> GetAllAbilities() => _abilities.OrderBy(x => x.Key);
+
+        private static string[] AllAbilityNames => new string[]
+        {
+
+        };
     }
 
     public enum AbilityType
