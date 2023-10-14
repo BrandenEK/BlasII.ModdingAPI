@@ -49,6 +49,27 @@ jobs:
     - name: Upload Nuget
       if: "${{ github.event_name }} == 'push' && ${{ github.ref_type }} == 'tag'"
       run: dotnet nuget push **\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Create Release
+      if: "${{ github.event_name }} == 'push' && ${{ github.ref_type }} == 'tag'"
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ env.MOD_NAME }} v${{ github.ref }}
+          
+    - name: Upload Release
+      if: "${{ github.event_name }} == 'push' && ${{ github.ref_type }} == 'tag'"
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: publish/${{ env.MOD_NAME }}.zip
+        asset_name: ${{ env.MOD_NAME }}.zip
+        asset_content_type: application/zip
         
     #- name: Upload 2.0
     #  uses: actions/upload-artifact@v3
