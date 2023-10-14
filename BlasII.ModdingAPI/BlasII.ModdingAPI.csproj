@@ -16,13 +16,8 @@
     
     <TargetName>ModdingAPI</TargetName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/BrandenEK/BlasII.ModdingAPI</RepositoryUrl>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Include="..\README.md" Pack="true" PackagePath="\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="BlasII.ModdingReferences" Version="1.1.0" />
