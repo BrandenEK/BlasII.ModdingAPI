@@ -9,12 +9,15 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Game1.0|Any CPU = Game1.0|Any CPU
 		Game2.0|Any CPU = Game2.0|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{DC2D9578-B7DC-43E1-A899-2B4273FF3BB5}.Game1.0|Any CPU.ActiveCfg = Game1.0|Any CPU
 		{DC2D9578-B7DC-43E1-A899-2B4273FF3BB5}.Game1.0|Any CPU.Build.0 = Game1.0|Any CPU
 		{DC2D9578-B7DC-43E1-A899-2B4273FF3BB5}.Game2.0|Any CPU.ActiveCfg = Game2.0|Any CPU
 		{DC2D9578-B7DC-43E1-A899-2B4273FF3BB5}.Game2.0|Any CPU.Build.0 = Game2.0|Any CPU
+		{DC2D9578-B7DC-43E1-A899-2B4273FF3BB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC2D9578-B7DC-43E1-A899-2B4273FF3BB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

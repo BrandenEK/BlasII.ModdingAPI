@@ -23,8 +23,8 @@ jobs:
     - name: Restore
       run: dotnet restore
       
-    - name: Build 1.0
-      run: dotnet build --configuration Game1.0 --no-restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
       
     #- name: Build 2.0
     #  run: dotnet build --configuration Game2.0 --no-restore
