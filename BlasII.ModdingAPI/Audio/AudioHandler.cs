@@ -4,11 +4,15 @@ namespace BlasII.ModdingAPI.Audio
 {
     public class AudioHandler
     {
-        public void PlayUI(UISFX effect)
+        public void PlayEffectUI(UISFX effect)
         {
-            string id = "event:/SFX/UI/" + _uiEvents[(int)effect];
-            CoreCache.AudioManager.InstantiateEvent(id);
-            CoreCache.AudioManager.PlayOneShot(id);
+            PlayEffect("event:/SFX/UI/" + _uiEvents[(int)effect]);
+        }
+
+        public void PlayEffect(string effect)
+        {
+            CoreCache.AudioManager.InstantiateEvent(effect);
+            CoreCache.AudioManager.PlayOneShot(effect);
         }
 
         private static readonly string[] _uiEvents = new string[]
