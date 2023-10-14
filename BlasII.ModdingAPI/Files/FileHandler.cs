@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using System.IO;
 using UnityEngine;
 
-namespace BlasII.ModdingAPI
+namespace BlasII.ModdingAPI.Files
 {
     public class FileHandler
     {

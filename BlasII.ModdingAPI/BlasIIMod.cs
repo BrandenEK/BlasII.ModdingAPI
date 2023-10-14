@@ -1,4 +1,5 @@
 ﻿using BlasII.ModdingAPI.Audio;
+using BlasII.ModdingAPI.Files;
 using System.Drawing;
 
 namespace BlasII.ModdingAPI
