@@ -26,7 +26,7 @@ namespace BlasII.ModdingAPI
 
         private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
         {
-            string assemblyPath = Path.GetFullPath($"Modding\\data\\{args.Name[..args.Name.IndexOf(",")]}.dll");
+            string assemblyPath = Path.GetFullPath($"Modding/data/{args.Name[..args.Name.IndexOf(",")]}.dll");
 
             if (File.Exists(assemblyPath))
             {

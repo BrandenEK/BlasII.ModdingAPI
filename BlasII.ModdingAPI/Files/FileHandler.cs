@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 using System.IO;
 using UnityEngine;
 
-namespace BlasII.ModdingAPI
+namespace BlasII.ModdingAPI.Files
 {
     public class FileHandler
     {
@@ -15,12 +15,12 @@ namespace BlasII.ModdingAPI
 
         internal FileHandler(BlasIIMod mod)
         {
-            rootPath = $"{Directory.GetCurrentDirectory()}\\";
-            configPath = Path.GetFullPath($"Modding\\config\\{mod.Name}.cfg");
-            dataPath = Path.GetFullPath($"Modding\\data\\{mod.Name}\\");
-            keybindingsPath = Path.GetFullPath($"Modding\\keybindings\\{mod.Name}.txt");
-            levelsPath = Path.GetFullPath($"Modding\\levels\\{mod.Name}\\");
-            localizationPath = Path.GetFullPath($"Modding\\localization\\{mod.Name}.txt");
+            rootPath = $"{Directory.GetCurrentDirectory()}/";
+            configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
+            dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
+            keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
+            levelsPath = Path.GetFullPath($"Modding/levels/{mod.Name}/");
+            localizationPath = Path.GetFullPath($"Modding/localization/{mod.Name}.txt");
         }
 
         // General
@@ -70,7 +70,7 @@ namespace BlasII.ModdingAPI
 
         public void SaveConfig<T>(T config)
         {
-            string configDir = "Modding\\config";
+            string configDir = "Modding/config";
             if (!Directory.Exists(configDir))
                 Directory.CreateDirectory(configDir);
             File.WriteAllText(configPath, JsonConvert.SerializeObject(config, Formatting.Indented));

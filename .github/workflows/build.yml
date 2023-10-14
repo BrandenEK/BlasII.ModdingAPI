@@ -23,8 +23,8 @@ jobs:
     - name: Restore
       run: dotnet restore
       
-    - name: Build 1.0
-      run: dotnet build --configuration Game1.0 --no-restore
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
       
     #- name: Build 2.0
     #  run: dotnet build --configuration Game2.0 --no-restore
@@ -38,13 +38,38 @@ jobs:
         BUILD_DATE=$(date +'%Y-%m-%d')
         echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
       
-    - name: Upload 1.0
+    - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.MOD_NAME }}_Game1.0 v${{ env.MOD_VERSION }} (${{ env.BUILD_DATE }})
-        path: publish/${{ env.MOD_NAME }}_Game1.0/
+        name: ${{ env.MOD_NAME }} v${{ env.MOD_VERSION }} (${{ env.BUILD_DATE }})
+        path: publish/${{ env.MOD_NAME }}/
         retention-days: 30
         if-no-files-found: error
+
+    - name: Upload Nuget
+      if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
+      run: dotnet nuget push **\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
+
+    - name: Create Release
+      if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ env.MOD_NAME }} v${{ github.ref_name }}
+          
+    - name: Upload Release
+      if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: publish/${{ env.MOD_NAME }}.zip
+        asset_name: ${{ env.MOD_NAME }}.zip
+        asset_content_type: application/zip
         
     #- name: Upload 2.0
     #  uses: actions/upload-artifact@v3
