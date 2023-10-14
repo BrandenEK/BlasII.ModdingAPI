@@ -38,13 +38,17 @@ jobs:
         BUILD_DATE=$(date +'%Y-%m-%d')
         echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
       
-    - name: Upload 1.0
+    - name: Upload Artifact
       uses: actions/upload-artifact@v3
       with:
-        name: ${{ env.MOD_NAME }}_Game1.0 v${{ env.MOD_VERSION }} (${{ env.BUILD_DATE }})
-        path: publish/${{ env.MOD_NAME }}_Game1.0/
+        name: ${{ env.MOD_NAME }} v${{ env.MOD_VERSION }} (${{ env.BUILD_DATE }})
+        path: publish/${{ env.MOD_NAME }}/
         retention-days: 30
         if-no-files-found: error
+
+    - name: Upload Nuget
+      if: "${{ github.event_name }} == 'push' && ${{ github.ref_type }} == 'tag'"
+      run: dotnet nuget push **\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
         
     #- name: Upload 2.0
     #  uses: actions/upload-artifact@v3
