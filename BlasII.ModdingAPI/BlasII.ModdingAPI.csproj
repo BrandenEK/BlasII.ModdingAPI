@@ -12,7 +12,7 @@
     <Authors>Damocles</Authors>
     <Company>Damocles</Company>
     <Description>A modding API that assists the creation of mods for Blasphemous 2</Description>
-    <Version>0.3.2</Version>
+    <Version>0.3.3</Version>
     
     <TargetName>ModdingAPI</TargetName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

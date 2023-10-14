@@ -4,8 +4,7 @@ name: Build
 on:
   push:
     branches: [ "main" ]
-    tags:
-    - v*
+    tags: [ "**" ]
   pull_request:
     branches: [ "main" ]
 
@@ -24,11 +23,13 @@ jobs:
       
     - name: Build Project
       run: |
-       dotnet restore
-       dotnet build --configuration Release --no-restore
+        dotnet restore
+        dotnet build --configuration Release --no-restore
             
     - name: Export Settings
       run: |
+        MOD_TITLE=$(grep -oP '<Title>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
+        echo "MOD_TITLE=$MOD_TITLE" >> $GITHUB_ENV
         MOD_NAME=$(grep -oP '<TargetName>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
         echo "MOD_NAME=$MOD_NAME" >> $GITHUB_ENV
         MOD_VERSION=$(grep -oP '<Version>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
@@ -44,10 +45,6 @@ jobs:
         retention-days: 30
         if-no-files-found: error
 
-    - name: Upload Nuget
-      if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
-      run: dotnet nuget push **\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
-
     - name: Create Release
       if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
       id: create_release
@@ -56,8 +53,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: ${{ env.MOD_NAME }} v${{ github.ref_name }}
-          
+        release_name: ${{ env.MOD_TITLE }} v${{ github.ref_name }}
+
     - name: Upload Release
       if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
       uses: actions/upload-release-asset@v1
@@ -68,4 +65,7 @@ jobs:
         asset_path: publish/${{ env.MOD_NAME }}.zip
         asset_name: ${{ env.MOD_NAME }}.zip
         asset_content_type: application/zip
-        
+
+    - name: Upload Nuget
+      if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
+      run: dotnet nuget push **\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
