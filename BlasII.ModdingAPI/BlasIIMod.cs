@@ -1,6 +1,7 @@
 ﻿using BlasII.ModdingAPI.Audio;
 using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
+using BlasII.ModdingAPI.Localization;
 using System.Drawing;
 
 namespace BlasII.ModdingAPI
@@ -30,14 +31,17 @@ namespace BlasII.ModdingAPI
 
         // Handlers
 
-        private readonly FileHandler _fileHandler;
-        public FileHandler FileHandler => _fileHandler;
-
         private readonly AudioHandler _audioHandler;
         public AudioHandler AudioHandler => _audioHandler;
 
+        private readonly FileHandler _fileHandler;
+        public FileHandler FileHandler => _fileHandler;
+
         private readonly InputHandler _inputHandler;
         public InputHandler InputHandler => _inputHandler;
+
+        private readonly LocalizationHandler _localizationHandler;
+        public LocalizationHandler LocalizationHandler => _localizationHandler;
 
         // Events
 
