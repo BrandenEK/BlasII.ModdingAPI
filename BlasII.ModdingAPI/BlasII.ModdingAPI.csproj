@@ -9,7 +9,7 @@
     <TargetName>ModdingAPI</TargetName>
     <Product>Modding API</Product>
     <Company>Damocles</Company>
-    <Version>0.3.1</Version>
+    <Version>0.3.2</Version>
     <Configurations>Game1.0;Game2.0</Configurations>
   </PropertyGroup>
 
