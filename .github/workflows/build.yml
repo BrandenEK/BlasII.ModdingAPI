@@ -47,11 +47,11 @@ jobs:
         if-no-files-found: error
 
     - name: Upload Nuget
-      if: ${{ github.event_name }} == 'push' && ${{ github.ref_type }} == 'tag'
+      if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
       run: dotnet nuget push **\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s https://api.nuget.org/v3/index.json
 
     - name: Create Release
-      if: ${{ github.event_name }} == 'push' && ${{ github.ref_type }} == 'tag'
+      if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -61,7 +61,7 @@ jobs:
         release_name: ${{ env.MOD_NAME }} v${{ github.ref_name }}
           
     - name: Upload Release
-      if: ${{ github.event_name }} == 'push' && ${{ github.ref_type }} == 'tag'
+      if: contains(github.event_name, 'push') && contains(github.ref_type, 'tag')
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
