@@ -1,5 +1,6 @@
 ﻿using BlasII.ModdingAPI.Audio;
 using BlasII.ModdingAPI.Files;
+using BlasII.ModdingAPI.Input;
 using System.Drawing;
 
 namespace BlasII.ModdingAPI
@@ -34,6 +35,9 @@ namespace BlasII.ModdingAPI
 
         private readonly AudioHandler _audioHandler;
         public AudioHandler AudioHandler => _audioHandler;
+
+        private readonly InputHandler _inputHandler;
+        public InputHandler InputHandler => _inputHandler;
 
         // Events
 
