@@ -4,6 +4,8 @@ name: Build
 on:
   push:
     branches: [ "main" ]
+    tags:
+    - '**'
   pull_request:
     branches: [ "main" ]
 
@@ -12,24 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout
+    - name: Checkout Repository
       uses: actions/checkout@v3
       
-    - name: Setup
+    - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
-        
-    - name: Restore
-      run: dotnet restore
       
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-      
-    #- name: Build 2.0
-    #  run: dotnet build --configuration Game2.0 --no-restore
-      
-    - name: Export
+    - name: Build Project
+      run: |
+       dotnet restore
+       dotnet build --configuration Release --no-restore
+            
+    - name: Export Settings
       run: |
         MOD_NAME=$(grep -oP '<TargetName>\K[^<]+' ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj)
         echo "MOD_NAME=$MOD_NAME" >> $GITHUB_ENV
@@ -71,10 +69,3 @@ jobs:
         asset_name: ${{ env.MOD_NAME }}.zip
         asset_content_type: application/zip
         
-    #- name: Upload 2.0
-    #  uses: actions/upload-artifact@v3
-    #  with:
-    #    name: ${{ env.MOD_NAME }}_Game2.0 v${{ env.MOD_VERSION }} (${{ env.BUILD_DATE }})
-    #    path: publish/${{ env.MOD_NAME }}_Game2.0/
-    #    retention-days: 30
-    #    if-no-files-found: error
