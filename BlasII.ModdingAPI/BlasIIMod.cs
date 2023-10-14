@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using BlasII.ModdingAPI.Audio;
+using System.Drawing;
 
 namespace BlasII.ModdingAPI
 {
@@ -27,8 +28,11 @@ namespace BlasII.ModdingAPI
 
         // Handlers
 
-        private readonly FileHandler fileHandler;
-        public FileHandler FileHandler => fileHandler;
+        private readonly FileHandler _fileHandler;
+        public FileHandler FileHandler => _fileHandler;
+
+        private readonly AudioHandler _audioHandler;
+        public AudioHandler AudioHandler => _audioHandler;
 
         // Events
 
@@ -65,7 +69,8 @@ namespace BlasII.ModdingAPI
             this.version = version;
 
             // Set handlers
-            fileHandler = new FileHandler(this);
+            _fileHandler = new FileHandler(this);
+            _audioHandler = new AudioHandler();
 
             // Register mod
             Main.ModLoader.RegisterMod(this);
