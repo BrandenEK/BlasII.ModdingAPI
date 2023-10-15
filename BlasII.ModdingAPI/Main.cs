@@ -40,13 +40,13 @@ namespace BlasII.ModdingAPI
             }
         }
 
-        public static void Log(string modName, object message) => MelonLogger.Msg(modName, message);
+        public static void Log(string modName, object message) => MelonLogger.Msg(modName, message.ToString());
 
-        public static void LogWarning(string modName, object warning) => MelonLogger.Warning(modName, warning);
+        public static void LogWarning(string modName, object warning) => MelonLogger.Warning(modName, warning.ToString());
 
-        public static void LogError(string modName, object error) => MelonLogger.Error(modName, error);
+        public static void LogError(string modName, object error) => MelonLogger.Error(modName, error.ToString());
 
-        public static void LogCustom(string modName, object message, Color color) => MelonLogger.Msg(color, modName, message);
+        public static void LogCustom(string modName, object message, Color color) => MelonLogger.Msg(color, modName, message.ToString());
 
         public static void LogSpecial(string modName, string message)
         {
