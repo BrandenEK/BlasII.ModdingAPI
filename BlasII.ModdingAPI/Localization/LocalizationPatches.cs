@@ -10,6 +10,7 @@ namespace BlasII.ModdingAPI.Localization
         public static void Postfix(string LanguageCode)
         {
             Main.ModdingAPI.Log($"Changing language to [{LanguageCode}]");
+            Main.ModLoader.LanguageChanged();
             ItemStorage.LocalizeAllItems();
         }
     }

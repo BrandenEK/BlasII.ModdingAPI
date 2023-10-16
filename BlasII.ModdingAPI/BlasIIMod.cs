@@ -78,8 +78,10 @@ namespace BlasII.ModdingAPI
             this.version = version;
 
             // Set handlers
-            _fileHandler = new FileHandler(this);
             _audioHandler = new AudioHandler();
+            _fileHandler = new FileHandler(this);
+            _inputHandler = new InputHandler();
+            _localizationHandler = new LocalizationHandler();
 
             // Register mod
             Main.ModLoader.RegisterMod(this);

@@ -15,8 +15,6 @@ namespace BlasII.ModdingAPI.Storage
             AssetLoader.LoadObjectsOfType(_prayers);
             AssetLoader.LoadObjectsOfType(_figures);
             AssetLoader.LoadObjectsOfType(_questItems);
-
-            LocalizeAllItems();
         }
 
         private static InventoryComponent _playerInventory;
