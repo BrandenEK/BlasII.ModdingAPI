@@ -71,7 +71,9 @@ namespace BlasII.ModdingAPI.Localization
                 return _textByLanguage["en"][key];
             }
 
-            return "LOC_ERROR";
+            return ERROR_TEXT;
         }
+
+        private const string ERROR_TEXT = "LOC_ERROR";
     }
 }
