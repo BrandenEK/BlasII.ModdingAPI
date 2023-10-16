@@ -1,11 +1,16 @@
-﻿using Il2CppTGK.Game;
+﻿using Il2CppI2.Loc;
+using Il2CppTGK.Game;
+using Il2CppTGK.Game.Components.UI;
+using Il2CppTMPro;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace BlasII.ModdingAPI.Localization
 {
     public class LocalizationHandler
     {
         private readonly Dictionary<string, Dictionary<string, string>> _textByLanguage = new();
+        private readonly List<ILocalizer> _localizers = new();
 
         public LocalizationHandler(string[] localization)
         {
@@ -50,6 +55,10 @@ namespace BlasII.ModdingAPI.Localization
         /// </summary>
         internal void OnLangaugeChanged()
         {
+            for (int i = 0; i < _localizers.Count; i++)
+            {
+                Main.ModdingAPI.LogWarning(_localizers[i].Localize(this));
+            }
         }
 
         /// <summary>
@@ -72,6 +81,40 @@ namespace BlasII.ModdingAPI.Localization
             }
 
             return ERROR_TEXT;
+        }
+
+        /// <summary>
+        /// Registers this text object to be localized whenever the current language changes
+        /// </summary>
+        public void AddTMProLocalizer(TMP_Text text, string key)
+        {
+            RemoveVanillaLocalizers(text.gameObject);
+
+            var localizer = new LocalizeTMPro(text, key);
+            localizer.Localize(this);
+            _localizers.Add(localizer);
+        }
+
+        /// <summary>
+        /// Registers this text object to be localized whenever the current language changes
+        /// </summary>
+        public void AddPixelTextLocalizer(UIPixelTextWithShadow text, string key)
+        {
+            RemoveVanillaLocalizers(text.gameObject);
+
+            var localizer = new LocalizePixelText(text, key);
+            localizer.Localize(this);
+            _localizers.Add(localizer);
+        }
+
+        /// <summary>
+        /// Finds any vanilla localizers on a gameobject and destroys them
+        /// </summary>
+        private void RemoveVanillaLocalizers(GameObject obj)
+        {
+            var localize = obj.GetComponent<Localize>();
+            if (localize != null)
+                Object.Destroy(localize);
         }
 
         private const string ERROR_TEXT = "LOC_ERROR";

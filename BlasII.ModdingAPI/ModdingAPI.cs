@@ -50,6 +50,9 @@ namespace BlasII.ModdingAPI
                 sb.AppendLine($"{mod.Name} v{mod.Version}");
             }
 
+            TMP_Text text = UIModder.CreateText("test", UIModder.Parents.MainMenu);
+            LocalizationHandler.AddTMProLocalizer(text, "text");
+
             // Create underneath text object
             UIModder.CreateRect("Mods under", UIModder.Parents.MainMenu.GetChild(0))
                 .SetXRange(0, 0)

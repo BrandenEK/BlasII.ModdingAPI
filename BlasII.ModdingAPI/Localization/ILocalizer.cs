@@ -1,7 +1,5 @@
-﻿using Il2CppI2.Loc;
-using Il2CppTGK.Game.Components.UI;
+﻿using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
-using UnityEngine;
 
 namespace BlasII.ModdingAPI.Localization
 {
@@ -19,8 +17,6 @@ namespace BlasII.ModdingAPI.Localization
         {
             _text = text;
             _key = key;
-
-            RemoveVanillaLocalizers();
         }
 
         /// <summary>
@@ -34,16 +30,6 @@ namespace BlasII.ModdingAPI.Localization
             _text.text = handler.Localize(_key);
             return true;
         }
-
-        /// <summary>
-        /// Finds any vanilla localizers on the gameobject and destroys them
-        /// </summary>
-        private void RemoveVanillaLocalizers()
-        {
-            var localize = _text.gameObject.GetComponent<Localize>();
-            if (localize != null)
-                Object.Destroy(localize);
-        }
     }
 
     internal class LocalizePixelText : ILocalizer
@@ -55,8 +41,6 @@ namespace BlasII.ModdingAPI.Localization
         {
             _text = text;
             _key = key;
-
-            RemoveVanillaLocalizers();
         }
 
         /// <summary>
@@ -69,16 +53,6 @@ namespace BlasII.ModdingAPI.Localization
 
             _text.SetText(handler.Localize(_key));
             return true;
-        }
-
-        /// <summary>
-        /// Finds any vanilla localizers on the gameobject and destroys them
-        /// </summary>
-        private void RemoveVanillaLocalizers()
-        {
-            var localize = _text.gameObject.GetComponent<Localize>();
-            if (localize != null)
-                Object.Destroy(localize);
         }
     }
 }
