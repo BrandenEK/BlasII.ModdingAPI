@@ -200,9 +200,9 @@ namespace BlasII.ModdingAPI.Files
 
         // Keybindings
 
-        internal void LoadKeybindings()
+        internal string[] LoadKeybindings()
         {
-
+            return ReadFileLines(keybindingsPath, out string[] output) ? output : System.Array.Empty<string>();
         }
 
         // Levels
@@ -214,9 +214,9 @@ namespace BlasII.ModdingAPI.Files
 
         // Localization
 
-        internal void LoadLocalization()
+        internal string[] LoadLocalization()
         {
-
+            return ReadFileLines(localizationPath, out string[] output) ? output : System.Array.Empty<string>();
         }
     }
 }
