@@ -57,7 +57,11 @@ namespace BlasII.ModdingAPI.Localization
         {
             for (int i = 0; i < _localizers.Count; i++)
             {
-                Main.ModdingAPI.LogWarning(_localizers[i].Localize(this));
+                if (!_localizers[i].Localize(this))
+                {
+                    _localizers.RemoveAt(i);
+                    i--;
+                }
             }
         }
 
