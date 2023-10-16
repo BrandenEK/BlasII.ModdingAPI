@@ -1,5 +1,6 @@
-﻿using Il2CppTGK.Game.Components.Inventory;
+﻿using Il2CppTGK.Framework.Localization;
 using Il2CppTGK.Game;
+using Il2CppTGK.Game.Components.Inventory;
 using Il2CppTGK.Inventory;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,23 @@ namespace BlasII.ModdingAPI.Storage
                     _playerInventory = CoreCache.PlayerSpawn?.PlayerInstance?.GetComponent<InventoryComponent>();
                 return _playerInventory;
             }
+        }
+
+        internal static void LocalizeAllItems()
+        {
+            foreach (var bead in _rosaryBeads.Values)
+                LocalizeItem(bead);
+            foreach (var prayer in _prayers.Values)
+                LocalizeItem(prayer);
+            foreach (var figure in _figures.Values)
+                LocalizeItem(figure);
+            foreach (var questItem in _questItems.Values)
+                LocalizeItem(questItem);
+        }
+
+        private static void LocalizeItem(ItemID item)
+        {
+            CoreCache.Localization.Localize(item.Cast<ILocalizable>());
         }
 
         // Rosary beads

@@ -137,6 +137,21 @@ namespace BlasII.ModdingAPI
             }
         }
 
+        public void LanguageChanged()
+        {
+            foreach (var mod in mods)
+            {
+                try
+                {
+                    mod.LocalizationHandler.OnLangaugeChanged();
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
+                }
+            }
+        }
+
         public void SaveGame(int slot)
         {
             var data = new Dictionary<string, SaveData>();
