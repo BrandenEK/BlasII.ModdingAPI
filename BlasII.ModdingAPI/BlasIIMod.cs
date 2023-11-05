@@ -1,4 +1,5 @@
 ﻿using BlasII.ModdingAPI.Audio;
+using BlasII.ModdingAPI.Config;
 using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.Localization;
@@ -33,6 +34,9 @@ namespace BlasII.ModdingAPI
 
         private readonly AudioHandler _audioHandler;
         public AudioHandler AudioHandler => _audioHandler;
+
+        private readonly ConfigHandler _configHandler;
+        public ConfigHandler ConfigHandler => _configHandler;
 
         private readonly FileHandler _fileHandler;
         public FileHandler FileHandler => _fileHandler;
@@ -78,8 +82,10 @@ namespace BlasII.ModdingAPI
             this.version = version;
 
             // Set handlers
-            _audioHandler = new AudioHandler();
             _fileHandler = new FileHandler(this);
+
+            _audioHandler = new AudioHandler();
+            _configHandler = new ConfigHandler(this);
             _inputHandler = new InputHandler(this);
             _localizationHandler = new LocalizationHandler(this);
 
