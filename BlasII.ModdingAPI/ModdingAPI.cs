@@ -41,6 +41,26 @@ namespace BlasII.ModdingAPI
             }
         }
 
+        protected internal override void OnUpdate()
+        {
+            if (InputHandler.GetButtonDown(Input.ButtonType.Interact))
+                LogWarning("Interact");
+            if (InputHandler.GetButtonDown(Input.ButtonType.Flask))
+                LogWarning("flask");
+            if (InputHandler.GetButtonDown(Input.ButtonType.ChangeWeaponSlot1))
+                LogWarning("chage w 1");
+            if (InputHandler.GetButtonDown(Input.ButtonType.MoveHorizontal))
+                LogWarning("move horizontal");
+            if (InputHandler.GetButtonDown(Input.ButtonType.UIShoulderLeft))
+                LogWarning("ui shoulder");
+            if (InputHandler.GetButtonDown(Input.ButtonType.UIShoulderLeft2))
+                LogWarning("ui shoudler 2");
+            if (InputHandler.GetButtonDown(Input.ButtonType.UIConfirm))
+                LogWarning("ui confirm");
+            if (InputHandler.GetButtonDown(Input.ButtonType.MoveVertical))
+                LogWarning("move vertical");
+        }
+
         private void DisplayModListOnMenu()
         {
             // Calculate mod list text
