@@ -18,6 +18,7 @@ namespace BlasII.ModdingAPI
             ItemStorage.Initialize();
             StatStorage.Initialize();
             WeaponStorage.Initialize();
+            InputStorage.Initialize();
 
 #if GAME1_0
             LogWarning("Initialized API for game version 1.0");
