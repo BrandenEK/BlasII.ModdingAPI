@@ -6,11 +6,8 @@ namespace BlasII.ModdingAPI.Input
         // Movement
         MoveHorizontal = 0,
         MoveVertical = 1,
-        MoveHorizontalFake = 2,
-        MoveVerticalFake = 3,
-        MoveRHorizontal = 4,
-        MoveRVertical = 5,
-        MoveFake = 6,
+        MoveRHorizontal = 2,
+        MoveRVertical = 3,
 
         // UI
         UIHorizontal = 20,
