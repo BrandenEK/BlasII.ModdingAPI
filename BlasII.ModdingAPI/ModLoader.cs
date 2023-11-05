@@ -58,7 +58,7 @@ namespace BlasII.ModdingAPI
                 }
             }
 
-            Main.Log(ModInfo.MOD_NAME, "All mods diposed!");
+            Main.Log(ModInfo.MOD_NAME, "All mods disposed!");
         }
 
         public void Update()

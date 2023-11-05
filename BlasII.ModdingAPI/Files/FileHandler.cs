@@ -66,13 +66,18 @@ namespace BlasII.ModdingAPI.Files
             File.WriteAllText(rootPath + fileName, text);
         }
 
+        private void EnsureDirectoryExists(string path)
+        {
+            string directory = Path.GetDirectoryName(path);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
+        }
+
         // Config
 
         public void SaveConfig<T>(T config)
         {
-            string configDir = "Modding/config";
-            if (!Directory.Exists(configDir))
-                Directory.CreateDirectory(configDir);
+            EnsureDirectoryExists(configPath);            
             File.WriteAllText(configPath, JsonConvert.SerializeObject(config, Formatting.Indented));
         }
 
@@ -203,6 +208,12 @@ namespace BlasII.ModdingAPI.Files
         internal string[] LoadKeybindings()
         {
             return ReadFileLines(keybindingsPath, out string[] output) ? output : System.Array.Empty<string>();
+        }
+
+        internal void SaveKeybindings(string[] keys)
+        {
+            EnsureDirectoryExists(keybindingsPath);
+            File.WriteAllLines(keybindingsPath, keys);
         }
 
         // Levels
