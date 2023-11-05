@@ -18,6 +18,24 @@ namespace BlasII.ModdingAPI.Input
             DeserializeKeybindings(_mod.FileHandler.LoadKeybindings());
         }
 
+        // Blocking
+
+        public bool InputBlocked
+        {
+            get => CoreCache.Input.InputBlocked;
+            set
+            {
+                if (value)
+                {
+                    CoreCache.Input.SetInputBlock(true, false);
+                }
+                else
+                {
+                    CoreCache.Input.ClearAllInputBlocks();
+                }
+            }
+        }
+
         // Keys
 
         public bool GetKey(string action)
