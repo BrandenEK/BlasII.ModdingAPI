@@ -20,6 +20,17 @@ namespace BlasII.ModdingAPI
             WeaponStorage.Initialize();
             InputStorage.Initialize();
 
+            ConfigHandler.RegisterDefaultProperties(new System.Collections.Generic.Dictionary<string, object>()
+            {
+                { "Test1", false },
+                { "Test2", 5.0f }
+            });
+
+            bool t1 = ConfigHandler.GetProperty<bool>("Test1");
+            Log(ConfigHandler.GetProperty<float>("Test2"));
+            int tFail = ConfigHandler.GetProperty<int>("Test3");
+            string tFail2 = ConfigHandler.GetProperty<string>("Test6");
+
 #if GAME1_0
             LogWarning("Initialized API for game version 1.0");
 #elif GAME2_0

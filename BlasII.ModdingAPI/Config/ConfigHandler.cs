@@ -6,7 +6,7 @@ namespace BlasII.ModdingAPI.Config
     {
         private readonly BlasIIMod _mod;
 
-        private readonly Dictionary<string, string> _properties = new();
+        private readonly Dictionary<string, object> _properties = new();
 
         public ConfigHandler(BlasIIMod mod)
         {
@@ -15,40 +15,15 @@ namespace BlasII.ModdingAPI.Config
             DeserializeProperties(_mod.FileHandler.LoadConfig());
         }
 
-        public bool GetBool(string key)
+        public T GetProperty<T>(string key)
         {
-            if (_properties.TryGetValue(key, out string value) && bool.TryParse(value, out bool result))
-                return result;
+            if (!_properties.TryGetValue(key, out object value))
+            {
+                _mod.LogError($"Property '{key}' does not exist!");
+                return default;
+            }
 
-            _mod.LogError($"Failed to locate valid bool property for '{key}'");
-            return false;
-        }
-
-        public int GetInt(string key)
-        {
-            if (_properties.TryGetValue(key, out string value) && int.TryParse(value, out int result))
-                return result;
-
-            _mod.LogError($"Failed to locate valid int property for '{key}'");
-            return 0;
-        }
-
-        public float GetFloat(string key)
-        {
-            if (_properties.TryGetValue(key, out string value) && float.TryParse(value, out float result))
-                return result;
-
-            _mod.LogError($"Failed to locate valid float property for '{key}'");
-            return 0.0f;
-        }
-
-        public string GetString(string key)
-        {
-            if (_properties.TryGetValue(key, out string value))
-                return value;
-
-            _mod.LogError($"Failed to locate valid string property for '{key}'");
-            return string.Empty;
+            return (T)value;
         }
 
         // Custom properties
@@ -57,8 +32,47 @@ namespace BlasII.ModdingAPI.Config
         {
             foreach (var mapping in defaults)
             {
+                // If the property wasn't in the config, just add it
                 if (!_properties.ContainsKey(mapping.Key))
-                    _properties.Add(mapping.Key, mapping.Value.ToString());
+                {
+                    _properties.Add(mapping.Key, mapping.Value);
+                    continue;
+                }
+
+                // Validate the property, and possibly replace it with default
+                string currentValue = (string)_properties[mapping.Key];
+                switch (mapping.Value)
+                {
+                    case bool _:
+                        if (bool.TryParse(currentValue, out bool boolValue))
+                        {
+                            _properties[mapping.Key] = boolValue;
+                            continue;
+                        }
+                        break;
+                    case int _:
+                        if (int.TryParse(currentValue, out int intValue))
+                        {
+                            _properties[mapping.Key] = intValue;
+                            continue;
+                        }
+                        break;
+                    case float _:
+                        if (float.TryParse(currentValue, out float floatValue))
+                        {
+                            _properties[mapping.Key] = floatValue;
+                            continue;
+                        }
+                        break;
+                    case string _:
+                        continue;
+                    default:
+                        _mod.LogError($"Property '{mapping.Key}' has an invalid type!");
+                        continue;
+                }
+
+                _mod.LogError($"Property '{mapping.Key}' is invalid.  Using default instead.");
+                _properties[mapping.Key] = mapping.Value;
             }
 
             _mod.FileHandler.SaveConfig(SerializeProperties());
