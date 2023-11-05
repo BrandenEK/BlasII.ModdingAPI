@@ -9,6 +9,23 @@ namespace BlasII.ModdingAPI.Input
 
         }
 
+        // Keys
+
+        public bool GetKey(string action)
+        {
+            return false;
+        }
+
+        public bool GetKeyDown(string action)
+        {
+            return false;
+        }
+
+        public bool GetKeyUp(string action)
+        {
+            return false;
+        }
+
         // Buttons
 
         public bool GetButton(ButtonType button)
