@@ -9,6 +9,8 @@ namespace BlasII.ModdingAPI.Input
 
         }
 
+        // Buttons
+
         public bool GetButton(ButtonType button)
         {
             return GetButton(MapButtonToString(button));
@@ -36,6 +38,20 @@ namespace BlasII.ModdingAPI.Input
             return CoreCache.Input.GetButtonUp(buttonName);
         }
 
+        // Axes
+
+        public float GetAxis(AxisType axis)
+        {
+            return GetAxis(MapAxisToString(axis));
+        }
+
+        public float GetAxis(string axisName)
+        {
+            return CoreCache.Input.GetAxis(axisName);
+        }
+
+        // Mapping
+
         private string MapButtonToString(ButtonType button)
         {
             return button switch
@@ -48,14 +64,6 @@ namespace BlasII.ModdingAPI.Input
                 ButtonType.Prayer => "Prayer",
                 ButtonType.WeaponArt => "Weapon Art",
 
-                ButtonType.MoveHorizontal => "Move Horizontal",
-                ButtonType.MoveVertical => "Move Vertical",
-                ButtonType.MoveHorizontalFake => "Fake Move Horizontal",
-                ButtonType.MoveVerticalFake => "Fake Move Vertical",
-                ButtonType.MoveRHorizontal => "Move RHorizontal",
-                ButtonType.MoveRVertical => "Move RVertical",
-                ButtonType.MoveFake => "Fake No Move 2",
-
                 ButtonType.ChangeWeapon => "Change Weapon",
                 ButtonType.NextWeapon => "Next Weapon",
                 ButtonType.PrevWeapon => "Prev Weapon",
@@ -65,14 +73,10 @@ namespace BlasII.ModdingAPI.Input
 
                 ButtonType.UIConfirm => "UI Confirm",
                 ButtonType.UICancel => "UI Cancel",
-                ButtonType.UIHorizontal => "UI Horizontal",
-                ButtonType.UIHorizontalRight => "UI Horizontal Right",
-                ButtonType.UIVertical => "UI Vertical",
-                ButtonType.UIVerticalRight => "UI Vertical Right",
-                ButtonType.UIShoulderLeft => "UI Shoulder Left",
-                ButtonType.UIShoulderLeft2 => "UI Shoulder Left 2",
-                ButtonType.UIShoulderRight => "UI Shoulder Right",
-                ButtonType.UIShoulderRight2 => "UI Shoulder Right 2",
+                ButtonType.UIBumperLeft => "UI Shoulder Left",
+                ButtonType.UITriggerLeft => "UI Shoulder Left 2",
+                ButtonType.UIBumperRight => "UI Shoulder Right",
+                ButtonType.UITriggerRight => "UI Shoulder Right 2",
                 ButtonType.UICenter1 => "UI Center 1",
                 ButtonType.UICenter2 => "UI Center 2",
                 ButtonType.UITopRow1 => "UI TopRow 1",
@@ -85,7 +89,27 @@ namespace BlasII.ModdingAPI.Input
                 ButtonType.Pause => "Pause",
                 ButtonType.L3 => "L3",
                 ButtonType.R3 => "R3",
+
                 _ => throw new System.Exception("Invalid button code")
+            };
+        }
+
+        private string MapAxisToString(AxisType axis)
+        {
+            return axis switch
+            {
+                AxisType.MoveHorizontal => "Move Horizontal",
+                AxisType.MoveVertical => "Move Vertical",
+                AxisType.MoveHorizontalFake => "Fake Move Horizontal",
+                AxisType.MoveVerticalFake => "Fake Move Vertical",
+                AxisType.MoveRHorizontal => "Move RHorizontal",
+                AxisType.MoveRVertical => "Move RVertical",
+                AxisType.MoveFake => "Fake No Move 2",
+
+                AxisType.UIHorizontal => "UI Horizontal",
+                AxisType.UIVertical => "UI Vertical",
+
+                _ => throw new System.Exception("Invalid axis code")
             };
         }
     }
