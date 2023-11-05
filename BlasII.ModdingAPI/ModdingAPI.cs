@@ -41,30 +41,6 @@ namespace BlasII.ModdingAPI
             }
         }
 
-        protected internal override void OnUpdate()
-        {
-            if (InputHandler.GetButtonDown(Input.ButtonType.Interact))
-                LogWarning("Interact");
-            if (InputHandler.GetButtonDown(Input.ButtonType.Flask))
-                LogWarning("flask");
-            if (InputHandler.GetButtonDown(Input.ButtonType.ChangeWeaponSlot1))
-                LogWarning("chage w 1");
-            if (InputHandler.GetButtonDown(Input.ButtonType.UITopRow1))
-                LogWarning("ui shoulder");
-            if (InputHandler.GetButtonDown(Input.ButtonType.UITopRow2))
-                LogWarning("ui shoudler 2");
-            if (InputHandler.GetButtonDown(Input.ButtonType.UIConfirm))
-                LogWarning("ui confirm");
-
-            if (Time.frameCount % 240 == 0)
-            {
-                LogError("Move h: " + InputHandler.GetAxis(Input.AxisType.MoveHorizontal));
-                LogError("Move v: " + InputHandler.GetAxis(Input.AxisType.MoveVertical));
-                LogError("ui h: " + InputHandler.GetAxis(Input.AxisType.UIHorizontal));
-                LogError("fake move: " + InputHandler.GetAxis(Input.AxisType.MoveFake));
-            }
-        }
-
         private void DisplayModListOnMenu()
         {
             // Calculate mod list text

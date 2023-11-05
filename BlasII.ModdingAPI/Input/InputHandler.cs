@@ -1,29 +1,37 @@
 ﻿using Il2CppTGK.Game;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace BlasII.ModdingAPI.Input
 {
     public class InputHandler
     {
-        public InputHandler(string[] keybindings)
-        {
+        private readonly BlasIIMod _mod;
 
+        private readonly Dictionary<string, KeyCode> _keybindings = new();
+
+        public InputHandler(BlasIIMod mod)
+        {
+            _mod = mod;
+
+            DeserializeKeybindings(_mod.FileHandler.LoadKeybindings());
         }
 
         // Keys
 
         public bool GetKey(string action)
         {
-            return false;
+            return _keybindings.TryGetValue(action, out KeyCode key) && UnityEngine.Input.GetKey(key);
         }
 
         public bool GetKeyDown(string action)
         {
-            return false;
+            return _keybindings.TryGetValue(action, out KeyCode key) && UnityEngine.Input.GetKeyDown(key);
         }
 
         public bool GetKeyUp(string action)
         {
-            return false;
+            return _keybindings.TryGetValue(action, out KeyCode key) && UnityEngine.Input.GetKeyUp(key);
         }
 
         // Buttons
@@ -128,6 +136,57 @@ namespace BlasII.ModdingAPI.Input
 
                 _ => throw new System.Exception("Invalid axis code")
             };
+        }
+
+        // Key serialization
+
+        public void RegisterDefaultKeybindings(Dictionary<string, KeyCode> defaults)
+        {
+            foreach (var mapping in defaults)
+            {
+                if (!_keybindings.ContainsKey(mapping.Key))
+                    _keybindings.Add(mapping.Key, mapping.Value);
+            }
+
+            _mod.FileHandler.SaveKeybindings(SerializeKeyBindings());
+        }
+
+        private string[] SerializeKeyBindings()
+        {
+            string[] keys = new string[_keybindings.Count];
+            int currentIdx = 0;
+
+            foreach (var mapping in _keybindings)
+            {
+                keys[currentIdx++] = $"{mapping.Key}: {mapping.Value}";
+            }
+
+            return keys;
+        }
+
+        private void DeserializeKeybindings(string[] keys)
+        {
+            foreach (string line in keys)
+            {
+                // Skip lines without a colon
+                int colon = line.IndexOf(':');
+                if (colon < 0)
+                    continue;
+
+                // Get action and key for each pair
+                string key = line[..colon].Trim();
+                string value = line[(colon + 1)..].Trim();
+
+                // Parse value to a key code
+                if (!System.Enum.TryParse(typeof(KeyCode), value, out object keyCode))
+                {
+                    _mod.LogError($"Failed to convert '{value}' to a keycode. Using default instead.");
+                    continue;
+                }
+
+                // Add custom keybinding
+                _keybindings.Add(key, (KeyCode)keyCode);
+            }
         }
     }
 }
