@@ -81,7 +81,7 @@ namespace BlasII.ModdingAPI
             _audioHandler = new AudioHandler();
             _fileHandler = new FileHandler(this);
             _inputHandler = new InputHandler(this);
-            _localizationHandler = new LocalizationHandler(_fileHandler.LoadLocalization());
+            _localizationHandler = new LocalizationHandler(this);
 
             // Register mod
             Main.ModLoader.RegisterMod(this);

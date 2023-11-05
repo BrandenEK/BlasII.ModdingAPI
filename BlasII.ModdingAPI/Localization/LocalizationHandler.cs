@@ -9,18 +9,22 @@ namespace BlasII.ModdingAPI.Localization
 {
     public class LocalizationHandler
     {
+        private readonly BlasIIMod _mod;
+
         private readonly Dictionary<string, Dictionary<string, string>> _textByLanguage = new();
         private readonly List<ILocalizer> _localizers = new();
 
-        public LocalizationHandler(string[] localization)
+        public LocalizationHandler(BlasIIMod mod)
         {
-            LoadLocalization(localization);
+            _mod = mod;
+
+            ParseLocalization(_mod.FileHandler.LoadLocalization());
         }
 
         /// <summary>
         /// Takes in the lines from the localization file and fills the text dictionary
         /// </summary>
-        private void LoadLocalization(string[] localization)
+        private void ParseLocalization(string[] localization)
         {
             string currLanguage = null;
             foreach (string line in localization)
@@ -84,6 +88,7 @@ namespace BlasII.ModdingAPI.Localization
                 return _textByLanguage["en"][key];
             }
 
+            _mod.LogError($"Failed to localize '{key}' to any language.");
             return ERROR_TEXT;
         }
 
