@@ -73,28 +73,6 @@ namespace BlasII.ModdingAPI.Files
                 Directory.CreateDirectory(directory);
         }
 
-        // Config
-
-        public void SaveConfig<T>(T config)
-        {
-            EnsureDirectoryExists(configPath);            
-            File.WriteAllText(configPath, JsonConvert.SerializeObject(config, Formatting.Indented));
-        }
-
-        public T LoadConfig<T>() where T : new()
-        {
-            if (ReadFileContents(configPath, out string text))
-            {
-                return JsonConvert.DeserializeObject<T>(text);
-            }
-            else
-            {
-                T config = new();
-                SaveConfig(config);
-                return config;
-            }
-        }
-
         // Data
 
         public bool LoadDataAsText(string fileName, out string output)
@@ -201,6 +179,30 @@ namespace BlasII.ModdingAPI.Files
             var sr = obj.AddComponent<SpriteRenderer>();
             sr.sprite = sprite;
             sr.enabled = false;
+        }
+
+        // Config
+
+        internal string[] LoadConfig()
+        {
+            return ReadFileLines(configPath, out string[] output) ? output : System.Array.Empty<string>();
+        }
+
+        internal void SaveConfig(string[] properties)
+        {
+            EnsureDirectoryExists(configPath);
+            File.WriteAllLines(configPath, properties);
+        }
+
+        [System.Obsolete("Use new ConfigHandler instead")]
+        public void SaveConfig<T>(T config)
+        {
+        }
+
+        [System.Obsolete("Use new ConfigHandler instead")]
+        public T LoadConfig<T>() where T : new()
+        {
+            return new T();
         }
 
         // Keybindings

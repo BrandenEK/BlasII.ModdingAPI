@@ -11,7 +11,7 @@ namespace BlasII.ModdingAPI.Input
 
         private readonly Dictionary<string, KeyCode> _keybindings = new();
 
-        public InputHandler(BlasIIMod mod)
+        internal InputHandler(BlasIIMod mod)
         {
             _mod = mod;
 
