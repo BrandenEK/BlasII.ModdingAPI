@@ -23,13 +23,16 @@ namespace BlasII.ModdingAPI
             ConfigHandler.RegisterDefaultProperties(new System.Collections.Generic.Dictionary<string, object>()
             {
                 { "Test1", false },
-                { "Test2", 5.0f }
+                { "Test2", 5.0f },
+                { "Test4", "test" },
+                { "Test5", true },
             });
 
-            bool t1 = ConfigHandler.GetProperty<bool>("Test1");
+            Log(ConfigHandler.GetProperty<bool>("Test1"));
             Log(ConfigHandler.GetProperty<float>("Test2"));
-            int tFail = ConfigHandler.GetProperty<int>("Test3");
-            string tFail2 = ConfigHandler.GetProperty<string>("Test6");
+            Log(ConfigHandler.GetProperty<float>("Test3"));
+            Log(ConfigHandler.GetProperty<string>("Test4"));
+            Log(ConfigHandler.GetProperty<bool>("Test5"));
 
 #if GAME1_0
             LogWarning("Initialized API for game version 1.0");

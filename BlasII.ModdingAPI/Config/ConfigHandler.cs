@@ -6,6 +6,7 @@ namespace BlasII.ModdingAPI.Config
     {
         private readonly BlasIIMod _mod;
 
+        private readonly Dictionary<string, string> _tempProperties = new();
         private readonly Dictionary<string, object> _properties = new();
 
         public ConfigHandler(BlasIIMod mod)
@@ -23,6 +24,12 @@ namespace BlasII.ModdingAPI.Config
                 return default;
             }
 
+            if (value.GetType() != typeof(T))
+            {
+                _mod.LogError($"Property '{key}' is the wrong type!");
+                return default;
+            }
+
             return (T)value;
         }
 
@@ -33,51 +40,53 @@ namespace BlasII.ModdingAPI.Config
             foreach (var mapping in defaults)
             {
                 // If the property wasn't in the config, just add it
-                if (!_properties.ContainsKey(mapping.Key))
+                if (!_tempProperties.TryGetValue(mapping.Key, out string currentValue))
                 {
                     _properties.Add(mapping.Key, mapping.Value);
                     continue;
                 }
 
                 // Validate the property, and possibly replace it with default
-                string currentValue = (string)_properties[mapping.Key];
+                object resultValue = null;
                 switch (mapping.Value)
                 {
                     case bool _:
-                        if (bool.TryParse(currentValue, out bool boolValue))
-                        {
-                            _properties[mapping.Key] = boolValue;
-                            continue;
-                        }
+                        if (bool.TryParse(currentValue, out bool bResult))
+                            resultValue = bResult;
                         break;
                     case int _:
-                        if (int.TryParse(currentValue, out int intValue))
-                        {
-                            _properties[mapping.Key] = intValue;
-                            continue;
-                        }
+                        if (int.TryParse(currentValue, out int iResult))
+                            resultValue = iResult;
                         break;
                     case float _:
-                        if (float.TryParse(currentValue, out float floatValue))
-                        {
-                            _properties[mapping.Key] = floatValue;
-                            continue;
-                        }
+                        if (float.TryParse(currentValue, out float fResult))
+                            resultValue = fResult;
                         break;
                     case string _:
-                        continue;
+                        resultValue = currentValue;
+                        break;
                     default:
                         _mod.LogError($"Property '{mapping.Key}' has an invalid type!");
                         continue;
                 }
 
-                _mod.LogError($"Property '{mapping.Key}' is invalid.  Using default instead.");
-                _properties[mapping.Key] = mapping.Value;
+                if (resultValue == null)
+                {
+                    _mod.LogError($"Property '{mapping.Key}' is invalid.  Using default instead.");
+                    _properties.Add(mapping.Key, mapping.Value);
+                    continue;
+                }
+
+                _properties.Add(mapping.Key, resultValue);
             }
 
+            _tempProperties.Clear();
             _mod.FileHandler.SaveConfig(SerializeProperties());
         }
 
+        /// <summary>
+        /// After registering defaults, save all properties
+        /// </summary>
         private string[] SerializeProperties()
         {
             string[] properties = new string[_properties.Count];
@@ -91,6 +100,9 @@ namespace BlasII.ModdingAPI.Config
             return properties;
         }
 
+        /// <summary>
+        /// Before initialization, load all properties as strings into a temporary list
+        /// </summary>
         private void DeserializeProperties(string[] properties)
         {
             foreach (string line in properties)
@@ -105,7 +117,7 @@ namespace BlasII.ModdingAPI.Config
                 string value = line[(colon + 1)..].Trim();
 
                 // Add property
-                _properties.Add(key, value);
+                _tempProperties.Add(key, value);
             }
         }
     }
