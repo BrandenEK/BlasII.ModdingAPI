@@ -14,7 +14,7 @@ namespace BlasII.ModdingAPI.Localization
         private readonly Dictionary<string, Dictionary<string, string>> _textByLanguage = new();
         private readonly List<ILocalizer> _localizers = new();
 
-        public LocalizationHandler(BlasIIMod mod)
+        internal LocalizationHandler(BlasIIMod mod)
         {
             _mod = mod;
 
