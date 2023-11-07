@@ -4,6 +4,9 @@ using UnityEngine;
 
 namespace BlasII.ModdingAPI.Files
 {
+    /// <summary>
+    /// Provides access to loading data files and other IO methods
+    /// </summary>
     public class FileHandler
     {
         private readonly string rootPath;
@@ -25,6 +28,9 @@ namespace BlasII.ModdingAPI.Files
 
         // General
 
+        /// <summary>
+        /// Returns the string contents of a file if it could be read
+        /// </summary>
         private bool ReadFileContents(string path, out string output)
         {
             if (File.Exists(path))
@@ -37,6 +43,9 @@ namespace BlasII.ModdingAPI.Files
             return false;
         }
 
+        /// <summary>
+        /// Returns the string[] contents of a file if it could be read
+        /// </summary>
         private bool ReadFileLines(string path, out string[] output)
         {
             if (File.Exists(path))
@@ -49,6 +58,9 @@ namespace BlasII.ModdingAPI.Files
             return false;
         }
 
+        /// <summary>
+        /// Returns the byte[] contents of a file if it could be read
+        /// </summary>
         private bool ReadFileBytes(string path, out byte[] output)
         {
             if (File.Exists(path))
@@ -61,11 +73,17 @@ namespace BlasII.ModdingAPI.Files
             return false;
         }
 
+        /// <summary>
+        /// Writes data to a text file in the game's root directory
+        /// </summary>
         public void WriteToFile(string fileName, string text)
         {
             File.WriteAllText(rootPath + fileName, text);
         }
 
+        /// <summary>
+        /// Before writing to a file, create the directory if it doesnt already exist
+        /// </summary>
         private void EnsureDirectoryExists(string path)
         {
             string directory = Path.GetDirectoryName(path);
@@ -75,11 +93,17 @@ namespace BlasII.ModdingAPI.Files
 
         // Data
 
+        /// <summary>
+        /// Loads the data as a string, if it exists
+        /// </summary>
         public bool LoadDataAsText(string fileName, out string output)
         {
             return ReadFileContents(dataPath + fileName, out output);
         }
 
+        /// <summary>
+        /// Loads the data as a json object, if it exists
+        /// </summary>
         public bool LoadDataAsJson<T>(string fileName, out T output)
         {
             if (ReadFileContents(dataPath + fileName, out string text))
@@ -92,11 +116,17 @@ namespace BlasII.ModdingAPI.Files
             return false;
         }
 
+        /// <summary>
+        /// Loads the data as a string[], if it exists
+        /// </summary>
         public bool LoadDataAsArray(string fileName, out string[] output)
         {
             return ReadFileLines(dataPath + fileName, out output);
         }
 
+        /// <summary>
+        /// Loads the data as a sprite, if it exists
+        /// </summary>
         public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
         {
             if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
@@ -117,16 +147,25 @@ namespace BlasII.ModdingAPI.Files
             return true;
         }
 
+        /// <summary>
+        /// Loads the data as a sprite, if it exists
+        /// </summary>
         public bool LoadDataAsSprite(string fileName, out Sprite output)
         {
             return LoadDataAsSprite(fileName, out output, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
         }
 
+        /// <summary>
+        /// Loads the data as a sprite, if it exists
+        /// </summary>
         public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter)
         {
             return LoadDataAsSprite(fileName, out output, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
         }
 
+        /// <summary>
+        /// Loads the data as a sprite[], if it exists
+        /// </summary>
         public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
         {
             if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
@@ -158,11 +197,17 @@ namespace BlasII.ModdingAPI.Files
             return true;
         }
 
+        /// <summary>
+        /// Loads the data as a sprite[], if it exists
+        /// </summary>
         public bool LoadDataAsTexture(string fileName, out Sprite[] output)
         {
             return LoadDataAsTexture(fileName, out output, 30, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
         }
 
+        /// <summary>
+        /// Loads the data as a sprite[], if it exists
+        /// </summary>
         public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter)
         {
             return LoadDataAsTexture(fileName, out output, size, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
@@ -183,22 +228,34 @@ namespace BlasII.ModdingAPI.Files
 
         // Config
 
+        /// <summary>
+        /// Loads the contents of the config file, or an empty list
+        /// </summary>
         internal string[] LoadConfig()
         {
             return ReadFileLines(configPath, out string[] output) ? output : System.Array.Empty<string>();
         }
 
+        /// <summary>
+        /// Saves the contents of the config file
+        /// </summary>
         internal void SaveConfig(string[] properties)
         {
             EnsureDirectoryExists(configPath);
             File.WriteAllLines(configPath, properties);
         }
 
+        /// <summary>
+        /// Will be removed soon
+        /// </summary>
         [System.Obsolete("Use new ConfigHandler instead")]
         public void SaveConfig<T>(T config)
         {
         }
 
+        /// <summary>
+        /// Will be removed soon
+        /// </summary>
         [System.Obsolete("Use new ConfigHandler instead")]
         public T LoadConfig<T>() where T : new()
         {
@@ -207,11 +264,17 @@ namespace BlasII.ModdingAPI.Files
 
         // Keybindings
 
+        /// <summary>
+        /// Loads the contents of the keybindings file, or an empty list
+        /// </summary>
         internal string[] LoadKeybindings()
         {
             return ReadFileLines(keybindingsPath, out string[] output) ? output : System.Array.Empty<string>();
         }
 
+        /// <summary>
+        /// Saves the contents of the keybindings file
+        /// </summary>
         internal void SaveKeybindings(string[] keys)
         {
             EnsureDirectoryExists(keybindingsPath);
@@ -227,6 +290,9 @@ namespace BlasII.ModdingAPI.Files
 
         // Localization
 
+        /// <summary>
+        /// Loads the contents of the localization file, or an empty list
+        /// </summary>
         internal string[] LoadLocalization()
         {
             return ReadFileLines(localizationPath, out string[] output) ? output : System.Array.Empty<string>();

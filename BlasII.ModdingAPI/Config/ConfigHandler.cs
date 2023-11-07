@@ -2,6 +2,9 @@
 
 namespace BlasII.ModdingAPI.Config
 {
+    /// <summary>
+    /// Provides access to saving and loading configuration properties
+    /// </summary>
     public class ConfigHandler
     {
         private readonly BlasIIMod _mod;
