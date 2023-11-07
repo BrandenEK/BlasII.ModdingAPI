@@ -7,6 +7,9 @@ using UnityEngine;
 
 namespace BlasII.ModdingAPI.Localization
 {
+    /// <summary>
+    /// Provides access to automatic localization based on selected language
+    /// </summary>
     public class LocalizationHandler
     {
         private readonly BlasIIMod _mod;
