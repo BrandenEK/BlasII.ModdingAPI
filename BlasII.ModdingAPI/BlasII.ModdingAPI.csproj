@@ -2,9 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <ImplicitUsings>disable</ImplicitUsings>
-    <Nullable>disable</Nullable>
     <Configurations>Game1.0;Game2.0;Release</Configurations>
 
     <Title>Modding API</Title>
@@ -15,8 +12,10 @@
     <Version>0.5.2</Version>
     
     <TargetName>ModdingAPI</TargetName>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/BrandenEK/BlasII.ModdingAPI</RepositoryUrl>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
