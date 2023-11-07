@@ -2,7 +2,6 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Configurations>Game1.0;Game2.0;Release</Configurations>
 
     <Title>Modding API</Title>
     <Product>Modding API</Product>
@@ -25,14 +24,6 @@
     <PackageReference Include="Lib.Harmony" Version="2.2.2" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
-
-  <!--<ItemGroup Condition=" '$(Configuration)' == 'Game1.0' ">
-    <PackageReference Include="BlasII.ModdingReferences" Version="1.1.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(Configuration)' == 'Game2.0' ">
-    <PackageReference Include="BlasII.ModdingReferences" Version="1.1.0" />
-  </ItemGroup>-->
 
   <Target Name="Development" AfterTargets="PostBuildEvent">
 
