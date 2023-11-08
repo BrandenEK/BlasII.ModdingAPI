@@ -1,4 +1,4 @@
-﻿using BlasII.ModdingAPI.Storage;
+﻿using BlasII.ModdingAPI.Assets;
 using HarmonyLib;
 using Il2CppI2.Loc;
 
@@ -14,7 +14,7 @@ namespace BlasII.ModdingAPI.Localization
         {
             Main.ModdingAPI.Log($"Changing language to [{LanguageCode}]");
             Main.ModLoader.LanguageChanged();
-            ItemStorage.LocalizeAllItems();
+            AssetStorage.LocalizeAllItems();
         }
     }
 }
