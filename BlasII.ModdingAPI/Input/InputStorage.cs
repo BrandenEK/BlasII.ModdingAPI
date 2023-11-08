@@ -1,9 +1,8 @@
-﻿using BlasII.ModdingAPI.Input;
-using Il2CppTGK.InputSystem;
+﻿using Il2CppTGK.InputSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BlasII.ModdingAPI.Storage
+namespace BlasII.ModdingAPI.Input
 {
     internal static class InputStorage
     {
