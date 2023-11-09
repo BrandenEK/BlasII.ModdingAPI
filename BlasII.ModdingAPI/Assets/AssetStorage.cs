@@ -10,55 +10,76 @@ using Il2CppTGK.Inventory;
 
 namespace BlasII.ModdingAPI.Assets
 {
+    /// <summary>
+    /// Loads and stores a variety of useful data objects
+    /// </summary>
     public static class AssetStorage
     {
-        public static AssetStore<RosaryBeadItemID> Beads { get; private set; }
-        public static AssetStore<PrayerItemID> Prayers { get; private set; }
-        public static AssetStore<FigureItemID> Figures { get; private set; }
-        public static AssetStore<QuestItemID> QuestItems { get; private set; }
+        /// <summary> Stores all RosaryBeadItemID assets (RB00) </summary>
+        public static TypedStorage<RosaryBeadItemID> Beads { get; private set; }
+        /// <summary> Stores all PrayerItemID assets (PR00) </summary>
+        public static TypedStorage<PrayerItemID> Prayers { get; private set; }
+        /// <summary> Stores all FigureItemID assets (FG00) </summary>
+        public static TypedStorage<FigureItemID> Figures { get; private set; }
+        /// <summary> Stores all QuestItemID assets (QI00) </summary>
+        public static TypedStorage<QuestItemID> QuestItems { get; private set; }
 
-        public static AssetStore<IAbilityTypeRef> Abilities { get; private set; }
+        /// <summary> Stores all IAbilityTypeRef assets (AB00) </summary>
+        public static TypedStorage<IAbilityTypeRef> Abilities { get; private set; }
 
-        public static AssetStore<WeaponID> Weapons { get; private set; }
-        public static AssetStore<WeaponMemoryID> WeaponMemories { get; private set; }
+        /// <summary> Stores all WeaponID assets (WE00) </summary>
+        public static TypedStorage<WeaponID> Weapons { get; private set; }
+        /// <summary> Stores all WeaponMemoryID assets (WM00) </summary>
+        public static TypedStorage<WeaponMemoryID> WeaponMemories { get; private set; }
 
-        public static AssetStore<MainStatID> MainStats { get; private set; }
-        public static AssetStore<ValueStatID> ValueStats { get; private set; }
-        public static AssetStore<RangeStatID> RangeStats { get; private set; }
-        public static AssetStore<BonuseableValueStatID> BonusStats { get; private set; }
-        public static AssetStore<ModifiableStatID> ModifiableStats { get; private set; }
+        /// <summary> Stores all MainStatID assets (NAME) </summary>
+        public static TypedStorage<MainStatID> MainStats { get; private set; }
+        /// <summary> Stores all ValueStatID assets (NAME) </summary>
+        public static TypedStorage<ValueStatID> ValueStats { get; private set; }
+        /// <summary> Stores all RangeStatID assets (NAME) </summary>
+        public static TypedStorage<RangeStatID> RangeStats { get; private set; }
+        /// <summary> Stores all BonuseableValueStatID assets (NAME) </summary>
+        public static TypedStorage<BonuseableValueStatID> BonusStats { get; private set; }
+        /// <summary> Stores all ModifiableStatID assets (NAME) </summary>
+        public static TypedStorage<ModifiableStatID> ModifiableStats { get; private set; }
 
+        /// <summary>
+        /// Initializes and loads all tracked assets
+        /// </summary>
         internal static void Initialize()
         {
-            Beads = new AssetStore<RosaryBeadItemID>(
+            Beads = new TypedStorage<RosaryBeadItemID>(
                 AssetLoader.LoadObjectsOfType<RosaryBeadItemID>());
-            Prayers = new AssetStore<PrayerItemID>(
+            Prayers = new TypedStorage<PrayerItemID>(
                 AssetLoader.LoadObjectsOfType<PrayerItemID>());
-            Figures = new AssetStore<FigureItemID>(
+            Figures = new TypedStorage<FigureItemID>(
                 AssetLoader.LoadObjectsOfType<FigureItemID>());
-            QuestItems = new AssetStore<QuestItemID>(
+            QuestItems = new TypedStorage<QuestItemID>(
                 AssetLoader.LoadObjectsOfType<QuestItemID>());
 
-            Abilities = new AssetStore<IAbilityTypeRef>(
+            Abilities = new TypedStorage<IAbilityTypeRef>(
                 AssetLoader.LoadObjectsOfType<IAbilityTypeRef>("AB", AbilityNames));
 
-            Weapons = new AssetStore<WeaponID>(
+            Weapons = new TypedStorage<WeaponID>(
                 AssetLoader.LoadObjectsOfType<WeaponID>("WE", WeaponNames));
-            WeaponMemories = new AssetStore<WeaponMemoryID>(
+            WeaponMemories = new TypedStorage<WeaponMemoryID>(
                 AssetLoader.LoadObjectsOfType<WeaponMemoryID>("WM"));
 
-            MainStats = new AssetStore<MainStatID>(
+            MainStats = new TypedStorage<MainStatID>(
                 AssetLoader.LoadObjectsOfType<MainStatID>());
-            ValueStats = new AssetStore<ValueStatID>(
+            ValueStats = new TypedStorage<ValueStatID>(
                 AssetLoader.LoadObjectsOfType<ValueStatID>());
-            RangeStats = new AssetStore<RangeStatID>(
+            RangeStats = new TypedStorage<RangeStatID>(
                 AssetLoader.LoadObjectsOfType<RangeStatID>());
-            BonusStats = new AssetStore<BonuseableValueStatID>(
+            BonusStats = new TypedStorage<BonuseableValueStatID>(
                 AssetLoader.LoadObjectsOfType<BonuseableValueStatID>());
-            ModifiableStats = new AssetStore<ModifiableStatID>(
+            ModifiableStats = new TypedStorage<ModifiableStatID>(
                 AssetLoader.LoadObjectsOfType<ModifiableStatID>());
         }
 
+        /// <summary>
+        /// Whenever language changes, localize all item objects
+        /// </summary>
         internal static void LocalizeAllItems()
         {
             foreach (var bead in Beads.AllAssets)
@@ -69,14 +90,17 @@ namespace BlasII.ModdingAPI.Assets
                 LocalizeItem(figure.Value);
             foreach (var questItem in QuestItems.AllAssets)
                 LocalizeItem(questItem.Value);
-        }
 
-        private static void LocalizeItem(ItemID item)
-        {
-            CoreCache.Localization.Localize(item.Cast<ILocalizable>());
+            static void LocalizeItem(ItemID item)
+            {
+                CoreCache.Localization.Localize(item.Cast<ILocalizable>());
+            }
         }
 
         private static InventoryComponent _playerInventory;
+        /// <summary>
+        /// A permanent reference to the player's inventory component
+        /// </summary>
         public static InventoryComponent PlayerInventory
         {
             get
@@ -88,6 +112,9 @@ namespace BlasII.ModdingAPI.Assets
         }
 
         private static StatsComponent _playerStats;
+        /// <summary>
+        /// A permanent reference to the player's stat component
+        /// </summary>
         public static StatsComponent PlayerStats
         {
             get
