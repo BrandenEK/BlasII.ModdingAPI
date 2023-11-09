@@ -4,8 +4,14 @@ using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI.UI
 {
+    /// <summary>
+    /// Useful methods to modify Images
+    /// </summary>
     public static class ImageExtensions
     {
+        /// <summary>
+        /// Resets sprite and color to default
+        /// </summary>
         public static Image ResetToDefault(this Image image)
         {
             return image
@@ -13,6 +19,9 @@ namespace BlasII.ModdingAPI.UI
                 .SetColor(Color.white);
         }
 
+        /// <summary>
+        /// Displays the properties of the UI
+        /// </summary>
         public static string DisplayProperties(this Image image)
         {
             var sb = new StringBuilder("\n\n");
@@ -21,12 +30,14 @@ namespace BlasII.ModdingAPI.UI
             return sb.ToString();
         }
 
+        /// <summary> Updates the sprite </summary>
         public static Image SetSprite(this Image image, Sprite sprite)
         {
             image.sprite = sprite;
             return image;
         }
 
+        /// <summary> Updates the color </summary>
         public static Image SetColor(this Image image, Color color)
         {
             image.color = color;

@@ -6,8 +6,14 @@ using System.IO;
 
 namespace BlasII.ModdingAPI.Persistence
 {
+    /// <summary>
+    /// Used to save and load persistent data for a mod
+    /// </summary>
     public abstract class SaveData
     {
+        /// <summary>
+        /// After collecting save data for all persistent mods, serialize it and save to a file
+        /// </summary>
         internal static void SaveDataToFile(int slot, Dictionary<string, SaveData> data)
         {
             try
@@ -24,6 +30,9 @@ namespace BlasII.ModdingAPI.Persistence
             }
         }
 
+        /// <summary>
+        /// Load and deserialize save data for all persistent mods, then give it to them
+        /// </summary>
         internal static Dictionary<string, SaveData> LoadDataFromFile(int slot)
         {
             try
@@ -41,6 +50,9 @@ namespace BlasII.ModdingAPI.Persistence
             }
         }
 
+        /// <summary>
+        /// Deletes the modded save data when the main save file is deleted
+        /// </summary>
         internal static void DeleteDataFromFile(int slot)
         {
             try
@@ -54,6 +66,9 @@ namespace BlasII.ModdingAPI.Persistence
             }
         }
 
+        /// <summary>
+        /// Based on the slot number, calculates the file path for the modded save data
+        /// </summary>
         private static string GetPathForSlot(int slot)
         {
             return $"{CoreCache.StorageManager.BuildPath("Savegames/")}savegame_{slot}_modded.bin";
