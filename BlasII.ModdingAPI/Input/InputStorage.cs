@@ -1,9 +1,8 @@
-﻿using BlasII.ModdingAPI.Input;
-using Il2CppTGK.InputSystem;
+﻿using Il2CppTGK.InputSystem;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace BlasII.ModdingAPI.Storage
+namespace BlasII.ModdingAPI.Input
 {
     internal static class InputStorage
     {
@@ -61,6 +60,9 @@ namespace BlasII.ModdingAPI.Storage
 
         public static bool TryGetAxis(AxisType axis, out InputData input) => _inputAxes.TryGetValue(axis, out input);
 
+        /// <summary>
+        /// Finds an input data and registers it as a button type
+        /// </summary>
         private static void AddButtonInput(ButtonType button, string name, InputData[] inputs)
         {
             foreach (var input in inputs)
@@ -75,6 +77,9 @@ namespace BlasII.ModdingAPI.Storage
             Main.ModdingAPI.LogError("Failed to load input data for " + button);
         }
 
+        /// <summary>
+        /// Finds an input data and registers it as an axis type
+        /// </summary>
         private static void AddAxisInput(AxisType axis, string name, InputData[] inputs)
         {
             foreach (var input in inputs)

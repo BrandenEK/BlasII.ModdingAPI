@@ -1,4 +1,5 @@
-﻿using BlasII.ModdingAPI.Storage;
+﻿using BlasII.ModdingAPI.Assets;
+using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.UI;
 using Il2CppTMPro;
 using System.Text;
@@ -14,10 +15,7 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            AbilityStorage.Initialize();
-            ItemStorage.Initialize();
-            StatStorage.Initialize();
-            WeaponStorage.Initialize();
+            AssetStorage.Initialize();
             InputStorage.Initialize();
         }
 
