@@ -15,6 +15,8 @@ namespace BlasII.ModdingAPI
         private string _currentScene = string.Empty;
         public string CurrentScene => _currentScene;
 
+        public string GameVersion { get; internal set; } = "Unknown";
+
         private GameObject _modObject;
         public GameObject ModObject => _modObject;
 

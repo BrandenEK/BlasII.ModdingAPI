@@ -1,6 +1,7 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.UI;
+using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Text;
 using UnityEngine;
@@ -68,6 +69,20 @@ namespace BlasII.ModdingAPI
                 .SetAlignment(TextAlignmentOptions.TopLeft)
                 .SetFontSize(40)
                 .SetColor(new Color(0.773f, 0.451f, 0.314f));
+
+            // Store game version
+            var versionObject = Object.FindObjectOfType<SetGameVersionText>();
+            string versionText = versionObject.GetComponentInChildren<TextMeshProUGUI>().text;
+
+            int spaceIdx = versionText.IndexOf(' ');
+            if (spaceIdx >= 0)
+                versionText = versionText[..spaceIdx];
+
+            int dashIndex = versionText.IndexOf("-");
+            if (dashIndex >= 0)
+                versionText = versionText[..dashIndex];
+
+            Main.ModLoader.GameVersion = versionText;
         }
     }
 }
