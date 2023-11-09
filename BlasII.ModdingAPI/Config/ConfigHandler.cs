@@ -9,14 +9,11 @@ namespace BlasII.ModdingAPI.Config
     {
         private readonly BlasIIMod _mod;
 
-        private readonly Dictionary<string, string> _tempProperties = new();
         private readonly Dictionary<string, object> _properties = new();
 
         internal ConfigHandler(BlasIIMod mod)
         {
             _mod = mod;
-
-            DeserializeProperties(_mod.FileHandler.LoadConfig());
         }
 
         /// <summary>
@@ -76,61 +73,11 @@ namespace BlasII.ModdingAPI.Config
         {
             foreach (var mapping in defaults)
             {
-                // If the property wasn't in the config, use default
-                if (!_tempProperties.TryGetValue(mapping.Key, out string currentValue))
-                {
-                    _properties.Add(mapping.Key, mapping.Value);
-                    continue;
-                }
-
-                // If the property was not a valid type, skip property
-                if (!ParseProperty(currentValue, mapping.Value, out object realValue))
-                {
-                    _mod.LogError($"Property '{mapping.Key}' has an invalid type!");
-                    continue;
-                }
-
-                // If the property was invalid, use default
-                if (realValue == null)
-                {
-                    _mod.LogError($"Property '{mapping.Key}' is invalid.  Using default instead.");
-                    _properties.Add(mapping.Key, mapping.Value);
-                    continue;
-                }
-
-                _properties.Add(mapping.Key, realValue);
+                _properties.Add(mapping.Key, mapping.Value);
             }
 
-            _tempProperties.Clear();
-            SaveConfig();
-        }
-
-        /// <summary>
-        /// Attempts to parse the property into its specified type and returns whether it was a valid type
-        /// </summary>
-        private bool ParseProperty(string currentValue, object defaultValue, out object realValue)
-        {
-            realValue = null;
-            switch (defaultValue)
-            {
-                case bool _:
-                    if (bool.TryParse(currentValue, out bool boolValue))
-                        realValue = boolValue;
-                    return true;
-                case int _:
-                    if (int.TryParse(currentValue, out int intValue))
-                        realValue = intValue;
-                    return true;
-                case float _:
-                    if (float.TryParse(currentValue, out float floatValue))
-                        realValue = floatValue;
-                    return true;
-                case string _:
-                    realValue = currentValue;
-                    return true;
-                default:
-                    return false;
-            }
+            DeserializeProperties(_mod.FileHandler.LoadConfig());
+            _mod.FileHandler.SaveConfig(SerializeProperties());
         }
 
         /// <summary>
@@ -165,9 +112,56 @@ namespace BlasII.ModdingAPI.Config
                 string key = line[..colon].Trim();
                 string value = line[(colon + 1)..].Trim();
 
-                // Add property
-                _tempProperties.Add(key, value);
+                // If the key wasn't in the defaults, skip
+                if (!_properties.TryGetValue(key, out object defaultValue))
+                {
+                    continue;
+                }
+
+                // If the property was not a valid type, skip property
+                if (!ParseProperty(value, defaultValue, out object realValue))
+                {
+                    _mod.LogError($"Property '{key}' is invalid.  Using default instead.");
+                    continue;
+                }
+
+                // Update the valid property
+                _properties[key] = realValue;
             }
+        }
+
+        /// <summary>
+        /// Attempts to parse the property into its specified type and returns whether it is valid
+        /// </summary>
+        private bool ParseProperty(string newValue, object defaultValue, out object realValue)
+        {
+            bool isValid;
+
+            switch (defaultValue)
+            {
+                case bool _:
+                    isValid = bool.TryParse(newValue, out bool boolValue);
+                    realValue = boolValue;
+                    break;
+                case int _:
+                    isValid = int.TryParse(newValue, out int intValue);
+                    realValue = intValue;
+                    break;
+                case float _:
+                    isValid = float.TryParse(newValue, out float floatValue);
+                    realValue = floatValue;
+                    break;
+                case string _:
+                    isValid = true;
+                    realValue = newValue;
+                    break;
+                default:
+                    isValid = false;
+                    realValue = null;
+                    break;
+            }
+
+            return isValid;
         }
     }
 }
