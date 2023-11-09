@@ -39,6 +39,11 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;
 
+        /// <summary>
+        /// The build version of the game executable
+        /// </summary>
+        public string GameVersion => Main.ModLoader.GameVersion;
+
         // Handlers
 
         /// <summary>
