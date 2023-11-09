@@ -112,13 +112,13 @@ namespace BlasII.ModdingAPI.Config
                 string key = line[..colon].Trim();
                 string value = line[(colon + 1)..].Trim();
 
-                // If the key wasn't in the defaults, skip
+                // If the property wasn't in the defaults, skip
                 if (!_properties.TryGetValue(key, out object defaultValue))
                 {
                     continue;
                 }
 
-                // If the property was not a valid type, skip property
+                // If the property was not a valid type, skip
                 if (!ParseProperty(value, defaultValue, out object realValue))
                 {
                     _mod.LogError($"Property '{key}' is invalid.  Using default instead.");

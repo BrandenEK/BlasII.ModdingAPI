@@ -16,8 +16,6 @@ namespace BlasII.ModdingAPI.Input
         internal InputHandler(BlasIIMod mod)
         {
             _mod = mod;
-
-            DeserializeKeybindings(_mod.FileHandler.LoadKeybindings());
         }
 
         // Blocking
@@ -112,10 +110,10 @@ namespace BlasII.ModdingAPI.Input
         {
             foreach (var mapping in defaults)
             {
-                if (!_keybindings.ContainsKey(mapping.Key))
-                    _keybindings.Add(mapping.Key, mapping.Value);
+                _keybindings.Add(mapping.Key, mapping.Value);
             }
 
+            DeserializeKeybindings(_mod.FileHandler.LoadKeybindings());
             _mod.FileHandler.SaveKeybindings(SerializeKeyBindings());
         }
 
@@ -151,15 +149,21 @@ namespace BlasII.ModdingAPI.Input
                 string key = line[..colon].Trim();
                 string value = line[(colon + 1)..].Trim();
 
-                // Parse value to a key code
-                if (!System.Enum.TryParse(typeof(KeyCode), value, out object keyCode))
+                // If the keybinding wasn't in the defaults, skip
+                if (!_keybindings.ContainsKey(key))
                 {
-                    _mod.LogError($"Failed to convert '{value}' to a keycode. Using default instead.");
                     continue;
                 }
 
-                // Add custom keybinding
-                _keybindings.Add(key, (KeyCode)keyCode);
+                // If the keybinding was not a valid type, skip
+                if (!System.Enum.TryParse(typeof(KeyCode), value, out object keyCode))
+                {
+                    _mod.LogError($"Keybinding '{key}' is invalid.  Using default instead.");
+                    continue;
+                }
+
+                // Update the valid keybinding
+                _keybindings[key] = (KeyCode)keyCode;
             }
         }
     }
