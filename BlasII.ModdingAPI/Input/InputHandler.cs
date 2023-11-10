@@ -11,6 +11,7 @@ namespace BlasII.ModdingAPI.Input
     {
         private readonly BlasIIMod _mod;
 
+        private bool _registered = false;
         private readonly Dictionary<string, KeyCode> _keybindings = new();
 
         internal InputHandler(BlasIIMod mod)
@@ -108,6 +109,13 @@ namespace BlasII.ModdingAPI.Input
         /// </summary>
         public void RegisterDefaultKeybindings(Dictionary<string, KeyCode> defaults)
         {
+            if (_registered)
+            {
+                _mod.LogWarning("InputHandler has already been registered!");
+                return;
+            }
+            _registered = true;
+
             foreach (var mapping in defaults)
             {
                 _keybindings.Add(mapping.Key, mapping.Value);

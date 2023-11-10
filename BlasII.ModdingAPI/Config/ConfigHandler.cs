@@ -9,6 +9,7 @@ namespace BlasII.ModdingAPI.Config
     {
         private readonly BlasIIMod _mod;
 
+        private bool _registered = false;
         private readonly Dictionary<string, object> _properties = new();
 
         internal ConfigHandler(BlasIIMod mod)
@@ -71,6 +72,13 @@ namespace BlasII.ModdingAPI.Config
         /// </summary>
         public void RegisterDefaultProperties(Dictionary<string, object> defaults)
         {
+            if (_registered)
+            {
+                _mod.LogWarning("ConfigHandler has already been registered!");
+                return;
+            }
+            _registered = true;
+
             foreach (var mapping in defaults)
             {
                 _properties.Add(mapping.Key, mapping.Value);

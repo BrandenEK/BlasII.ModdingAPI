@@ -245,23 +245,6 @@ namespace BlasII.ModdingAPI.Files
             File.WriteAllLines(configPath, properties);
         }
 
-        /// <summary>
-        /// Will be removed soon
-        /// </summary>
-        [System.Obsolete("Use new ConfigHandler instead")]
-        public void SaveConfig<T>(T config)
-        {
-        }
-
-        /// <summary>
-        /// Will be removed soon
-        /// </summary>
-        [System.Obsolete("Use new ConfigHandler instead")]
-        public T LoadConfig<T>() where T : new()
-        {
-            return new T();
-        }
-
         // Keybindings
 
         /// <summary>

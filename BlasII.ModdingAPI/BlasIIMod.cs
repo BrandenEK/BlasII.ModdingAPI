@@ -144,10 +144,9 @@ namespace BlasII.ModdingAPI
             this.version = version;
 
             // Set handlers
-            _fileHandler = new FileHandler(this);
-
             _audioHandler = new AudioHandler();
             _configHandler = new ConfigHandler(this);
+            _fileHandler = new FileHandler(this);
             _inputHandler = new InputHandler(this);
             _localizationHandler = new LocalizationHandler(this);
 
