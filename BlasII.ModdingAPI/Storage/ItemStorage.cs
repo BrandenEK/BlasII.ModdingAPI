@@ -7,6 +7,7 @@ namespace BlasII.ModdingAPI.Storage
 {
     public static class ItemStorage
     {
+        [System.Obsolete("Use new AssetStorage instead")]
         public static InventoryComponent PlayerInventory => AssetStorage.PlayerInventory;
 
         // Rosary beads

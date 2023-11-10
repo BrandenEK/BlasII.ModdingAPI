@@ -7,6 +7,7 @@ namespace BlasII.ModdingAPI.Storage
 {
     public static class StatStorage
     {
+        [System.Obsolete("Use new AssetStorage instead")]
         public static StatsComponent PlayerStats => AssetStorage.PlayerStats;
 
         // Main stats
