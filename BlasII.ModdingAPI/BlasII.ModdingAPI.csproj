@@ -11,8 +11,9 @@
     <Version>0.5.3</Version>
     
     <TargetName>ModdingAPI</TargetName>
-    <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>obj\Release\ModdingAPI.xml</DocumentationFile>
     <RepositoryUrl>https://github.com/BrandenEK/BlasII.ModdingAPI</RepositoryUrl>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
   </PropertyGroup>
