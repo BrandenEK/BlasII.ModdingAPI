@@ -20,41 +20,6 @@ namespace BlasII.ModdingAPI.Localization
         internal LocalizationHandler(BlasIIMod mod)
         {
             _mod = mod;
-
-            ParseLocalization(_mod.FileHandler.LoadLocalization());
-        }
-
-        /// <summary>
-        /// Takes in the lines from the localization file and fills the text dictionary
-        /// </summary>
-        private void ParseLocalization(string[] localization)
-        {
-            string currLanguage = null;
-            foreach (string line in localization)
-            {
-                // Skip lines without a colon
-                int colon = line.IndexOf(':');
-                if (colon < 0)
-                    continue;
-
-                // Get key and term for each pair
-                string key = line[..colon].Trim();
-                string term = line[(colon + 1)..].Trim();
-
-                // Possibly set new language
-                if (key == "lang")
-                {
-                    currLanguage = term;
-                    _textByLanguage.Add(term, new Dictionary<string, string>());
-                    continue;
-                }
-
-                // Make sure the current language has been set
-                if (currLanguage == null)
-                    continue;
-
-                _textByLanguage[currLanguage].Add(key, term.Replace("\\n", "\n"));
-            }
         }
 
         /// <summary>
@@ -127,6 +92,47 @@ namespace BlasII.ModdingAPI.Localization
             var localize = obj.GetComponent<Localize>();
             if (localize != null)
                 Object.Destroy(localize);
+        }
+
+        /// <summary>
+        /// Specifies which language to default to and loads the translations
+        /// </summary>
+        public void RegisterDefaultLanguage(string languageKey)
+        {
+            DeserializeLocalization(_mod.FileHandler.LoadLocalization());
+        }
+
+        /// <summary>
+        /// Takes in the lines from the localization file and fills the text dictionary
+        /// </summary>
+        private void DeserializeLocalization(string[] localization)
+        {
+            string currLanguage = null;
+            foreach (string line in localization)
+            {
+                // Skip lines without a colon
+                int colon = line.IndexOf(':');
+                if (colon < 0)
+                    continue;
+
+                // Get key and term for each pair
+                string key = line[..colon].Trim();
+                string term = line[(colon + 1)..].Trim();
+
+                // Possibly set new language
+                if (key == "lang")
+                {
+                    currLanguage = term;
+                    _textByLanguage.Add(term, new Dictionary<string, string>());
+                    continue;
+                }
+
+                // Make sure the current language has been set
+                if (currLanguage == null)
+                    continue;
+
+                _textByLanguage[currLanguage].Add(key, term.Replace("\\n", "\n"));
+            }
         }
 
         private const string ERROR_TEXT = "LOC_ERROR";

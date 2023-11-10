@@ -18,6 +18,8 @@ namespace BlasII.ModdingAPI
         {
             AssetStorage.Initialize();
             InputStorage.Initialize();
+
+            LocalizationHandler.RegisterDefaultLanguage("en");
         }
 
         protected internal override void OnSceneLoaded(string sceneName)
