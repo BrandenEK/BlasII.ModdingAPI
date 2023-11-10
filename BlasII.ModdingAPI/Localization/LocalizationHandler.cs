@@ -17,6 +17,8 @@ namespace BlasII.ModdingAPI.Localization
         private readonly Dictionary<string, Dictionary<string, string>> _textByLanguage = new();
         private readonly List<ILocalizer> _localizers = new();
 
+        private string _defaultLanguage = string.Empty;
+
         internal LocalizationHandler(BlasIIMod mod)
         {
             _mod = mod;
@@ -50,10 +52,10 @@ namespace BlasII.ModdingAPI.Localization
                 return _textByLanguage[currentLanguage][key];
             }
 
-            // The language doesn't exist - default to english
-            if (_textByLanguage.ContainsKey("en") && _textByLanguage["en"].ContainsKey(key))
+            // The language doesn't exist - use default language
+            if (_textByLanguage.ContainsKey(_defaultLanguage) && _textByLanguage[_defaultLanguage].ContainsKey(key))
             {
-                return _textByLanguage["en"][key];
+                return _textByLanguage[_defaultLanguage][key];
             }
 
             _mod.LogError($"Failed to localize '{key}' to any language.");
@@ -99,6 +101,7 @@ namespace BlasII.ModdingAPI.Localization
         /// </summary>
         public void RegisterDefaultLanguage(string languageKey)
         {
+            _defaultLanguage = languageKey;
             DeserializeLocalization(_mod.FileHandler.LoadLocalization());
         }
 
