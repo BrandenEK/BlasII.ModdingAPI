@@ -14,10 +14,11 @@ namespace BlasII.ModdingAPI.Localization
     {
         private readonly BlasIIMod _mod;
 
-        private readonly Dictionary<string, Dictionary<string, string>> _textByLanguage = new();
         private readonly List<ILocalizer> _localizers = new();
 
+        private bool _registered = false;
         private string _defaultLanguage = string.Empty;
+        private readonly Dictionary<string, Dictionary<string, string>> _textByLanguage = new();
 
         internal LocalizationHandler(BlasIIMod mod)
         {
@@ -101,6 +102,13 @@ namespace BlasII.ModdingAPI.Localization
         /// </summary>
         public void RegisterDefaultLanguage(string languageKey)
         {
+            if (_registered)
+            {
+                _mod.LogWarning("LocalizationHandler has already been registered!");
+                return;
+            }
+            _registered = true;
+
             _defaultLanguage = languageKey;
             DeserializeLocalization(_mod.FileHandler.LoadLocalization());
         }
