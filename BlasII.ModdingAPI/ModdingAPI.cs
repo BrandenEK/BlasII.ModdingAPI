@@ -33,6 +33,10 @@ namespace BlasII.ModdingAPI
 
                 DisplayModListOnMenu();
             }
+            else
+            {
+                MessageHandler.SendMessage("Test message");
+            }
         }
 
         private void DisplayModListOnMenu()

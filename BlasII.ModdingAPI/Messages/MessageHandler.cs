@@ -8,16 +8,26 @@ namespace BlasII.ModdingAPI.Messages
     {
         private readonly BlasIIMod _mod;
 
-        internal MessageHandler(BlasIIMod mod)
+        internal MessageHandler(BlasIIMod mod) => _mod = mod;
+
+        public void SendMessage(string message) => SendMessage(message, null);
+
+        public void SendMessage(string message, string[] args)
         {
-            _mod = mod;
+            if (string.IsNullOrEmpty(message))
+                return;
+
+            Main.ModdingAPI.Log($"{_mod.Name} is sending {message}.");
+            Main.ModLoader.ProcessModFunction(mod =>
+            {
+                if (mod != _mod)
+                    mod.MessageHandler.ReceiveMessage(_mod.Id, message, args);
+            });
         }
 
-        public void SendMessage(string message) => Main.ModLoader.SendMessage(this, new string[] { message });
-
-        public void SendMessage(string[] message) => Main.ModLoader.SendMessage(this, message);
-
-        protected internal virtual void ReceiveMessage(string sender, string[] message) { }
-
+        internal void ReceiveMessage(string sender, string message, string[] args)
+        {
+            _mod.LogError("Received message from " + sender);
+        }
     }
 }

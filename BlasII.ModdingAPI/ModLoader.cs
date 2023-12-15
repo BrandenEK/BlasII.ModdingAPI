@@ -138,20 +138,5 @@ namespace BlasII.ModdingAPI
         {
             return (mod = mods.FirstOrDefault(m => m.Id == modId)) != null;
         }
-
-        /// <summary>
-        /// Sends a message to all other registered mods
-        /// </summary>
-        public void SendMessage(BlasIIMod sender, string[] message)
-        {
-            if (message == null || message.Length == 0)
-                return;
-
-            Main.ModdingAPI.Log($"{sender.Name} is sending {message[0]}.");
-            foreach (var mod in mods.Where(m => m != sender))
-            {
-                mod.ReceiveMessage(sender.Id, message);
-            }
-        }
     }
 }
