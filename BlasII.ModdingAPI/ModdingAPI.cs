@@ -18,11 +18,6 @@ namespace BlasII.ModdingAPI
         {
             AssetStorage.Initialize();
             InputStorage.Initialize();
-
-            MessageHandler.AddGlobalListener((string x, string y) =>
-            {
-                LogWarning("Received global message");
-            });
         }
 
         protected internal override void OnSceneLoaded(string sceneName)
@@ -38,11 +33,8 @@ namespace BlasII.ModdingAPI
 
                 DisplayModListOnMenu();
             }
-            else
-            {
-                MessageHandler.Broadcast("Test message");
-                MessageHandler.Send("BlasII.Test", "Special message");
-            }
+                MessageHandler.Broadcast("Test message", "Test content");
+                MessageHandler.Send("BlasII.Test", "Special");
         }
 
         private void DisplayModListOnMenu()

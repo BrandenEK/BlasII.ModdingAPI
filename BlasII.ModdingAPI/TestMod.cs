@@ -12,10 +12,16 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            MessageHandler.AddGlobalListener((string x, string y) =>
+            MessageHandler.AddGlobalListener((string mod, string message, string content) =>
             {
-                LogWarning("Test: Received global message");
+                LogWarning($"Test: Received {message} from {mod} with {content}");
             });
+            MessageHandler.AddMessageListener("BlasII.ModdingAPI", "Special", PerformSpecial);
+        }
+
+        private void PerformSpecial(string obj)
+        {
+            LogError("Recevied special object: " + obj);
         }
     }
 }

@@ -11,13 +11,16 @@ namespace BlasII.ModdingAPI.Messages
     {
         private readonly BlasIIMod _mod;
 
-        private readonly List<MessageListener> _listeners = new();
+        private readonly List<GlobalListener> _globalListeners = new();
+        private readonly List<ModListener> _modListeners = new();
+        private readonly List<MessageListener> _messageListeners = new();
+        private readonly List<ContentListener> _contentListeners = new();
 
         internal MessageHandler(BlasIIMod mod) => _mod = mod;
 
         // Sending messages
 
-        public void Send(string receiver, string message, string args)
+        public void Send(string receiver, string message, string content)
         {
             if (string.IsNullOrEmpty(message) || receiver == _mod.Id)
                 return;
@@ -26,7 +29,7 @@ namespace BlasII.ModdingAPI.Messages
             Main.ModLoader.ProcessModFunction(mod =>
             {
                 if (mod.Id == receiver)
-                    mod.MessageHandler.Receive(_mod.Id, message, args);
+                    mod.MessageHandler.Receive(_mod.Id, message, content ?? string.Empty);
             });
         }
 
@@ -34,7 +37,7 @@ namespace BlasII.ModdingAPI.Messages
 
         // Broadcasting messages
 
-        public void Broadcast(string message, string args)
+        public void Broadcast(string message, string content)
         {
             if (string.IsNullOrEmpty(message))
                 return;
@@ -43,7 +46,7 @@ namespace BlasII.ModdingAPI.Messages
             Main.ModLoader.ProcessModFunction(mod =>
             {
                 if (mod != _mod)
-                    mod.MessageHandler.Receive(_mod.Id, message, args);
+                    mod.MessageHandler.Receive(_mod.Id, message, content ?? string.Empty);
             });
         }
 
@@ -51,20 +54,33 @@ namespace BlasII.ModdingAPI.Messages
 
         // Receiving messages
 
-        internal void Receive(string sender, string message, string args)
+        internal void Receive(string sender, string message, string content)
         {
             _mod.LogError("Received message from " + sender);
 
-            foreach (var listener in _listeners.Where(x =>
-                (x.sender == "any" || x.sender == sender) && (x.message == "any" | x.message == message)))
-            {
-                listener.callback(sender, args);
-            }
+            foreach (var listener in _globalListeners)
+                listener.callback(sender, message, content);
+
+            foreach (var listener in _modListeners.Where(x => x.mod == sender))
+                listener.callback(message, content);
+
+            foreach (var listener in _messageListeners.Where(x => x.mod == sender && x.message == message))
+                listener.callback(content);
+
+            foreach (var listener in _contentListeners.Where(x => x.mod == sender && x.message == message && x.content == content))
+                listener.callback();
         }
 
-        public void AddGlobalListener(Action<string, string> callback)
-        {
-            _listeners.Add(new MessageListener("any", "any", callback));
-        }
+        public void AddGlobalListener(Action<string, string, string> callback) =>
+            _globalListeners.Add(new GlobalListener(callback));
+
+        public void AddModListener(string mod, Action<string, string> callback) =>
+            _modListeners.Add(new ModListener(mod, callback));
+
+        public void AddMessageListener(string mod, string message, Action<string> callback) =>
+            _messageListeners.Add(new MessageListener(mod, message, callback));
+
+        public void AddContentListener(string mod, string message, string content, Action callback) =>
+            _contentListeners.Add(new ContentListener(mod, message, content, callback));
     }
 }
