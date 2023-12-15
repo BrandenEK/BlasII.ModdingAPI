@@ -118,48 +118,6 @@ namespace BlasII.ModdingAPI
         }
 
         /// <summary>
-        /// Saves game progress for each mod
-        /// </summary>
-        public void SaveGame(int slot)
-        {
-            var data = new Dictionary<string, SaveData>();
-
-            ProcessModFunction(mod =>
-            {
-                if (mod is IPersistentMod persistentMod)
-                    data.Add(mod.Id, persistentMod.SaveGame());
-            });
-
-            SaveData.SaveDataToFile(slot, data);
-        }
-
-        /// <summary>
-        /// Loads game progress for each mod
-        /// </summary>
-        public void LoadGame(int slot)
-        {
-            var data = SaveData.LoadDataFromFile(slot);
-
-            ProcessModFunction(mod =>
-            {
-                if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
-                    persistentMod.LoadGame(save);
-            });
-        }
-
-        /// <summary>
-        /// Resets game progress for each mod
-        /// </summary>
-        public void ResetGame()
-        {
-            ProcessModFunction(mod =>
-            {
-                if (mod is IPersistentMod persistentMod)
-                    persistentMod.ResetGame();
-            });
-        }
-
-        /// <summary>
         /// Registers a new mod whenever it is first created
         /// </summary>
         public void RegisterMod(BlasIIMod mod)
