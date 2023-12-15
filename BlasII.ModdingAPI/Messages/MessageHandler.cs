@@ -1,4 +1,7 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
 namespace BlasII.ModdingAPI.Messages
 {
     /// <summary>
@@ -8,11 +11,15 @@ namespace BlasII.ModdingAPI.Messages
     {
         private readonly BlasIIMod _mod;
 
+        private readonly List<MessageListener> _listeners = new();
+
         internal MessageHandler(BlasIIMod mod) => _mod = mod;
 
-        public void Send(string receiver, string message, string[] args)
+        // Sending messages
+
+        public void Send(string receiver, string message, string args)
         {
-            if (string.IsNullOrEmpty(message))
+            if (string.IsNullOrEmpty(message) || receiver == _mod.Id)
                 return;
 
             Main.ModdingAPI.Log($"{_mod.Id} is sending message '{message}' to {receiver}");
@@ -25,7 +32,9 @@ namespace BlasII.ModdingAPI.Messages
 
         public void Send(string receiver, string message) => Send(receiver, message, null);
 
-        public void Broadcast(string message, string[] args)
+        // Broadcasting messages
+
+        public void Broadcast(string message, string args)
         {
             if (string.IsNullOrEmpty(message))
                 return;
@@ -40,9 +49,22 @@ namespace BlasII.ModdingAPI.Messages
 
         public void Broadcast(string message) => Broadcast(message, null);
 
-        internal void Receive(string sender, string message, string[] args)
+        // Receiving messages
+
+        internal void Receive(string sender, string message, string args)
         {
             _mod.LogError("Received message from " + sender);
+
+            foreach (var listener in _listeners.Where(x =>
+                (x.sender == "any" || x.sender == sender) && (x.message == "any" | x.message == message)))
+            {
+                listener.callback(sender, args);
+            }
+        }
+
+        public void AddGlobalListener(Action<string, string> callback)
+        {
+            _listeners.Add(new MessageListener("any", "any", callback));
         }
     }
 }
