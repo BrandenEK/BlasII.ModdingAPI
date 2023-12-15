@@ -24,7 +24,7 @@ namespace BlasII.ModdingAPI
         /// <summary>
         /// Loops over the list of registered mods and performs an action on each one
         /// </summary>
-        private void ProcessModFunction(System.Action<BlasIIMod> action)
+        public void ProcessModFunction(System.Action<BlasIIMod> action)
         {
             foreach (var mod in mods)
             {
@@ -115,14 +115,6 @@ namespace BlasII.ModdingAPI
         public void NewGame()
         {
             ProcessModFunction(mod => mod.OnNewGameStarted());
-        }
-
-        /// <summary>
-        /// Updates the localizers for all mods
-        /// </summary>
-        public void LanguageChanged()
-        {
-            ProcessModFunction(mod => mod.LocalizationHandler.OnLangaugeChanged());
         }
 
         /// <summary>
