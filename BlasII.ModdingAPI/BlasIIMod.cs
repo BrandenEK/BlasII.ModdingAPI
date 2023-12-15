@@ -3,6 +3,7 @@ using BlasII.ModdingAPI.Config;
 using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.Localization;
+using BlasII.ModdingAPI.Messages;
 using System.Drawing;
 
 namespace BlasII.ModdingAPI
@@ -44,6 +45,11 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public string GameVersion => Main.ModLoader.GameVersion;
 
+        /// <summary>
+        /// Checks whether a mod is loaded, and returns it if so
+        /// </summary>
+        public bool IsModLoaded(string modId, out BlasIIMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
+
         // Handlers
 
         /// <summary>
@@ -76,18 +82,11 @@ namespace BlasII.ModdingAPI
         public LocalizationHandler LocalizationHandler => _localizationHandler;
         private readonly LocalizationHandler _localizationHandler;
 
-        // Communication
-
-        // Maybe move to separate communication handler ??
-        // RegisterMessageReceiver which specific mods or any ?
-
-        public bool IsModLoaded(string modId, out BlasIIMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
-
-        public void SendMessage(string message) => Main.ModLoader.SendMessage(this, new string[] { message });
-
-        public void SendMessage(string[] message) => Main.ModLoader.SendMessage(this, message);
-
-        protected internal virtual void ReceiveMessage(string sender, string[] message) { }
+        /// <summary>
+        /// Handles sending and receiving messages, such as listening for specific broadcasts
+        /// </summary>
+        public MessageHandler MessageHandler => _messageHandler;
+        private readonly MessageHandler _messageHandler;
 
         // Events
 
@@ -162,6 +161,7 @@ namespace BlasII.ModdingAPI
             _fileHandler = new FileHandler(this);
             _inputHandler = new InputHandler(this);
             _localizationHandler = new LocalizationHandler(this);
+            _messageHandler = new MessageHandler(this);
 
             // Register mod
             Main.ModLoader.RegisterMod(this);
