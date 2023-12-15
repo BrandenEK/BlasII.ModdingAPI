@@ -10,22 +10,37 @@ namespace BlasII.ModdingAPI.Messages
 
         internal MessageHandler(BlasIIMod mod) => _mod = mod;
 
-        public void SendMessage(string message) => SendMessage(message, null);
-
-        public void SendMessage(string message, string[] args)
+        public void Send(string receiver, string message, string[] args)
         {
             if (string.IsNullOrEmpty(message))
                 return;
 
-            Main.ModdingAPI.Log($"{_mod.Name} is sending {message}.");
+            Main.ModdingAPI.Log($"{_mod.Id} is sending message '{message}' to {receiver}");
             Main.ModLoader.ProcessModFunction(mod =>
             {
-                if (mod != _mod)
-                    mod.MessageHandler.ReceiveMessage(_mod.Id, message, args);
+                if (mod.Id == receiver)
+                    mod.MessageHandler.Receive(_mod.Id, message, args);
             });
         }
 
-        internal void ReceiveMessage(string sender, string message, string[] args)
+        public void Send(string receiver, string message) => Send(receiver, message, null);
+
+        public void Broadcast(string message, string[] args)
+        {
+            if (string.IsNullOrEmpty(message))
+                return;
+
+            Main.ModdingAPI.Log($"{_mod.Id} is broadcasting message '{message}'");
+            Main.ModLoader.ProcessModFunction(mod =>
+            {
+                if (mod != _mod)
+                    mod.MessageHandler.Receive(_mod.Id, message, args);
+            });
+        }
+
+        public void Broadcast(string message) => Broadcast(message, null);
+
+        internal void Receive(string sender, string message, string[] args)
         {
             _mod.LogError("Received message from " + sender);
         }

@@ -35,7 +35,8 @@ namespace BlasII.ModdingAPI
             }
             else
             {
-                MessageHandler.SendMessage("Test message");
+                MessageHandler.Broadcast("Test message");
+                MessageHandler.Send("BlasII.DebugMod", "Special message");
             }
         }
 
