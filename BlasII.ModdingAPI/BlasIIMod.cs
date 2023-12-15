@@ -76,6 +76,19 @@ namespace BlasII.ModdingAPI
         public LocalizationHandler LocalizationHandler => _localizationHandler;
         private readonly LocalizationHandler _localizationHandler;
 
+        // Communication
+
+        // Maybe move to separate communication handler ??
+        // RegisterMessageReceiver which specific mods or any ?
+
+        public bool IsModLoaded(string modId, out BlasIIMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
+
+        public void SendMessage(string message) => Main.ModLoader.SendMessage(this, new string[] { message });
+
+        public void SendMessage(string[] message) => Main.ModLoader.SendMessage(this, message);
+
+        protected internal virtual void ReceiveMessage(string sender, string[] message) { }
+
         // Events
 
         /// <summary>

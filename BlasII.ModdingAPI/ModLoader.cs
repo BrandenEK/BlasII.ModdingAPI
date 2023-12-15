@@ -1,5 +1,6 @@
 ﻿using BlasII.ModdingAPI.Persistence;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BlasII.ModdingAPI
@@ -216,17 +217,31 @@ namespace BlasII.ModdingAPI
 
         public void RegisterMod(BlasIIMod mod)
         {
-            foreach (BlasIIMod m in mods)
+            if (mods.Any(m => m.Id == mod.Id))
             {
-                if (m.Id == mod.Id)
-                {
-                    Main.LogError("Mod Loader", $"Mod with id '{mod.Id}' already exists!");
-                    return;
-                }
+                Main.LogError("Mod Loader", $"Mod with id '{mod.Id}' already exists!");
+                return;
             }
 
             Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", System.Drawing.Color.Green);
             mods.Add(mod);
+        }
+
+        public bool IsModLoaded(string modId, out BlasIIMod mod)
+        {
+            return (mod = mods.FirstOrDefault(m => m.Id == modId)) != null;
+        }
+
+        public void SendMessage(BlasIIMod sender, string[] message)
+        {
+            if (message == null || message.Length == 0)
+                return;
+
+            Main.ModdingAPI.Log($"{sender.Name} is sending {message[0]}.");
+            foreach (var mod in mods.Where(m => m != sender))
+            {
+                mod.ReceiveMessage(sender.Id, message);
+            }
         }
     }
 }
