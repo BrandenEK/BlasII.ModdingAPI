@@ -12,11 +12,20 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            MessageHandler.AddGlobalListener((string mod, string message, string content) =>
+            MessageHandler.AllowReceivingBroadcasts = true;
+            MessageHandler.AddGlobalListener((mod, message, content) =>
             {
                 LogWarning($"Test: Received {message} from {mod} with {content}");
             });
             MessageHandler.AddMessageListener("BlasII.ModdingAPI", "Special", PerformSpecial);
+            MessageHandler.AddMessageListener("BlasII.ModdingAPI", "Kill", enemy =>
+            {
+                LogError("Killed a " + enemy);
+            });
+            MessageHandler.AddModListener("BlasII.ModdingAPI", (_, _) =>
+            {
+                LogWarning("Received message from api");
+            });
         }
 
         private void PerformSpecial(string obj)

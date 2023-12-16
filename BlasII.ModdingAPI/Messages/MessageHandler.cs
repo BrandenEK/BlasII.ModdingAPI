@@ -18,6 +18,8 @@ namespace BlasII.ModdingAPI.Messages
 
         internal MessageHandler(BlasIIMod mod) => _mod = mod;
 
+        public bool AllowReceivingBroadcasts { get; set; }
+
         // Sending messages
 
         public void Send(string receiver, string message, string content)
@@ -25,12 +27,11 @@ namespace BlasII.ModdingAPI.Messages
             if (string.IsNullOrEmpty(message) || receiver == _mod.Id)
                 return;
 
-            Main.ModdingAPI.Log($"{_mod.Id} is sending message '{message}' to {receiver}");
-            Main.ModLoader.ProcessModFunction(mod =>
+            Main.ModdingAPI.Log($"{_mod.Id} is sending message '{message}' [{content}] to {receiver}");
+            if (_mod.IsModLoaded(receiver, out BlasIIMod mod))
             {
-                if (mod.Id == receiver)
-                    mod.MessageHandler.Receive(_mod.Id, message, content ?? string.Empty);
-            });
+                mod.MessageHandler.Receive(_mod.Id, message, content ?? string.Empty);
+            }
         }
 
         public void Send(string receiver, string message) => Send(receiver, message, null);
@@ -42,10 +43,10 @@ namespace BlasII.ModdingAPI.Messages
             if (string.IsNullOrEmpty(message))
                 return;
 
-            Main.ModdingAPI.Log($"{_mod.Id} is broadcasting message '{message}'");
+            Main.ModdingAPI.Log($"{_mod.Id} is broadcasting message '{message}' [{content}]");
             Main.ModLoader.ProcessModFunction(mod =>
             {
-                if (mod != _mod)
+                if (mod != _mod && mod.MessageHandler.AllowReceivingBroadcasts)
                     mod.MessageHandler.Receive(_mod.Id, message, content ?? string.Empty);
             });
         }
