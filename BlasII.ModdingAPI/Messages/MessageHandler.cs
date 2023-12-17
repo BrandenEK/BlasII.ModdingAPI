@@ -71,8 +71,6 @@ namespace BlasII.ModdingAPI.Messages
         /// </summary>
         internal void Receive(string sender, string message, string content)
         {
-            _mod.LogError("Received message from " + sender);
-
             try
             {
                 foreach (var listener in _listeners)
