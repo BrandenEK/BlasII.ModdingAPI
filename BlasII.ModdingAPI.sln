@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlasII.ModdingAPI", "BlasII.ModdingAPI\BlasII.ModdingAPI.csproj", "{256EF9CA-C6B5-4D81-B978-19A445335B52}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlasII.ModdingAPI.Tests", "BlasII.ModdingAPI.Tests\BlasII.ModdingAPI.Tests.csproj", "{E5520D2B-574A-41BF-AC2F-40CA2AA970E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{256EF9CA-C6B5-4D81-B978-19A445335B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{256EF9CA-C6B5-4D81-B978-19A445335B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{256EF9CA-C6B5-4D81-B978-19A445335B52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5520D2B-574A-41BF-AC2F-40CA2AA970E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5520D2B-574A-41BF-AC2F-40CA2AA970E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5520D2B-574A-41BF-AC2F-40CA2AA970E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5520D2B-574A-41BF-AC2F-40CA2AA970E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
