@@ -33,7 +33,7 @@ namespace BlasII.ModdingAPI
                 }
                 catch (System.Exception e)
                 {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
+                    mod.LogError($"Encountered error: {e.Message}\n{e.CleanStackTrace()}");
                 }
             }
         }

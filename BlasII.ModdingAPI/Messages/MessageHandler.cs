@@ -59,17 +59,24 @@ namespace BlasII.ModdingAPI.Messages
         {
             _mod.LogError("Received message from " + sender);
 
-            foreach (var listener in _globalListeners)
-                listener.callback(sender, message, content);
+            try
+            {
+                foreach (var listener in _contentListeners.Where(x => x.mod == sender && x.message == message && x.content == content))
+                    listener.callback();
 
-            foreach (var listener in _modListeners.Where(x => x.mod == sender))
-                listener.callback(message, content);
+                foreach (var listener in _messageListeners.Where(x => x.mod == sender && x.message == message))
+                    listener.callback(content);
 
-            foreach (var listener in _messageListeners.Where(x => x.mod == sender && x.message == message))
-                listener.callback(content);
+                foreach (var listener in _modListeners.Where(x => x.mod == sender))
+                    listener.callback(message, content);
 
-            foreach (var listener in _contentListeners.Where(x => x.mod == sender && x.message == message && x.content == content))
-                listener.callback();
+                foreach (var listener in _globalListeners)
+                    listener.callback(sender, message, content);
+            }
+            catch
+            {
+                _mod.LogError($"Failed to receive message '{message}' from {sender}");
+            }
         }
 
         public void AddGlobalListener(Action<string, string, string> callback) =>

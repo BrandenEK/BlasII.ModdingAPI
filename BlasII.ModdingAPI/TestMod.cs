@@ -12,7 +12,6 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
-            MessageHandler.AllowReceivingBroadcasts = true;
             MessageHandler.AddGlobalListener((mod, message, content) =>
             {
                 LogWarning($"Test: Received {message} from {mod} with {content}");
@@ -31,6 +30,7 @@ namespace BlasII.ModdingAPI
         private void PerformSpecial(string obj)
         {
             LogError("Recevied special object: " + obj);
+            throw new Exception("test error");
         }
     }
 }
