@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BlasII.ModdingAPI.Messages
 {
@@ -15,10 +14,16 @@ namespace BlasII.ModdingAPI.Messages
 
         internal MessageHandler(BlasIIMod mod) => _mod = mod;
 
+        /// <summary>
+        /// Whether this mod will listen for broadcasts instead of only direct messages
+        /// </summary>
         public bool AllowReceivingBroadcasts { get; set; }
 
         // Sending messages
 
+        /// <summary>
+        /// Sends a message with content to the specified mod
+        /// </summary>
         public void Send(string receiver, string message, string content)
         {
             if (string.IsNullOrEmpty(message) || receiver == _mod.Id)
@@ -31,10 +36,16 @@ namespace BlasII.ModdingAPI.Messages
             }
         }
 
+        /// <summary>
+        /// Sends a message without content to the specified mod
+        /// </summary>
         public void Send(string receiver, string message) => Send(receiver, message, null);
 
         // Broadcasting messages
 
+        /// <summary>
+        /// Broadcasts a message with content to all mods
+        /// </summary>
         public void Broadcast(string message, string content)
         {
             if (string.IsNullOrEmpty(message))
@@ -48,10 +59,16 @@ namespace BlasII.ModdingAPI.Messages
             });
         }
 
+        /// <summary>
+        /// Broadcasts a message without content to all mods
+        /// </summary>
         public void Broadcast(string message) => Broadcast(message, null);
 
         // Receiving messages
 
+        /// <summary>
+        /// Receives a message and allows its listeners to process it
+        /// </summary>
         internal void Receive(string sender, string message, string content)
         {
             _mod.LogError("Received message from " + sender);
@@ -67,15 +84,27 @@ namespace BlasII.ModdingAPI.Messages
             }
         }
 
+        /// <summary>
+        /// Listens for any and all messages
+        /// </summary>
         public void AddGlobalListener(Action<string, string, string> callback) =>
             _listeners.Add(new GlobalListener(callback));
 
+        /// <summary>
+        /// Listens for messages from a certain mod
+        /// </summary>
         public void AddModListener(string mod, Action<string, string> callback) =>
             _listeners.Add(new ModListener(mod, callback));
 
+        /// <summary>
+        /// Listens for messages from a certain mod with a certain message
+        /// </summary>
         public void AddMessageListener(string mod, string message, Action<string> callback) =>
             _listeners.Add(new MessageListener(mod, message, callback));
 
+        /// <summary>
+        /// Listens for messages from a certain mod with a certain message and content
+        /// </summary>
         public void AddContentListener(string mod, string message, string content, Action callback) =>
             _listeners.Add(new ContentListener(mod, message, content, callback));
     }

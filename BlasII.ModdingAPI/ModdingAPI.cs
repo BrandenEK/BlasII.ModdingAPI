@@ -33,9 +33,6 @@ namespace BlasII.ModdingAPI
 
                 DisplayModListOnMenu();
             }
-                MessageHandler.Broadcast("Test message", "Test content");
-                MessageHandler.Send("BlasII.Test", "Special");
-            MessageHandler.Broadcast("Kill", "Default enemy");
         }
 
         private void DisplayModListOnMenu()
