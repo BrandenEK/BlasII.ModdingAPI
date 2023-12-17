@@ -7,10 +7,10 @@ using System.Text;
 
 namespace BlasII.ModdingAPI
 {
-    internal class Main : MelonMod
+    public class Main : MelonMod
     {
-        public static ModLoader ModLoader { get; private set; }
-        public static ModdingAPI ModdingAPI { get; private set; }
+        internal static ModLoader ModLoader { get; private set; }
+        internal static ModdingAPI ModdingAPI { get; private set; }
 
         public override void OnInitializeMelon()
         {
@@ -40,13 +40,13 @@ namespace BlasII.ModdingAPI
             }
         }
 
-        public static void Log(string modName, object message) => MelonLogger.Msg(modName, message.ToString());
+        public static void Log(string modName, object message) { }// => MelonLogger.Msg(modName, message.ToString());
 
-        public static void LogWarning(string modName, object warning) => MelonLogger.Warning(modName, warning.ToString());
+        public static void LogWarning(string modName, object warning) { }// => MelonLogger.Warning(modName, warning.ToString());
 
-        public static void LogError(string modName, object error) => MelonLogger.Error(modName, error.ToString());
+        public static void LogError(string modName, object error) { }// => MelonLogger.Error(modName, error.ToString());
 
-        public static void LogCustom(string modName, object message, Color color) => MelonLogger.Msg(color, modName, message.ToString());
+        public static void LogCustom(string modName, object message, Color color) { }// => MelonLogger.Msg(color, modName, message.ToString());
 
         public static void LogSpecial(string modName, string message)
         {
