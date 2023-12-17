@@ -12,6 +12,7 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
+            MessageHandler.AllowReceivingBroadcasts = true;
             MessageHandler.AddGlobalListener((mod, message, content) =>
             {
                 LogWarning($"Test: Received {message} from {mod} with {content}");

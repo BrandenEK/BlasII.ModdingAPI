@@ -2,33 +2,49 @@
 
 namespace BlasII.ModdingAPI.Messages
 {
-    internal class GlobalListener
+    internal interface IListener
     {
-        public readonly Action<string, string, string> callback;
+        public void OnReceive(string mod, string message, string content);
+    }
+
+    internal class GlobalListener : IListener
+    {
+        private readonly Action<string, string, string> callback;
 
         public GlobalListener(Action<string, string, string> callback)
         {
             this.callback = callback;
         }
+
+        public void OnReceive(string mod, string message, string content)
+        {
+            callback(mod, message, content);
+        }
     }
 
-    internal class ModListener
+    internal class ModListener : IListener
     {
-        public readonly string mod;
-        public readonly Action<string, string> callback;
+        private readonly string mod;
+        private readonly Action<string, string> callback;
 
         public ModListener(string mod, Action<string, string> callback)
         {
             this.mod = mod;
             this.callback = callback;
         }
+
+        public void OnReceive(string mod, string message, string content)
+        {
+            if (this.mod == mod)
+                callback(message, content);
+        }
     }
 
-    internal class MessageListener
+    internal class MessageListener : IListener
     {
-        public readonly string mod;
-        public readonly string message;
-        public readonly Action<string> callback;
+        private readonly string mod;
+        private readonly string message;
+        private readonly Action<string> callback;
 
         public MessageListener(string mod, string message, Action<string> callback)
         {
@@ -36,14 +52,20 @@ namespace BlasII.ModdingAPI.Messages
             this.message = message;
             this.callback = callback;
         }
+
+        public void OnReceive(string mod, string message, string content)
+        {
+            if (this.mod == mod && this.message == message)
+                callback(content);
+        }
     }
 
-    internal class ContentListener
+    internal class ContentListener : IListener
     {
-        public readonly string mod;
-        public readonly string message;
-        public readonly string content;
-        public readonly Action callback;
+        private readonly string mod;
+        private readonly string message;
+        private readonly string content;
+        private readonly Action callback;
 
         public ContentListener(string mod, string message, string content, Action callback)
         {
@@ -51,6 +73,12 @@ namespace BlasII.ModdingAPI.Messages
             this.message = message;
             this.content = content;
             this.callback = callback;
+        }
+
+        public void OnReceive(string mod, string message, string content)
+        {
+            if (this.mod == mod && this.message == message && this.content == content)
+                callback();
         }
     }
 }

@@ -11,10 +11,7 @@ namespace BlasII.ModdingAPI.Messages
     {
         private readonly BlasIIMod _mod;
 
-        private readonly List<GlobalListener> _globalListeners = new();
-        private readonly List<ModListener> _modListeners = new();
-        private readonly List<MessageListener> _messageListeners = new();
-        private readonly List<ContentListener> _contentListeners = new();
+        private readonly List<IListener> _listeners = new();
 
         internal MessageHandler(BlasIIMod mod) => _mod = mod;
 
@@ -61,17 +58,8 @@ namespace BlasII.ModdingAPI.Messages
 
             try
             {
-                foreach (var listener in _contentListeners.Where(x => x.mod == sender && x.message == message && x.content == content))
-                    listener.callback();
-
-                foreach (var listener in _messageListeners.Where(x => x.mod == sender && x.message == message))
-                    listener.callback(content);
-
-                foreach (var listener in _modListeners.Where(x => x.mod == sender))
-                    listener.callback(message, content);
-
-                foreach (var listener in _globalListeners)
-                    listener.callback(sender, message, content);
+                foreach (var listener in _listeners)
+                    listener.OnReceive(sender, message, content);
             }
             catch
             {
@@ -80,15 +68,15 @@ namespace BlasII.ModdingAPI.Messages
         }
 
         public void AddGlobalListener(Action<string, string, string> callback) =>
-            _globalListeners.Add(new GlobalListener(callback));
+            _listeners.Add(new GlobalListener(callback));
 
         public void AddModListener(string mod, Action<string, string> callback) =>
-            _modListeners.Add(new ModListener(mod, callback));
+            _listeners.Add(new ModListener(mod, callback));
 
         public void AddMessageListener(string mod, string message, Action<string> callback) =>
-            _messageListeners.Add(new MessageListener(mod, message, callback));
+            _listeners.Add(new MessageListener(mod, message, callback));
 
         public void AddContentListener(string mod, string message, string content, Action callback) =>
-            _contentListeners.Add(new ContentListener(mod, message, content, callback));
+            _listeners.Add(new ContentListener(mod, message, content, callback));
     }
 }
