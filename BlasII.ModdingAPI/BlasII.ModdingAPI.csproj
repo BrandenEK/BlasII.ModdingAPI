@@ -8,7 +8,7 @@
     <Authors>Damocles</Authors>
     <Company>Damocles</Company>
     <Description>A modding API that assists the creation of mods for Blasphemous 2</Description>
-    <Version>0.6.0</Version>
+    <Version>0.7.0</Version>
     
     <TargetName>ModdingAPI</TargetName>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -35,7 +35,6 @@
     <ItemGroup>
       <DataDlls Include="$(ResourcesFolder)data\*" />
       <DataFiles Include="$(ResourcesFolder)data\$(Product)\*" />
-      <Keybindings Include="$(ResourcesFolder)keybindings\*" />
       <Levels Include="$(ResourcesFolder)levels\$(Product)\*" />
       <Localization Include="$(ResourcesFolder)localization\*" />
     </ItemGroup>
@@ -47,7 +46,6 @@
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(DevFolder)plugins" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(DevFolder)data" />
     <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(DevFolder)data\$(Product)" />
-    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(DevFolder)keybindings" />
     <Copy SourceFiles="@(Levels)" DestinationFolder="$(DevFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(DevFolder)localization" />
 
@@ -58,7 +56,6 @@
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ExportFolder)plugins" />
     <Copy SourceFiles="@(DataDlls)" DestinationFolder="$(ExportFolder)data" />
     <Copy SourceFiles="@(DataFiles)" DestinationFolder="$(ExportFolder)data\$(Product)" />
-    <Copy SourceFiles="@(Keybindings)" DestinationFolder="$(ExportFolder)keybindings" />
     <Copy SourceFiles="@(Levels)" DestinationFolder="$(ExportFolder)levels\$(Product)" />
     <Copy SourceFiles="@(Localization)" DestinationFolder="$(ExportFolder)localization" />
     <ZipDirectory SourceDirectory="$(ExportFolder)" DestinationFile="$(ExportFolder)..\$(TargetName).zip" Overwrite="true" />

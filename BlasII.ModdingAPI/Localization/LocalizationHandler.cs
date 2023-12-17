@@ -20,10 +20,7 @@ namespace BlasII.ModdingAPI.Localization
         private string _defaultLanguage = string.Empty;
         private readonly Dictionary<string, Dictionary<string, string>> _textByLanguage = new();
 
-        internal LocalizationHandler(BlasIIMod mod)
-        {
-            _mod = mod;
-        }
+        internal LocalizationHandler(BlasIIMod mod) => _mod = mod;
 
         /// <summary>
         /// Whenever the language is changed, update the text of any existing localizers

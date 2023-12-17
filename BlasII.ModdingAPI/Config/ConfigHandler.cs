@@ -12,10 +12,7 @@ namespace BlasII.ModdingAPI.Config
         private bool _registered = false;
         private readonly Dictionary<string, object> _properties = new();
 
-        internal ConfigHandler(BlasIIMod mod)
-        {
-            _mod = mod;
-        }
+        internal ConfigHandler(BlasIIMod mod) => _mod = mod;
 
         /// <summary>
         /// Gets the value of the specified property in the config

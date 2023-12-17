@@ -12,9 +12,37 @@ namespace BlasII.ModdingAPI.Persistence
     public abstract class SaveData
     {
         /// <summary>
+        /// Resets game progress for each mod
+        /// </summary>
+        internal static void ResetGame()
+        {
+            Main.ModLoader.ProcessModFunction(mod =>
+            {
+                if (mod is IPersistentMod persistentMod)
+                    persistentMod.ResetGame();
+            });
+        }
+
+        /// <summary>
+        /// Saves game progress for each mod
+        /// </summary>
+        internal static void SaveGame(int slot)
+        {
+            var data = new Dictionary<string, SaveData>();
+
+            Main.ModLoader.ProcessModFunction(mod =>
+            {
+                if (mod is IPersistentMod persistentMod)
+                    data.Add(mod.Id, persistentMod.SaveGame());
+            });
+
+            SaveDataToFile(slot, data);
+        }
+        
+        /// <summary>
         /// After collecting save data for all persistent mods, serialize it and save to a file
         /// </summary>
-        internal static void SaveDataToFile(int slot, Dictionary<string, SaveData> data)
+        private static void SaveDataToFile(int slot, Dictionary<string, SaveData> data)
         {
             try
             {
@@ -31,9 +59,23 @@ namespace BlasII.ModdingAPI.Persistence
         }
 
         /// <summary>
+        /// Loads game progress for each mod
+        /// </summary>
+        internal static void LoadGame(int slot)
+        {
+            var data = LoadDataFromFile(slot);
+
+            Main.ModLoader.ProcessModFunction(mod =>
+            {
+                if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
+                    persistentMod.LoadGame(save);
+            });
+        }
+
+        /// <summary>
         /// Load and deserialize save data for all persistent mods, then give it to them
         /// </summary>
-        internal static Dictionary<string, SaveData> LoadDataFromFile(int slot)
+        private static Dictionary<string, SaveData> LoadDataFromFile(int slot)
         {
             try
             {

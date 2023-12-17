@@ -14,10 +14,7 @@ namespace BlasII.ModdingAPI.Input
         private bool _registered = false;
         private readonly Dictionary<string, KeyCode> _keybindings = new();
 
-        internal InputHandler(BlasIIMod mod)
-        {
-            _mod = mod;
-        }
+        internal InputHandler(BlasIIMod mod) => _mod = mod;
 
         // Blocking
 

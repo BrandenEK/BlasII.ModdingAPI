@@ -1,5 +1,5 @@
-﻿using BlasII.ModdingAPI.Persistence;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BlasII.ModdingAPI
@@ -20,6 +20,27 @@ namespace BlasII.ModdingAPI
         private GameObject _modObject;
         public GameObject ModObject => _modObject;
 
+        /// <summary>
+        /// Loops over the list of registered mods and performs an action on each one
+        /// </summary>
+        public void ProcessModFunction(System.Action<BlasIIMod> action)
+        {
+            foreach (var mod in mods)
+            {
+                try
+                {
+                    action(mod);
+                }
+                catch (System.Exception e)
+                {
+                    mod.LogError($"Encountered error: {e.Message}\n{e.CleanStackTrace()}");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Initializes all mods
+        /// </summary>
         public void Initialize()
         {
             if (_initialized)
@@ -29,58 +50,35 @@ namespace BlasII.ModdingAPI
             Object.DontDestroyOnLoad(_modObject);
 
             Main.Log(ModInfo.MOD_NAME, "Initializing mods...");
-
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    mod.OnInitialize();
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
-
-            _initialized = true;
+            ProcessModFunction(mod => mod.OnInitialize());
             Main.Log(ModInfo.MOD_NAME, "All mods initialized!");
+            _initialized = true;
         }
 
+        /// <summary>
+        /// Disposes all mods
+        /// </summary>
         public void Dispose()
         {
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    mod.OnDispose();
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
+            ProcessModFunction(mod => mod.OnDispose());
 
             Main.Log(ModInfo.MOD_NAME, "All mods disposed!");
         }
 
+        /// <summary>
+        /// Updates all mods
+        /// </summary>
         public void Update()
         {
             if (!_initialized)
                 return;
 
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    mod.OnUpdate();
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
+            ProcessModFunction(mod => mod.OnUpdate());
         }
 
+        /// <summary>
+        /// Processes a LoadScene event for all mods
+        /// </summary>
         public void SceneLoaded(string sceneName)
         {
             if (_currentScene != string.Empty) return;
@@ -88,145 +86,57 @@ namespace BlasII.ModdingAPI
             Main.LogSpecial(ModInfo.MOD_NAME, "Loaded scene: " + sceneName);
             _currentScene = sceneName;
 
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    mod.OnSceneLoaded(sceneName);
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
+            ProcessModFunction(mod => mod.OnSceneLoaded(sceneName));
         }
 
+        /// <summary>
+        /// Processes an UnloadScene event for all mods
+        /// </summary>
         public void SceneUnloaded(string sceneName)
         {
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    mod.OnSceneUnloaded(sceneName);
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
+            ProcessModFunction(mod => mod.OnSceneUnloaded(sceneName));
 
             _currentScene = string.Empty;
         }
 
+        /// <summary>
+        /// Sets the unloaded flag when the main menu is loaded
+        /// </summary>
         public void UnitySceneLoaded(string sceneName)
         {
             if (sceneName == "Empty")
                 _currentScene = string.Empty;
         }
 
+        /// <summary>
+        /// Processes a NewGame event for all mods
+        /// </summary>
         public void NewGame()
         {
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    mod.OnNewGameStarted();
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
+            ProcessModFunction(mod => mod.OnNewGameStarted());
         }
 
-        public void LanguageChanged()
-        {
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    mod.LocalizationHandler.OnLangaugeChanged();
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
-        }
-
-        public void SaveGame(int slot)
-        {
-            var data = new Dictionary<string, SaveData>();
-
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    if (mod is IPersistentMod persistentMod)
-                    {
-                        data.Add(mod.Id, persistentMod.SaveGame());
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
-
-            SaveData.SaveDataToFile(slot, data);
-        }
-
-        public void LoadGame(int slot)
-        {
-            var data = SaveData.LoadDataFromFile(slot);
-
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
-                    {
-                        persistentMod.LoadGame(save);
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
-        }
-
-        public void ResetGame()
-        {
-            foreach (var mod in mods)
-            {
-                try
-                {
-                    if (mod is IPersistentMod persistentMod)
-                    {
-                        persistentMod.ResetGame();
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.StackTrace}");
-                }
-            }
-        }
-
+        /// <summary>
+        /// Registers a new mod whenever it is first created
+        /// </summary>
         public void RegisterMod(BlasIIMod mod)
         {
-            foreach (BlasIIMod m in mods)
+            if (mods.Any(m => m.Id == mod.Id))
             {
-                if (m.Id == mod.Id)
-                {
-                    Main.LogError("Mod Loader", $"Mod with id '{mod.Id}' already exists!");
-                    return;
-                }
+                Main.LogError("Mod Loader", $"Mod with id '{mod.Id}' already exists!");
+                return;
             }
 
             Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", System.Drawing.Color.Green);
             mods.Add(mod);
+        }
+
+        /// <summary>
+        /// Checks whether a mod is already loaded
+        /// </summary>
+        public bool IsModLoaded(string modId, out BlasIIMod mod)
+        {
+            return (mod = mods.FirstOrDefault(m => m.Id == modId)) != null;
         }
     }
 }
