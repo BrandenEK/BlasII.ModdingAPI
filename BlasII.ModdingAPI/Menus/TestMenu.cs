@@ -11,9 +11,9 @@ namespace BlasII.ModdingAPI.Menus
     {
         public TestMenu() : base("test", 5) { }
 
-        protected internal override GameObject CreateUI(GameObject ui)
+        protected internal override void CreateUI(Transform ui)
         {
-            return ui;
+            
         }
     }
 }

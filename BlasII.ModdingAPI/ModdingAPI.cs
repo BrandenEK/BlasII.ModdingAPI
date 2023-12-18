@@ -44,21 +44,6 @@ namespace BlasII.ModdingAPI
             }
         }
 
-        protected internal override void OnUpdate()
-        {
-            MenuHandler.Update();
-        }
-
-        protected internal override void OnNewGame()
-        {
-            LogWarning("Starting new game");
-        }
-
-        protected internal override void OnLoadGame()
-        {
-            LogWarning("Continuing game");
-        }
-
         private void DisplayModListOnMenu()
         {
             // Calculate mod list text

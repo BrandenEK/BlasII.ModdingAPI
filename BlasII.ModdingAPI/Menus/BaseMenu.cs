@@ -30,8 +30,16 @@ namespace BlasII.ModdingAPI.Menus
 
         // UI display
 
-        internal GameObject MenuUI { get; set; }
+        internal MenuComponent UI { get; private set; }
 
-        protected internal abstract GameObject CreateUI(GameObject ui);
+        internal void CreateUI(bool isFirst, bool isLast)
+        {
+            if (UI != null) return;
+
+            UI = Main.ModdingAPI.MenuHandler.CreateBaseMenu(_title, isFirst, isLast);
+            CreateUI(UI.transform.Find("Main Section"));
+        }
+
+        protected internal abstract void CreateUI(Transform ui);
     }
 }

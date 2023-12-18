@@ -13,7 +13,6 @@ namespace BlasII.ModdingAPI.Menus
         // Temporary settings
         private bool _isNewGame = false;
         private int _currentSlot = 0;
-        private bool _closeNextFrame = false;
 
         // Menu objects
         private readonly ObjectCache<MainMenuWindowLogic> _mainMenuCache;
@@ -26,8 +25,6 @@ namespace BlasII.ModdingAPI.Menus
         private readonly MenuList _loadGameMenus;
 
         public bool AllowGameStart { get; private set; }
-        private bool PressedEnter => Main.ModdingAPI.InputHandler.GetButtonDown(ButtonType.UIConfirm);
-        private bool PressedCancel => Main.ModdingAPI.InputHandler.GetButtonDown(ButtonType.UICancel);
 
         public MenuHandler()
         {
@@ -41,26 +38,9 @@ namespace BlasII.ModdingAPI.Menus
         public void RegisterNewGameMenu(BaseMenu menu) => _newGameMenus.AddMenu(menu);
         public void RegisterLoadGameMenu(BaseMenu menu) => _loadGameMenus.AddMenu(menu);
 
-        public void Update()
-        {
-            if (!IsMenuActive) return;
+        public void OnPressEnter() => CurrentMenuList.ShowNextMenu();
 
-            if (_closeNextFrame)
-            {
-                _closeNextFrame = false;
-                CurrentMenuList.ShowPreviousMenu();
-                return;
-            }
-
-            if (PressedEnter)
-            {
-                CurrentMenuList.ShowNextMenu();
-            }
-            else if (PressedCancel)
-            {
-                _closeNextFrame = true;
-            }
-        }
+        public void OnPressCancel() => CurrentMenuList.ShowPreviousMenu();
 
         public void OnTryStartGame(int slot, bool isNewGame)
         {
@@ -118,7 +98,7 @@ namespace BlasII.ModdingAPI.Menus
             AllowGameStart = false;
         }
 
-        public GameObject CreateBaseMenu(string header, bool isFirst, bool isLast)
+        public MenuComponent CreateBaseMenu(string header, bool isFirst, bool isLast)
         {
             // Create copy for new settings menu
             var settingsMenu = Object.Instantiate(_slotsMenuCache.Value, _slotsMenuCache.Value.transform.parent);
@@ -148,7 +128,7 @@ namespace BlasII.ModdingAPI.Menus
                 .SetSize(1800, 750)
                 .SetPosition(0, -30);
 
-            return settingsMenu;
+            return settingsMenu.AddComponent<MenuComponent>();
         }
     }
 }

@@ -40,12 +40,8 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         private void ShowMenu(int index)
         {
-            BaseMenu menu = _menus[index];
-
-            if (menu.MenuUI == null)
-                menu.MenuUI = menu.CreateUI(Main.ModdingAPI.MenuHandler.CreateBaseMenu(menu.Title, index == 0, index == _menus.Count - 1));
-            
-            menu.MenuUI.SetActive(true);
+            BaseMenu menu = _menus[index];            
+            menu.UI?.gameObject.SetActive(true);
             menu.OnShow();
 
             _currentMenu = index;
@@ -57,20 +53,22 @@ namespace BlasII.ModdingAPI.Menus
         private void HideMenu(int index)
         {
             BaseMenu menu = _menus[index];
-
             menu.OnHide();
-            menu.MenuUI.SetActive(false);
+            menu.UI?.gameObject.SetActive(false);
         }
 
         /// <summary>
-        /// Opens the first menu
+        /// Opens the first menu and initializes all menu UI
         /// </summary>
         public void StartMenu()
         {
             if (IsEmpty) return;
 
-            foreach (var menu in _menus)
-                menu.OnStart();
+            for (int i = 0; i < _menus.Count; i++)
+            {
+                _menus[i].CreateUI(i == 0, i == _menus.Count - 1);
+                _menus[i].OnStart();
+            }
 
             ShowMenu(0);
         }
