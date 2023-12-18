@@ -24,9 +24,9 @@ namespace BlasII.ModdingAPI
 
             LocalizationHandler.RegisterDefaultLanguage("en");
 
-            MenuHandler.RegisterLoadGameMenu(new TestMenu());
-            MenuHandler.RegisterLoadGameMenu(new TestMenu());
-            MenuHandler.RegisterNewGameMenu(new TestMenu());
+            MenuHandler.RegisterLoadGameMenu(new TestMenu("test", "This is first continue"));
+            MenuHandler.RegisterLoadGameMenu(new TestMenu("other", "This is second continue"));
+            MenuHandler.RegisterNewGameMenu(new TestMenu("test", "This is a new game menu"));
         }
 
         protected internal override void OnSceneLoaded(string sceneName)

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace BlasII.ModdingAPI.Menus
 {
@@ -41,5 +42,9 @@ namespace BlasII.ModdingAPI.Menus
         }
 
         protected internal abstract void CreateUI(Transform ui);
+
+        protected void AddClickable(RectTransform rect, Action onClick) => UI.AddClickable(rect, onClick, null);
+
+        protected void AddClickable(RectTransform rect, Action onClick, Action onUnclick) => UI.AddClickable(rect, onClick, onUnclick);
     }
 }

@@ -107,7 +107,6 @@ namespace BlasII.ModdingAPI.Menus
             // Change text of title
             var title = settingsMenu.transform.Find("Header").GetComponent<UIPixelTextWithShadow>();
             Main.ModdingAPI.LocalizationHandler.AddPixelTextLocalizer(title, header); // Use mod's localization
-            title.SetText(header);
 
             // Change text of buttons
             var newBtn = settingsMenu.transform.Find("Buttons/Button A/New").gameObject;
@@ -124,7 +123,7 @@ namespace BlasII.ModdingAPI.Menus
                 cancelBtn.GetComponentInChildren<UIPixelTextWithShadow>(), isFirst ? "btncnc" : "btnpvs");
 
             // Create holder for options and all settings
-            RectTransform mainSection = UIModder.CreateRect("Main Section", settingsMenu.transform)
+            UIModder.CreateRect("Main Section", settingsMenu.transform)
                 .SetSize(1800, 750)
                 .SetPosition(0, -30);
 
