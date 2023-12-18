@@ -21,6 +21,10 @@ namespace BlasII.ModdingAPI
         {
             AssetStorage.Initialize();
             InputStorage.Initialize();
+
+            MenuHandler.RegisterLoadGameMenu(new TestMenu());
+            MenuHandler.RegisterLoadGameMenu(new TestMenu());
+            MenuHandler.RegisterNewGameMenu(new TestMenu());
         }
 
         protected internal override void OnSceneLoaded(string sceneName)

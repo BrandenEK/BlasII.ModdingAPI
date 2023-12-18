@@ -16,9 +16,14 @@ namespace BlasII.ModdingAPI.Menus
 
         // Menu objects
         private readonly ObjectCache<MainMenuWindowLogic> _mainMenuCache;
-        private readonly ObjectCache<GameObject> _slotsMenuCache;
+        private readonly ObjectCache _slotsMenuCache;
 
-        public bool IsMenuActive => false; // fix !!!
+        // Menu lists
+        public bool IsMenuActive => CurrentMenuList.IsActive;
+        private MenuList CurrentMenuList => _isNewGame ? _newGameMenus : _loadGameMenus;
+        private readonly MenuList _newGameMenus;
+        private readonly MenuList _loadGameMenus;
+
         public bool AllowGameStart { get; private set; }
         private bool PressedEnter => Main.ModdingAPI.InputHandler.GetButtonDown(ButtonType.UIConfirm);
         private bool PressedCancel => Main.ModdingAPI.InputHandler.GetButtonDown(ButtonType.UICancel);
@@ -27,7 +32,13 @@ namespace BlasII.ModdingAPI.Menus
         {
             _mainMenuCache = new(() => Object.FindObjectOfType<MainMenuWindowLogic>());
             _slotsMenuCache = new(() => _mainMenuCache.Value.slotsMenuView.transform.parent.gameObject);
+
+            _newGameMenus = new(OnFinishMenu, OnCancelMenu);
+            _loadGameMenus = new(OnFinishMenu, OnCancelMenu);
         }
+
+        public void RegisterNewGameMenu(BaseMenu menu) => _newGameMenus.AddMenu(menu);
+        public void RegisterLoadGameMenu(BaseMenu menu) => _loadGameMenus.AddMenu(menu);
 
         public void Update()
         {
@@ -36,15 +47,13 @@ namespace BlasII.ModdingAPI.Menus
             if (_closeNextFrame)
             {
                 _closeNextFrame = false;
-                OnCancelMenu();
-                //_menuList.ShowPreviousMenu();
+                CurrentMenuList.ShowPreviousMenu();
                 return;
             }
 
             if (PressedEnter)
             {
-                //_menuList.ShowNextMenu();
-                OnFinishMenu();
+                CurrentMenuList.ShowNextMenu();
             }
             else if (PressedCancel)
             {
@@ -57,11 +66,11 @@ namespace BlasII.ModdingAPI.Menus
             _currentSlot = slot;
             _isNewGame = isNewGame;
 
-            //if (_menuList.IsEmpty)
-            //{
-            //    OnFinishMenu();
-            //    return;
-            //}
+            if (CurrentMenuList.IsEmpty)
+            {
+                OnFinishMenu();
+                return;
+            }
 
             StartMenu();
         }
@@ -77,7 +86,7 @@ namespace BlasII.ModdingAPI.Menus
             _slotsMenuCache.Value.SetActive(false);
             CoreCache.Input.ClearAllInputBlocks();
 
-            //_menuList.StartMenu();
+            CurrentMenuList.StartMenu();
         }
 
         /// <summary>
