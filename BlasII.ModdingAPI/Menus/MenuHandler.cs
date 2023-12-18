@@ -10,6 +10,7 @@ namespace BlasII.ModdingAPI.Menus
     internal class MenuHandler
     {
         // Temporary settings
+        private bool _isNewGame = false;
         private int _currentSlot = 0;
         private bool _closeNextFrame = false;
 
@@ -30,7 +31,6 @@ namespace BlasII.ModdingAPI.Menus
 
         public void Update()
         {
-            //Cursor.visible = IsMenuActive;
             if (!IsMenuActive) return;
 
             if (_closeNextFrame)
@@ -52,21 +52,11 @@ namespace BlasII.ModdingAPI.Menus
             }
         }
 
-        public void OnPressNewGame(int slot)
+        public void OnTryStartGame(int slot, bool isNewGame)
         {
             _currentSlot = slot;
-            //if (_menuList.IsEmpty)
-            //{
-            //    OnFinishMenu();
-            //    return;
-            //}
+            _isNewGame = isNewGame;
 
-            StartMenu();
-        }
-
-        public void OnPressLoadGame(int slot)
-        {
-            _currentSlot = slot;
             //if (_menuList.IsEmpty)
             //{
             //    OnFinishMenu();
@@ -113,7 +103,8 @@ namespace BlasII.ModdingAPI.Menus
             Main.ModdingAPI.AudioHandler.PlayEffectUI(UISFX.OpenMenu);
 
             AllowGameStart = true;
-            _mainMenuCache.Value.NewGame(_currentSlot);
+            if (_isNewGame) _mainMenuCache.Value.NewGame(_currentSlot);
+            else _mainMenuCache.Value.LoadGame(_currentSlot);
             AllowGameStart = false;
         }
     }

@@ -16,7 +16,7 @@ namespace BlasII.ModdingAPI.Menus
             if (Main.ModdingAPI.MenuHandler.AllowGameStart)
                 return true;
 
-            Main.ModdingAPI.MenuHandler.OnPressNewGame(slot);
+            Main.ModdingAPI.MenuHandler.OnTryStartGame(slot, true);
             return false;
         }
 
@@ -39,7 +39,7 @@ namespace BlasII.ModdingAPI.Menus
             if (Main.ModdingAPI.MenuHandler.AllowGameStart)
                 return true;
 
-            Main.ModdingAPI.MenuHandler.OnPressLoadGame(slot);
+            Main.ModdingAPI.MenuHandler.OnTryStartGame(slot, false);
             return false;
         }
 
