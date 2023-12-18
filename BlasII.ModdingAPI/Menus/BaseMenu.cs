@@ -5,16 +5,14 @@ namespace BlasII.ModdingAPI.Menus
 {
     public abstract class BaseMenu
     {
-        private readonly string _title;
-        internal string Title => _title;
-
-        private readonly int _priority;
-        internal int Priority => _priority;
+        internal string Title { get; }
+        internal int Priority { get; }
+        internal BlasIIMod OwnerMod { get; set; }
 
         public BaseMenu(string title, int priority)
         {
-            _title = title;
-            _priority = priority;
+            Title = title;
+            Priority = priority;
         }
 
         // Using menu
@@ -37,7 +35,7 @@ namespace BlasII.ModdingAPI.Menus
         {
             if (UI != null) return;
 
-            UI = Main.ModdingAPI.MenuHandler.CreateBaseMenu(_title, isFirst, isLast);
+            UI = MenuModder.CreateBaseMenu(OwnerMod, Title, isFirst, isLast);
             CreateUI(UI.transform.Find("Main Section"));
         }
 

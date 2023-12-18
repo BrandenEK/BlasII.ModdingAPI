@@ -16,7 +16,6 @@ namespace BlasII.ModdingAPI.Menus
 
         private void OnDisable()
         {
-            Main.ModdingAPI.Log("Deselecting clickable");
             _clickedSetting?.OnUnclick();
             _clickedSetting = null;
         }
@@ -26,7 +25,7 @@ namespace BlasII.ModdingAPI.Menus
             if (_closeNextFrame)
             {
                 _closeNextFrame = false;
-                Main.ModdingAPI.MenuHandler.OnPressCancel();
+                MenuModder.OnPressCancel();
                 return;
             }
 
@@ -37,7 +36,7 @@ namespace BlasII.ModdingAPI.Menus
 
             if (PressedEnter)
             {
-                Main.ModdingAPI.MenuHandler.OnPressEnter();
+                MenuModder.OnPressEnter();
             }
             else if (PressedCancel)
             {

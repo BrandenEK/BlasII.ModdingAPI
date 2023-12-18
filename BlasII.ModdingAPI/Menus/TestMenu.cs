@@ -14,11 +14,16 @@ namespace BlasII.ModdingAPI.Menus
 
         protected internal override void CreateUI(Transform ui)
         {
-            UIModder.CreateRect("Body", ui)
+            var rect = UIModder.CreateRect("Body", ui)
                 .SetXRange(0, 1).SetYRange(0, 1).AddText()
                 .SetAlignment(Il2CppTMPro.TextAlignmentOptions.Center)
-                .SetFontSize(30)
+                .SetFontSize(50)
                 .SetContents(_body);
+
+            AddClickable(rect.rectTransform, () =>
+            {
+                Main.ModdingAPI.Log("Clicked info");
+            });
         }
     }
 }

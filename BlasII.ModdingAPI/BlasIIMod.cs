@@ -3,6 +3,7 @@ using BlasII.ModdingAPI.Config;
 using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.Localization;
+using BlasII.ModdingAPI.Menus;
 using BlasII.ModdingAPI.Messages;
 using System.Drawing;
 
@@ -81,6 +82,12 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public LocalizationHandler LocalizationHandler => _localizationHandler;
         private readonly LocalizationHandler _localizationHandler;
+
+        /// <summary>
+        /// Handles displaying menus when beginning or loading a game
+        /// </summary>
+        public MenuHandler MenuHandler => _menuHandler;
+        private readonly MenuHandler _menuHandler;
 
         /// <summary>
         /// Handles sending and receiving messages, such as listening for specific broadcasts
@@ -166,6 +173,7 @@ namespace BlasII.ModdingAPI
             _fileHandler = new FileHandler(this);
             _inputHandler = new InputHandler(this);
             _localizationHandler = new LocalizationHandler(this);
+            _menuHandler = new MenuHandler(this);
             _messageHandler = new MessageHandler(this);
 
             // Register mod

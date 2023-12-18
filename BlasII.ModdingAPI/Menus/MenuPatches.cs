@@ -13,16 +13,16 @@ namespace BlasII.ModdingAPI.Menus
     {
         public static bool Prefix(int slot)
         {
-            if (Main.ModdingAPI.MenuHandler.AllowGameStart)
+            if (MenuModder.AllowGameStart)
                 return true;
 
-            Main.ModdingAPI.MenuHandler.OnTryStartGame(slot, true);
+            MenuModder.OnTryStartGame(slot, true);
             return false;
         }
 
         public static void Postfix()
         {
-            if (Main.ModdingAPI.MenuHandler.AllowGameStart)
+            if (MenuModder.AllowGameStart)
                 Main.ModLoader.ProcessModFunction(mod => mod.OnNewGame());
         }
     }
@@ -36,16 +36,16 @@ namespace BlasII.ModdingAPI.Menus
     {
         public static bool Prefix(int slot)
         {
-            if (Main.ModdingAPI.MenuHandler.AllowGameStart)
+            if (MenuModder.AllowGameStart)
                 return true;
 
-            Main.ModdingAPI.MenuHandler.OnTryStartGame(slot, false);
+            MenuModder.OnTryStartGame(slot, false);
             return false;
         }
 
         public static void Postfix()
         {
-            if (Main.ModdingAPI.MenuHandler.AllowGameStart)
+            if (MenuModder.AllowGameStart)
                 Main.ModLoader.ProcessModFunction(mod => mod.OnLoadGame());
         }
     }
@@ -56,7 +56,7 @@ namespace BlasII.ModdingAPI.Menus
     [HarmonyPatch(typeof(MainMenuWindowLogic), nameof(MainMenuWindowLogic.OnBackPressed))]
     class Menu_Cancel_Patch
     {
-        public static bool Prefix() => !Main.ModdingAPI.MenuHandler.IsMenuActive;
+        public static bool Prefix() => !MenuModder.IsMenuActive;
     }
 
     /// <summary>
