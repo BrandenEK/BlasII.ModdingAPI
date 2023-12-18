@@ -109,14 +109,6 @@ namespace BlasII.ModdingAPI
         }
 
         /// <summary>
-        /// Processes a NewGame event for all mods
-        /// </summary>
-        public void NewGame()
-        {
-            ProcessModFunction(mod => mod.OnNewGameStarted());
-        }
-
-        /// <summary>
         /// Registers a new mod whenever it is first created
         /// </summary>
         public void RegisterMod(BlasIIMod mod)

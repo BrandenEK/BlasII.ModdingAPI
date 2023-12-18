@@ -1,5 +1,6 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Input;
+using BlasII.ModdingAPI.Menus;
 using BlasII.ModdingAPI.UI;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
@@ -11,6 +12,8 @@ namespace BlasII.ModdingAPI
     internal class ModdingAPI : BlasIIMod
     {
         public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
+
+        internal MenuHandler MenuHandler { get; } = new();
 
         private bool _initializedUI = false;
 
@@ -33,6 +36,16 @@ namespace BlasII.ModdingAPI
 
                 DisplayModListOnMenu();
             }
+        }
+
+        protected internal override void OnUpdate()
+        {
+            MenuHandler.Update();
+        }
+
+        protected internal override void OnNewGame()
+        {
+            LogWarning("Starting new game");
         }
 
         private void DisplayModListOnMenu()

@@ -118,7 +118,12 @@ namespace BlasII.ModdingAPI
         /// <summary>
         /// Called when starting a new game on the main menu, after data is reset
         /// </summary>
-        protected internal virtual void OnNewGameStarted() { }
+        protected internal virtual void OnNewGame() { }
+
+        /// <summary>
+        /// Called when loading an existing game on the main menu, after data is reset
+        /// </summary>
+        protected internal virtual void OnLoadGame() { }
 
         // Logging
 
