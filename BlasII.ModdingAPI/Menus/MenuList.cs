@@ -41,7 +41,11 @@ namespace BlasII.ModdingAPI.Menus
         private void ShowMenu(int index)
         {
             BaseMenu menu = _menus[index];
-            //menu.MenuUI.SetActive(true);
+
+            if (menu.MenuUI == null)
+                menu.MenuUI = menu.CreateUI(Main.ModdingAPI.MenuHandler.CreateBaseMenu(menu.Title, index == 0, index == _menus.Count - 1));
+            
+            menu.MenuUI.SetActive(true);
             menu.OnShow();
 
             _currentMenu = index;
@@ -53,8 +57,9 @@ namespace BlasII.ModdingAPI.Menus
         private void HideMenu(int index)
         {
             BaseMenu menu = _menus[index];
+
             menu.OnHide();
-            //menu.MenuUI.SetActive(false);
+            menu.MenuUI.SetActive(false);
         }
 
         /// <summary>
@@ -75,8 +80,6 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         public void ShowNextMenu()
         {
-            Main.ModdingAPI.Log("Showing next menu");
-
             // If there is another menu, move to it
             if (_currentMenu < _menus.Count - 1)
             {
@@ -97,7 +100,6 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         public void ShowPreviousMenu()
         {
-            Main.ModdingAPI.Log("Showing previous menu");
             HideMenu(_currentMenu);
 
             // If there is another menu, move to it

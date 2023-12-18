@@ -1,4 +1,5 @@
-﻿
+﻿using UnityEngine;
+
 namespace BlasII.ModdingAPI.Menus
 {
     public abstract class BaseMenu
@@ -26,5 +27,11 @@ namespace BlasII.ModdingAPI.Menus
         public virtual void OnShow() { }
 
         public virtual void OnHide() { }
+
+        // UI display
+
+        internal GameObject MenuUI { get; set; }
+
+        protected internal abstract GameObject CreateUI(GameObject ui);
     }
 }

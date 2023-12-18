@@ -22,6 +22,8 @@ namespace BlasII.ModdingAPI
             AssetStorage.Initialize();
             InputStorage.Initialize();
 
+            LocalizationHandler.RegisterDefaultLanguage("en");
+
             MenuHandler.RegisterLoadGameMenu(new TestMenu());
             MenuHandler.RegisterLoadGameMenu(new TestMenu());
             MenuHandler.RegisterNewGameMenu(new TestMenu());
@@ -50,6 +52,11 @@ namespace BlasII.ModdingAPI
         protected internal override void OnNewGame()
         {
             LogWarning("Starting new game");
+        }
+
+        protected internal override void OnLoadGame()
+        {
+            LogWarning("Continuing game");
         }
 
         private void DisplayModListOnMenu()

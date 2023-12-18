@@ -1,5 +1,6 @@
 ﻿using BlasII.ModdingAPI.Audio;
 using BlasII.ModdingAPI.Input;
+using BlasII.ModdingAPI.UI;
 using BlasII.ModdingAPI.Utils;
 using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
@@ -115,6 +116,39 @@ namespace BlasII.ModdingAPI.Menus
             if (_isNewGame) _mainMenuCache.Value.NewGame(_currentSlot);
             else _mainMenuCache.Value.LoadGame(_currentSlot);
             AllowGameStart = false;
+        }
+
+        public GameObject CreateBaseMenu(string header, bool isFirst, bool isLast)
+        {
+            // Create copy for new settings menu
+            var settingsMenu = Object.Instantiate(_slotsMenuCache.Value, _slotsMenuCache.Value.transform.parent);
+            Object.Destroy(settingsMenu.transform.Find("SlotsList").gameObject);
+
+            // Change text of title
+            var title = settingsMenu.transform.Find("Header").GetComponent<UIPixelTextWithShadow>();
+            Main.ModdingAPI.LocalizationHandler.AddPixelTextLocalizer(title, header); // Use mod's localization
+            title.SetText(header);
+
+            // Change text of buttons
+            var newBtn = settingsMenu.transform.Find("Buttons/Button A/New").gameObject;
+            var continueBtn = settingsMenu.transform.Find("Buttons/Button A/Continue").gameObject;
+            var cancelBtn = settingsMenu.transform.Find("Buttons/Back").gameObject;
+
+            newBtn.SetActive(true);
+            continueBtn.SetActive(false);
+            cancelBtn.SetActive(true);
+
+            Main.ModdingAPI.LocalizationHandler.AddPixelTextLocalizer(
+                newBtn.GetComponentInChildren<UIPixelTextWithShadow>(), isLast ? (_isNewGame ? "btnbgn" : "btncnt") : "btnnxt");
+            Main.ModdingAPI.LocalizationHandler.AddPixelTextLocalizer(
+                cancelBtn.GetComponentInChildren<UIPixelTextWithShadow>(), isFirst ? "btncnc" : "btnpvs");
+
+            // Create holder for options and all settings
+            RectTransform mainSection = UIModder.CreateRect("Main Section", settingsMenu.transform)
+                .SetSize(1800, 750)
+                .SetPosition(0, -30);
+
+            return settingsMenu;
         }
     }
 }
