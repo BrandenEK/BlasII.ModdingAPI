@@ -29,7 +29,7 @@ namespace BlasII.ModdingAPI.Messages
             if (string.IsNullOrEmpty(message) || receiver == _mod.Id)
                 return;
 
-            Main.ModdingAPI.Log($"{_mod.Id} is sending message '{message}' [{content}] to {receiver}");
+            _mod.Log($"Sending message '{message}' [{content}] to {receiver}");
             if (_mod.IsModLoaded(receiver, out BlasIIMod mod))
             {
                 mod.MessageHandler.Receive(_mod.Id, message, content ?? string.Empty);
@@ -51,7 +51,7 @@ namespace BlasII.ModdingAPI.Messages
             if (string.IsNullOrEmpty(message))
                 return;
 
-            Main.ModdingAPI.Log($"{_mod.Id} is broadcasting message '{message}' [{content}]");
+            _mod.Log($"Broadcasting message '{message}' [{content}]");
             Main.ModLoader.ProcessModFunction(mod =>
             {
                 if (mod != _mod && mod.MessageHandler.AllowReceivingBroadcasts)
