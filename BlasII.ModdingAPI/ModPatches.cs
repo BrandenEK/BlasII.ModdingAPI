@@ -33,10 +33,4 @@ namespace BlasII.ModdingAPI
     {
         public static void Postfix() => Main.ModLoader.SceneLoaded("MainMenu");
     }
-
-    [HarmonyPatch(typeof(MainMenuWindowLogic), nameof(MainMenuWindowLogic.NewGame))]
-    class Mod_New_Patch
-    {
-        public static void Postfix() => Main.ModLoader.NewGame();
-    }
 }

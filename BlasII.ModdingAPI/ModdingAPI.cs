@@ -16,6 +16,8 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnInitialize()
         {
+            LocalizationHandler.RegisterDefaultLanguage("en");
+
             AssetStorage.Initialize();
             InputStorage.Initialize();
         }
