@@ -89,6 +89,8 @@ namespace BlasII.ModdingAPI.Menus
                 return;
             }
 
+            _menus[_currentMenu].OnHide();
+
             // Otherwise, finish the menu
             _currentMenu = -1;
             foreach (var menu in _menus)

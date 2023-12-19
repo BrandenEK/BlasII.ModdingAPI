@@ -2,11 +2,9 @@
 
 namespace BlasII.ModdingAPI.Menus
 {
-    public static class MenuExtensions
+    internal static class MenuExtensions
     {
-        // Register menu
-
-        internal static bool OverlapsPoint(this RectTransform rect, Vector2 point)
+        public static bool OverlapsPoint(this RectTransform rect, Vector2 point)
         {
             float xScale = (float)Screen.width / 1920;
             var scaling = new Vector3(xScale, xScale, (Screen.height - 1080 * xScale) * 0.5f);
