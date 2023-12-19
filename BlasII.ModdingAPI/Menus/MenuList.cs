@@ -30,7 +30,10 @@ namespace BlasII.ModdingAPI.Menus
             for (int i = 0; i < _menus.Count; i++)
             {
                 if (menu.Priority < _menus[i].Priority)
+                {
                     _menus.Insert(i, menu);
+                    return;
+                }
             }
             _menus.Add(menu);
         }

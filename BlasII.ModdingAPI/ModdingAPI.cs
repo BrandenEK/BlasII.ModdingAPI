@@ -1,6 +1,5 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Input;
-using BlasII.ModdingAPI.Menus;
 using BlasII.ModdingAPI.UI;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
@@ -21,10 +20,6 @@ namespace BlasII.ModdingAPI
             InputStorage.Initialize();
 
             LocalizationHandler.RegisterDefaultLanguage("en");
-
-            MenuHandler.RegisterLoadGameMenu(new TestMenu("test", "This is first continue"));
-            MenuHandler.RegisterLoadGameMenu(new TestMenu("other", "This is second continue"));
-            MenuHandler.RegisterNewGameMenu(new TestMenu("test", "This is a new game menu"));
         }
 
         protected internal override void OnSceneLoaded(string sceneName)

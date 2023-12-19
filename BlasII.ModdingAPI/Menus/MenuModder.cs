@@ -1,5 +1,4 @@
-﻿using BlasII.ModdingAPI.Audio;
-using BlasII.ModdingAPI.Utils;
+﻿using BlasII.ModdingAPI.Utils;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game;
 using UnityEngine;
@@ -61,12 +60,10 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         private static void StartMenu()
         {
-            Main.ModdingAPI.Log("Start settings menu");
             Cursor.visible = true;
 
             _slotsMenuCache.Value.SetActive(false);
             CoreCache.Input.ClearAllInputBlocks();
-
             CurrentMenuList.StartMenu();
         }
 
@@ -75,7 +72,6 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         private static void OnCancelMenu()
         {
-            Main.ModdingAPI.Log("Cancel settings menu");
             Cursor.visible = false;
 
             _mainMenuCache.Value.OpenSlotMenu();
@@ -87,10 +83,7 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         private static void OnFinishMenu()
         {
-            Main.ModdingAPI.Log("Finish settings menu");
             Cursor.visible = false;
-
-            Main.ModdingAPI.AudioHandler.PlayEffectUI(UISFX.OpenMenu);
 
             AllowGameStart = true;
             if (_isNewGame) _mainMenuCache.Value.NewGame(_currentSlot);
