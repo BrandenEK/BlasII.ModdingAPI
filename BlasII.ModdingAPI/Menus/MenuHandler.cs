@@ -1,12 +1,18 @@
 ﻿
 namespace BlasII.ModdingAPI.Menus
 {
+    /// <summary>
+    /// Provides access to creating in-game menus
+    /// </summary>
     public class MenuHandler
     {
         private readonly BlasIIMod _mod;
 
         internal MenuHandler(BlasIIMod mod) => _mod = mod;
 
+        /// <summary>
+        /// Registers a menu to appear before starting a new game
+        /// </summary>
         public void RegisterNewGameMenu(BaseMenu menu)
         {
             Main.ModdingAPI.Log($"Registering NewGame menu: " + menu.GetType().Name);
@@ -14,6 +20,9 @@ namespace BlasII.ModdingAPI.Menus
             MenuModder.AddNewGameMenu(menu);
         }
 
+        /// <summary>
+        /// Registers a menu to appear before loading an existing game
+        /// </summary>
         public void RegisterLoadGameMenu(BaseMenu menu)
         {
             Main.ModdingAPI.Log($"Registering LoadGame menu: " + menu.GetType().Name);
