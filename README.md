@@ -1,10 +1,4 @@
-# BlasII Modding API
-
-## How to use
-
-First download the modding tools and follow the instructions here: https://github.com/BrandenEK/BlasII.ModdingTools.  Then download this modding API and any other mods you want to play with and extract them into the Modding folder.
-
----
+# Blasphemous 2 Modding API
 
 ## Development
 
@@ -17,3 +11,7 @@ To develop a mod for Blasphemous 2, run these commands to create a new template 
 For example, to create a mod that adds the Boots of Pleading item, I would run the command:
 
 ```dotnet new blas2mod -n BlasII.BootsOfPleading -m "Boots of Pleading" -au Damocles -ve 1.0.5```
+
+## Documentation
+
+Full documentation, along with examples can be found here: [BlasII Modding API Documentation](docs/main.md)
