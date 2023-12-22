@@ -113,6 +113,11 @@ namespace BlasII.ModdingAPI
         protected internal virtual void OnUpdate() { }
 
         /// <summary>
+        /// Called at the end of every frame after initialization
+        /// </summary>
+        protected internal virtual void OnLateUpdate() { }
+
+        /// <summary>
         /// Called when a new level is loaded, including the main menu
         /// </summary>
         protected internal virtual void OnSceneLoaded(string sceneName) { }

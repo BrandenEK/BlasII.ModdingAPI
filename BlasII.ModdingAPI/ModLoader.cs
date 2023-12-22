@@ -43,8 +43,7 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void Initialize()
         {
-            if (_initialized)
-                return;
+            if (_initialized) return;
 
             _modObject = new GameObject("Mod object");
             Object.DontDestroyOnLoad(_modObject);
@@ -70,10 +69,19 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void Update()
         {
-            if (!_initialized)
-                return;
+            if (!_initialized) return;
 
             ProcessModFunction(mod => mod.OnUpdate());
+        }
+
+        /// <summary>
+        /// Late updates all mods
+        /// </summary>
+        public void LateUpdate()
+        {
+            if (!_initialized) return;
+
+            ProcessModFunction(mod => mod.OnLateUpdate());
         }
 
         /// <summary>
