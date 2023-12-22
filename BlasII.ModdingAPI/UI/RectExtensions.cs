@@ -40,6 +40,19 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary>
+        /// Copies the properties from the other RectTransform
+        /// </summary>
+        public static RectTransform CopyFrom(this RectTransform rect, RectTransform other)
+        {
+            return rect
+                .SetXRange(other.anchorMin.x, other.anchorMax.x)
+                .SetYRange(other.anchorMin.y, other.anchorMax.y)
+                .SetPivot(other.pivot)
+                .SetPosition(other.anchoredPosition)
+                .SetSize(other.sizeDelta);
+        }
+
+        /// <summary>
         /// Displays the properties of the UI
         /// </summary>
         public static string DisplayProperties(this RectTransform rect)
@@ -54,6 +67,9 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary> Updates the x anchors </summary>
+        public static RectTransform SetXRange(this RectTransform rect, float min, float max) => rect.SetXRange(new Vector2(min, max));
+
+        /// <summary> Updates the x anchors </summary>
         public static RectTransform SetXRange(this RectTransform rect, Vector2 range)
         {
             rect.anchorMin = new Vector2(range.x, rect.anchorMin.y);
@@ -61,8 +77,8 @@ namespace BlasII.ModdingAPI.UI
             return rect;
         }
 
-        /// <summary> Updates the x anchors </summary>
-        public static RectTransform SetXRange(this RectTransform rect, float xMin, float xMax) => rect.SetXRange(new Vector2(xMin, xMax));
+        /// <summary> Updates the y anchors </summary>
+        public static RectTransform SetYRange(this RectTransform rect, float min, float max) => rect.SetYRange(new Vector2(min, max));
 
         /// <summary> Updates the y anchors </summary>
         public static RectTransform SetYRange(this RectTransform rect, Vector2 range)
@@ -72,8 +88,8 @@ namespace BlasII.ModdingAPI.UI
             return rect;
         }
 
-        /// <summary> Updates the y anchors </summary>
-        public static RectTransform SetYRange(this RectTransform rect, float yMin, float yMax) => rect.SetYRange(new Vector2(yMin, yMax));
+        /// <summary> Updates the pivot </summary>
+        public static RectTransform SetPivot(this RectTransform rect, float x, float y) => rect.SetPivot(new Vector2(x, y));
 
         /// <summary> Updates the pivot </summary>
         public static RectTransform SetPivot(this RectTransform rect, Vector2 pivot)
@@ -82,8 +98,8 @@ namespace BlasII.ModdingAPI.UI
             return rect;
         }
 
-        /// <summary> Updates the pivot </summary>
-        public static RectTransform SetPivot(this RectTransform rect, float xPivot, float yPivot) => rect.SetPivot(new Vector2(xPivot, yPivot));
+        /// <summary> Updates the x and y position </summary>
+        public static RectTransform SetPosition(this RectTransform rect, float x, float y) => rect.SetPosition(new Vector2(x, y));
 
         /// <summary> Updates the x and y position </summary>
         public static RectTransform SetPosition(this RectTransform rect, Vector2 position)
@@ -92,8 +108,8 @@ namespace BlasII.ModdingAPI.UI
             return rect;
         }
 
-        /// <summary> Updates the x and y position </summary>
-        public static RectTransform SetPosition(this RectTransform rect, float xPosition, float yPosition) => rect.SetPosition(new Vector2(xPosition, yPosition));
+        /// <summary> Updates the width and height </summary>
+        public static RectTransform SetSize(this RectTransform rect, float width, float height) => rect.SetSize(new Vector2(width, height));
 
         /// <summary> Updates the width and height </summary>
         public static RectTransform SetSize(this RectTransform rect, Vector2 size)
@@ -102,7 +118,14 @@ namespace BlasII.ModdingAPI.UI
             return rect;
         }
 
-        /// <summary> Updates the width and height </summary>
-        public static RectTransform SetSize(this RectTransform rect, float xSize, float ySize) => rect.SetSize(new Vector2(xSize, ySize));
+        /// <summary> Modifies the x and y position </summary>
+        public static RectTransform ChangePosition(this RectTransform rect, float x, float y) => rect.ChangePosition(new Vector2(x, y));
+
+        /// <summary> Modifies the x and y position </summary>
+        public static RectTransform ChangePosition(this RectTransform rect, Vector2 position)
+        {
+            rect.anchoredPosition += position;
+            return rect;
+        }
     }
 }
