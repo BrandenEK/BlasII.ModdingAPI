@@ -42,7 +42,7 @@ namespace BlasII.ModdingAPI
             //Cursor.visible = false;
         }
 
-        public void OnLateUpdate()
+        protected internal override void OnLateUpdate()
         {
             bool showCursor = MenuModder.IsMenuActive;
             Cursor.visible = showCursor;
@@ -71,31 +71,19 @@ namespace BlasII.ModdingAPI
                 sb.AppendLine($"{mod.Name} v{mod.Version}");
             }
 
-            // Create underneath text object
-            UIModder.CreateRect("Mods under", UIModder.Parents.MainMenu.GetChild(0))
+            // Create shadow text
+            UIModder.CreateRect("ModList", UIModder.Parents.MainMenu.GetChild(0))
                 .SetXRange(0, 0)
                 .SetYRange(1, 1)
                 .SetPivot(0, 1)
                 .SetSize(400, 100)
-                .SetPosition(30, -20)
+                .SetPosition(30, -18)
                 .AddText()
                 .SetContents(sb.ToString())
                 .SetAlignment(TextAlignmentOptions.TopLeft)
                 .SetFontSize(40)
-                .SetColor(new Color(0.004f, 0.008f, 0.008f));
-
-            // Create overhead text object
-            UIModder.CreateRect("Mods over", UIModder.Parents.MainMenu.GetChild(0))
-                .SetXRange(0, 0)
-                .SetYRange(1, 1)
-                .SetPivot(0, 1)
-                .SetSize(400, 100)
-                .SetPosition(30, -16)
-                .AddText()
-                .SetContents(sb.ToString())
-                .SetAlignment(TextAlignmentOptions.TopLeft)
-                .SetFontSize(40)
-                .SetColor(new Color(0.773f, 0.451f, 0.314f));
+                .SetColor(new Color(0.773f, 0.451f, 0.314f))
+                .AddShadow();
 
             // Store game version
             var versionObject = Object.FindObjectOfType<SetGameVersionText>();

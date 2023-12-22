@@ -103,6 +103,11 @@ namespace BlasII.ModdingAPI
         protected internal virtual void OnInitialize() { }
 
         /// <summary>
+        /// Called when starting the game, after all other mods have been initialized
+        /// </summary>
+        protected internal virtual void OnAllInitialized() { }
+
+        /// <summary>
         /// Called when exiting the game, at the same time as other managers
         /// </summary>
         protected internal virtual void OnDispose() { }
@@ -111,6 +116,11 @@ namespace BlasII.ModdingAPI
         /// Called every frame after initialization
         /// </summary>
         protected internal virtual void OnUpdate() { }
+
+        /// <summary>
+        /// Called at the end of every frame after initialization
+        /// </summary>
+        protected internal virtual void OnLateUpdate() { }
 
         /// <summary>
         /// Called when a new level is loaded, including the main menu
@@ -131,6 +141,11 @@ namespace BlasII.ModdingAPI
         /// Called when loading an existing game on the main menu, after data is reset
         /// </summary>
         protected internal virtual void OnLoadGame() { }
+
+        /// <summary>
+        /// Called when quiting a game, after returning to the main menu
+        /// </summary>
+        protected internal virtual void OnExitGame() { }
 
         // Logging
 

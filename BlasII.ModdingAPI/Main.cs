@@ -22,10 +22,7 @@ namespace BlasII.ModdingAPI
 
         public override void OnUpdate() => ModLoader.Update();
 
-        public override void OnLateUpdate()
-        {
-            ModdingAPI.OnLateUpdate();
-        }
+        public override void OnLateUpdate() => ModLoader.LateUpdate();
 
         public override void OnSceneWasLoaded(int _, string sceneName) => ModLoader.UnitySceneLoaded(sceneName);
 
