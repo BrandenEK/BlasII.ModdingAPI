@@ -102,7 +102,7 @@ namespace BlasII.ModdingAPI.UI
         {
             // Create new overhead text
             var newText = UIModder.CreateRect("Text", text.transform)
-                .CopyFrom(text.rectTransform).SetPosition(0, 4)
+                .SetPosition(0, 4).SetSize(text.rectTransform.sizeDelta)
                 .AddText().CopyFrom(text);
 
             // Update old shadow text
