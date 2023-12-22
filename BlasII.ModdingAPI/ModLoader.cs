@@ -11,6 +11,7 @@ namespace BlasII.ModdingAPI
         public IEnumerable<BlasIIMod> AllMods => mods;
 
         private bool _initialized = false;
+        private bool _loadedMenu = false;
 
         private string _currentScene = string.Empty;
         public string CurrentScene => _currentScene;
@@ -43,8 +44,7 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void Initialize()
         {
-            if (_initialized)
-                return;
+            if (_initialized) return;
 
             _modObject = new GameObject("Mod object");
             Object.DontDestroyOnLoad(_modObject);
@@ -52,6 +52,7 @@ namespace BlasII.ModdingAPI
             Main.Log(ModInfo.MOD_NAME, "Initializing mods...");
             ProcessModFunction(mod => mod.OnInitialize());
             Main.Log(ModInfo.MOD_NAME, "All mods initialized!");
+            ProcessModFunction(mod => mod.OnAllInitialized());
             _initialized = true;
         }
 
@@ -70,10 +71,19 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void Update()
         {
-            if (!_initialized)
-                return;
+            if (!_initialized) return;
 
             ProcessModFunction(mod => mod.OnUpdate());
+        }
+
+        /// <summary>
+        /// Late updates all mods
+        /// </summary>
+        public void LateUpdate()
+        {
+            if (!_initialized) return;
+
+            ProcessModFunction(mod => mod.OnLateUpdate());
         }
 
         /// <summary>
@@ -82,6 +92,13 @@ namespace BlasII.ModdingAPI
         public void SceneLoaded(string sceneName)
         {
             if (_currentScene != string.Empty) return;
+
+            if (sceneName == "MainMenu")
+            {
+                if (_loadedMenu)
+                    ProcessModFunction(mod => mod.OnExitGame());
+                _loadedMenu = true;
+            }
 
             Main.LogSpecial(ModInfo.MOD_NAME, "Loaded scene: " + sceneName);
             _currentScene = sceneName;
