@@ -1,4 +1,5 @@
-﻿using Il2CppTMPro;
+﻿using Il2CppTGK.Game.Components.UI;
+using Il2CppTMPro;
 using System.Text;
 using UnityEngine;
 
@@ -33,7 +34,7 @@ namespace BlasII.ModdingAPI.UI
             sb.AppendLine("Color: " + text.color);
             sb.AppendLine("Font size: " + text.fontSize);
             sb.AppendLine("Alignment: " + text.alignment);
-            sb.AppendLine("Overflow: " + text.overflowMode);
+            sb.AppendLine("Wrapping: " + text.enableWordWrapping);
             sb.AppendLine("Font: " + text.font?.name ?? "null");
             return sb.ToString();
         }
@@ -66,14 +67,6 @@ namespace BlasII.ModdingAPI.UI
             return text;
         }
 
-        /// <summary> Failed to update the wrapping mode </summary>
-        [System.Obsolete("This did the wrong thing.  Use SetWrapping instead")]
-        public static TextMeshProUGUI SetOverflow(this TextMeshProUGUI text, TextOverflowModes overflow)
-        {
-            text.overflowMode = overflow;
-            return text;
-        }
-
         /// <summary> Updates the wrapping mode </summary>
         public static TextMeshProUGUI SetWrapping(this TextMeshProUGUI text, bool wordWrap)
         {
@@ -86,6 +79,28 @@ namespace BlasII.ModdingAPI.UI
         {
             text.font = font;
             return text;
+        }
+
+        /// <summary>
+        /// Turns the text object into a ShadowPixelText component
+        /// </summary>
+        public static UIPixelTextWithShadow AddShadow(this TextMeshProUGUI text)
+        {
+            // Create new overhead text
+            var newText = UIModder.CreateRect("Text", text.transform).SetSize(text.rectTransform.sizeDelta)
+                .SetPosition(0, 4)
+                .AddText().SetAlignment(text.alignment).SetColor(text.color).SetFontSize(text.fontSize)
+                .SetContents(text.text);
+
+            // Update old shadow text
+            text.rectTransform.ChangePosition(0, -2);
+            text.SetColor(new Color(0.004f, 0.008f, 0.008f));
+
+            // Add pixel text component
+            UIPixelTextWithShadow shadow = text.gameObject.AddComponent<UIPixelTextWithShadow>();
+            shadow.normalText = newText;
+            shadow.shadowText = text;
+            return shadow;
         }
     }
 }
