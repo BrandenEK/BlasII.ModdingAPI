@@ -142,6 +142,11 @@ namespace BlasII.ModdingAPI
         /// </summary>
         protected internal virtual void OnLoadGame() { }
 
+        /// <summary>
+        /// Called when quiting a game, after returning to the main menu
+        /// </summary>
+        protected internal virtual void OnExitGame() { }
+
         // Logging
 
         /// <summary>

@@ -11,6 +11,7 @@ namespace BlasII.ModdingAPI
         public IEnumerable<BlasIIMod> AllMods => mods;
 
         private bool _initialized = false;
+        private bool _loadedMenu = false;
 
         private string _currentScene = string.Empty;
         public string CurrentScene => _currentScene;
@@ -91,6 +92,13 @@ namespace BlasII.ModdingAPI
         public void SceneLoaded(string sceneName)
         {
             if (_currentScene != string.Empty) return;
+
+            if (sceneName == "MainMenu")
+            {
+                if (_loadedMenu)
+                    ProcessModFunction(mod => mod.OnExitGame());
+                _loadedMenu = true;
+            }
 
             Main.LogSpecial(ModInfo.MOD_NAME, "Loaded scene: " + sceneName);
             _currentScene = sceneName;
