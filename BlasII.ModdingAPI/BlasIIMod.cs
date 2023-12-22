@@ -103,6 +103,11 @@ namespace BlasII.ModdingAPI
         protected internal virtual void OnInitialize() { }
 
         /// <summary>
+        /// Called when starting the game, after all other mods have been initialized
+        /// </summary>
+        protected internal virtual void OnAllInitialized() { }
+
+        /// <summary>
         /// Called when exiting the game, at the same time as other managers
         /// </summary>
         protected internal virtual void OnDispose() { }

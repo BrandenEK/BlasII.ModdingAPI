@@ -51,6 +51,7 @@ namespace BlasII.ModdingAPI
             Main.Log(ModInfo.MOD_NAME, "Initializing mods...");
             ProcessModFunction(mod => mod.OnInitialize());
             Main.Log(ModInfo.MOD_NAME, "All mods initialized!");
+            ProcessModFunction(mod => mod.OnAllInitialized());
             _initialized = true;
         }
 
