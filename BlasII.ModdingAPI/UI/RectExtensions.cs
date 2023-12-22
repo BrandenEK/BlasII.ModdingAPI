@@ -40,6 +40,19 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary>
+        /// Copies the properties from the other RectTransform
+        /// </summary>
+        public static RectTransform CopyFrom(this RectTransform rect, RectTransform other)
+        {
+            return rect
+                .SetXRange(other.anchorMin.x, other.anchorMax.x)
+                .SetYRange(other.anchorMin.y, other.anchorMax.y)
+                .SetPivot(other.pivot)
+                .SetPosition(other.anchoredPosition)
+                .SetSize(other.sizeDelta);
+        }
+
+        /// <summary>
         /// Displays the properties of the UI
         /// </summary>
         public static string DisplayProperties(this RectTransform rect)

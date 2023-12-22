@@ -20,6 +20,16 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary>
+        /// Copies the properties from the other Image
+        /// </summary>
+        public static Image CopyFrom(this Image image, Image other)
+        {
+            return image
+                .SetSprite(other.sprite)
+                .SetColor(other.color);
+        }
+
+        /// <summary>
         /// Displays the properties of the UI
         /// </summary>
         public static string DisplayProperties(this Image image)
