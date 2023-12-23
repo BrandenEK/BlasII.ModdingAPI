@@ -59,15 +59,15 @@ namespace BlasII.ModdingAPI.Menus
 
             _cursor = UIModder.CreateRect("Cursor", transform)
                 .SetXRange(0, 0).SetYRange(0, 0).SetPivot(0, 1)
-                .AddImage().SetSprite(Main.ModdingAPI._cursorTexture).rectTransform;
+                .AddImage().SetSprite(Main.ModdingAPI.CursorIcon).rectTransform;
         }
 
         private void HandleMouse()
         {
             Vector2 mousePosition = UnityEngine.Input.mousePosition;
             Vector2 cursorPosition = new(
-                Math.Clamp(mousePosition.x, 0, Screen.width - _cursor.sizeDelta.x),
-                Math.Clamp(mousePosition.y, 0 + _cursor.sizeDelta.y, Screen.height));
+                Math.Clamp(mousePosition.x, 0, Screen.width - _cursor.sizeDelta.x / 2),
+                Math.Clamp(mousePosition.y, 0 + _cursor.sizeDelta.y / 2, Screen.height));
 
             _cursor.anchoredPosition = cursorPosition;
         }

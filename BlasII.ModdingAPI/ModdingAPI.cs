@@ -14,9 +14,13 @@ namespace BlasII.ModdingAPI
 
         private bool _initializedUI = false;
 
+        private Sprite _cursorIcon;
+        public Sprite CursorIcon => _cursorIcon;
+
         protected internal override void OnInitialize()
         {
             LocalizationHandler.RegisterDefaultLanguage("en");
+            FileHandler.LoadDataAsSprite("cursor.png", out _cursorIcon, 32, true);
 
             AssetStorage.Initialize();
             InputStorage.Initialize();
