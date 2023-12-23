@@ -60,8 +60,6 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         private static void StartMenu()
         {
-            //Cursor.visible = true;
-
             _slotsMenuCache.Value.SetActive(false);
             CoreCache.Input.ClearAllInputBlocks();
             CurrentMenuList.StartMenu();
@@ -72,8 +70,6 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         private static void OnCancelMenu()
         {
-            //Cursor.visible = false;
-
             _mainMenuCache.Value.OpenSlotMenu();
             _mainMenuCache.Value.slotsList.SelectElement(_currentSlot);
         }
@@ -83,8 +79,6 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         private static void OnFinishMenu()
         {
-            //Cursor.visible = false;
-
             AllowGameStart = true;
             if (_isNewGame) _mainMenuCache.Value.NewGame(_currentSlot);
             else _mainMenuCache.Value.LoadGame(_currentSlot);

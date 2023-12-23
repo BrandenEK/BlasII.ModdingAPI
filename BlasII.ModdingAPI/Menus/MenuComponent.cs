@@ -1,4 +1,5 @@
 ﻿using BlasII.ModdingAPI.Input;
+using BlasII.ModdingAPI.UI;
 using MelonLoader;
 using System;
 using System.Collections.Generic;
@@ -11,8 +12,14 @@ namespace BlasII.ModdingAPI.Menus
     {
         private bool _closeNextFrame = false;
         private Clickable _clickedSetting = null;
+        private RectTransform _cursor = null;
 
         private readonly List<Clickable> _clickables = new();
+
+        private void OnEnable()
+        {
+            CreateCursor();
+        }
 
         private void OnDisable()
         {
@@ -29,6 +36,8 @@ namespace BlasII.ModdingAPI.Menus
                 return;
             }
 
+            HandleMouse();
+
             if (UnityEngine.Input.GetMouseButtonDown(0))
             {
                 HandleClick();
@@ -42,6 +51,25 @@ namespace BlasII.ModdingAPI.Menus
             {
                 _closeNextFrame = true;
             }
+        }
+
+        private void CreateCursor()
+        {
+            if (_cursor != null) return;
+
+            _cursor = UIModder.CreateRect("Cursor", transform)
+                .SetXRange(0, 0).SetYRange(0, 0).SetPivot(0, 1)
+                .AddImage().SetSprite(Main.ModdingAPI._cursorTexture).rectTransform;
+        }
+
+        private void HandleMouse()
+        {
+            Vector2 mousePosition = UnityEngine.Input.mousePosition;
+            Vector2 cursorPosition = new(
+                Math.Clamp(mousePosition.x, 0, Screen.width - _cursor.sizeDelta.x),
+                Math.Clamp(mousePosition.y, 0 + _cursor.sizeDelta.y, Screen.height));
+
+            _cursor.anchoredPosition = cursorPosition;
         }
 
         private void HandleClick()

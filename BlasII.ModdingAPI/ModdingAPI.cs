@@ -1,8 +1,6 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Input;
-using BlasII.ModdingAPI.Menus;
 using BlasII.ModdingAPI.UI;
-using Il2CppTGK.Game.Components.Misc;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Text;
@@ -37,29 +35,6 @@ namespace BlasII.ModdingAPI
 
                 DisplayModListOnMenu();
             }
-
-            LogWarning("Scene visible: " + Cursor.visible);
-            //Cursor.visible = false;
-        }
-
-        protected internal override void OnLateUpdate()
-        {
-            bool showCursor = MenuModder.IsMenuActive;
-            Cursor.visible = showCursor;
-            Cursor.lockState = showCursor ? CursorLockMode.None : CursorLockMode.Locked;
-
-            if (UnityEngine.Input.GetKeyDown(KeyCode.O))
-            {
-                Cursor.SetCursor(null, CursorMode.Auto);
-                Cursor.lockState = CursorLockMode.None;
-            }
-            else if (UnityEngine.Input.GetKeyDown(KeyCode.P))
-            {
-                var cursor = new GameObject("MouseVisibility").AddComponent<MouseCursorVisibilityController>();
-                Cursor.SetCursor(cursor.hiddenTexture, CursorMode.ForceSoftware);
-                Cursor.lockState = CursorLockMode.Locked;
-            }
-            //LogWarning(MenuModder.IsMenuActive + ": " + Cursor.visible);
         }
 
         private void DisplayModListOnMenu()
