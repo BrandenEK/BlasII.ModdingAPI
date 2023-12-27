@@ -23,8 +23,8 @@ namespace BlasII.ModdingAPI.Menus
         public void UpdatePosition(Vector2 mousePosition)
         {
             Vector2 cursorPosition = new(
-                Math.Clamp(mousePosition.x, 0, Screen.width - _cursor.sizeDelta.x / 2),
-                Math.Clamp(mousePosition.y, 0 + _cursor.sizeDelta.y / 2, Screen.height));
+                Math.Clamp(mousePosition.x, 0, Screen.width - _cursor.sizeDelta.x / 2) / Screen.width * 1920,
+                Math.Clamp(mousePosition.y, 0 + _cursor.sizeDelta.y / 2, Screen.height) / Screen.height * 1080);
 
             _cursor.anchoredPosition = cursorPosition;
         }

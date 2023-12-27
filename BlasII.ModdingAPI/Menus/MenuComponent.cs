@@ -17,7 +17,7 @@ namespace BlasII.ModdingAPI.Menus
 
         private void OnEnable()
         {
-            _cursorController = _clickables.Count > 0
+            _cursorController ??= _clickables.Count > 0
                 ? new RealCursor(transform)
                 : new FakeCursor();
         }
