@@ -13,6 +13,14 @@ namespace BlasII.ModdingAPI.Menus
         private Clickable _clickedSetting = null;
 
         private readonly List<Clickable> _clickables = new();
+        private ICursorController _cursorController;
+
+        private void OnEnable()
+        {
+            _cursorController ??= _clickables.Count > 0
+                ? new RealCursor(transform)
+                : new FakeCursor();
+        }
 
         private void OnDisable()
         {
@@ -28,6 +36,8 @@ namespace BlasII.ModdingAPI.Menus
                 MenuModder.OnPressCancel();
                 return;
             }
+
+            _cursorController.UpdatePosition(UnityEngine.Input.mousePosition);
 
             if (UnityEngine.Input.GetMouseButtonDown(0))
             {
