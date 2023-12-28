@@ -150,7 +150,7 @@ namespace BlasII.ModdingAPI.Files
         /// <summary>
         /// Loads the data as a Sprite, if it exists
         /// </summary>
-        public bool LoadDataAsSprite(string fileName, SpriteImportOptions options, out Sprite output)
+        public bool LoadDataAsSprite(string fileName, out Sprite output, SpriteImportOptions options)
         {
             if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
             {
@@ -175,7 +175,7 @@ namespace BlasII.ModdingAPI.Files
         /// Loads the data as a Sprite (Default options), if it exists
         /// </summary>
         public bool LoadDataAsSprite(string fileName, out Sprite output) =>
-            LoadDataAsSprite(fileName, new SpriteImportOptions(), out output);
+            LoadDataAsSprite(fileName, out output, new SpriteImportOptions());
 
 
         //public bool LoadDataAsSpritesheet(string fileName, out Sprite[] output)
