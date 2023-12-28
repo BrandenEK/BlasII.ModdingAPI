@@ -1,4 +1,7 @@
+using Il2CppRewired.UI;
 using Newtonsoft.Json;
+using System;
+using System.Drawing;
 using System.IO;
 using UnityEngine;
 
@@ -183,10 +186,7 @@ namespace BlasII.ModdingAPI.Files
             return LoadDataAsSprite(fileName, out output, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
         }
 
-        /// <summary>
-        /// Loads the data as a Sprite[], if it exists
-        /// </summary>
-        public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
+        public bool LoadDataAsSpritesheet(string fileName, out Sprite[] output)
         {
             if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
             {
@@ -215,22 +215,6 @@ namespace BlasII.ModdingAPI.Files
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Loads the data as a Sprite[], if it exists
-        /// </summary>
-        public bool LoadDataAsTexture(string fileName, out Sprite[] output)
-        {
-            return LoadDataAsTexture(fileName, out output, 30, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
-        }
-
-        /// <summary>
-        /// Loads the data as a Sprite[], if it exists
-        /// </summary>
-        public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter)
-        {
-            return LoadDataAsTexture(fileName, out output, size, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
         }
 
         /// <summary>
@@ -299,6 +283,61 @@ namespace BlasII.ModdingAPI.Files
         internal string[] LoadLocalization()
         {
             return ReadFileLines(localizationPath, out string[] output) ? output : System.Array.Empty<string>();
+        }
+
+        // Obsolete
+
+        /// <summary>
+        /// Loads the data as a Sprite[], if it exists
+        /// </summary>
+        [Obsolete("Replaced with LoadDataAsSpritesheet")]
+        public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
+        {
+            if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+            {
+                output = null;
+                return false;
+            }
+
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            texture.LoadImage(bytes, false);
+
+            if (usePointFilter)
+                texture.filterMode = FilterMode.Point;
+
+            int totalWidth = texture.width, totalHeight = texture.height, count = 0;
+            output = new Sprite[totalWidth * totalHeight / size / size];
+
+            for (int i = totalHeight - size; i >= 0; i -= size)
+            {
+                for (int j = 0; j < totalWidth; j += size)
+                {
+                    Sprite sprite = Sprite.Create(texture, new Rect(j, i, size, size), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
+                    RegisterSpriteOnObject(sprite);
+                    output[count] = sprite;
+                    count++;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Loads the data as a Sprite[], if it exists
+        /// </summary>
+        [Obsolete("Replaced with LoadDataAsSpritesheet")]
+        public bool LoadDataAsTexture(string fileName, out Sprite[] output)
+        {
+            return LoadDataAsTexture(fileName, out output, 30, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
+        }
+
+        /// <summary>
+        /// Loads the data as a Sprite[], if it exists
+        /// </summary>
+        [Obsolete("Replaced with LoadDataAsSpritesheet")]
+        public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter)
+        {
+            return LoadDataAsTexture(fileName, out output, size, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
         }
     }
 }
