@@ -1,7 +1,5 @@
-using Il2CppRewired.UI;
 using Newtonsoft.Json;
 using System;
-using System.Drawing;
 using System.IO;
 using UnityEngine;
 
@@ -177,37 +175,85 @@ namespace BlasII.ModdingAPI.Files
         public bool LoadDataAsSprite(string fileName, out Sprite output) =>
             LoadDataAsSprite(fileName, out output, new SpriteImportOptions());
 
+        /// <summary>
+        /// Loads the data as a Sprite[], if it exists
+        /// </summary>
+        public bool LoadDataAsVariableSpritesheet(string fileName, Rect[] rects, out Sprite[] output, SpriteImportOptions options)
+        {
+            if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+            {
+                output = null;
+                return false;
+            }
 
-        //public bool LoadDataAsSpritesheet(string fileName, out Sprite[] output)
-        //{
-        //    if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
-        //    {
-        //        output = null;
-        //        return false;
-        //    }
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            texture.LoadImage(bytes, false);
 
-        //    var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-        //    texture.LoadImage(bytes, false);
+            if (options.UsePointFilter)
+                texture.filterMode = FilterMode.Point;
 
-        //    if (usePointFilter)
-        //        texture.filterMode = FilterMode.Point;
+            output = new Sprite[rects.Length];
 
-        //    int totalWidth = texture.width, totalHeight = texture.height, count = 0;
-        //    output = new Sprite[totalWidth * totalHeight / size / size];
+            for (int i = 0; i < rects.Length; i++)
+            {
+                Rect rect = rects[i];
+                if (rect.x < 0 || rect.x + rect.width > texture.width ||
+                    rect.y < 0 || rect.y + rect.height > texture.height)
+                    throw new Exception($"Invalid rect for {fileName}: {rect}");
 
-        //    for (int i = totalHeight - size; i >= 0; i -= size)
-        //    {
-        //        for (int j = 0; j < totalWidth; j += size)
-        //        {
-        //            Sprite sprite = Sprite.Create(texture, new Rect(j, i, size, size), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
-        //            RegisterSpriteOnObject(sprite);
-        //            output[count] = sprite;
-        //            count++;
-        //        }
-        //    }
+                Sprite sprite = Sprite.Create(texture, rect, options.Pivot, options.PixelsPerUnit, 0, options.MeshType, options.Border);
+                RegisterSpriteOnObject(sprite);
+                output[i] = sprite;
+            }
 
-        //    return true;
-        //}
+            return true;
+        }
+
+        /// <summary>
+        /// Loads the data as a Sprite[] (Default options), if it exists
+        /// </summary>
+        public bool LoadDataAsVariableSpritesheet(string fileName, Rect[] rects, out Sprite[] output) =>
+            LoadDataAsVariableSpritesheet(fileName, rects, out output, new SpriteImportOptions());
+
+        /// <summary>
+        /// Loads the data as a Sprite[], if it exists
+        /// </summary>
+        public bool LoadDataAsFixedSpritesheet(string fileName, Vector2 size, out Sprite[] output, SpriteImportOptions options)
+        {
+            if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+            {
+                output = null;
+                return false;
+            }
+
+            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            texture.LoadImage(bytes, false);
+
+            if (options.UsePointFilter)
+                texture.filterMode = FilterMode.Point;
+
+            int totalWidth = texture.width, totalHeight = texture.height, singleWidth = (int)size.x, singleHeight = (int)size.y, count = 0;
+            output = new Sprite[totalWidth * totalHeight / singleWidth / singleHeight];
+
+            for (int y = totalHeight - singleHeight; y >= 0; y -= singleHeight)
+            {
+                for (int x = 0; x < totalWidth; x += singleWidth)
+                {
+                    var rect = new Rect(x, y, singleWidth, singleHeight);
+                    Sprite sprite = Sprite.Create(texture, rect, options.Pivot, options.PixelsPerUnit, 0, options.MeshType, options.Border);
+                    RegisterSpriteOnObject(sprite);
+                    output[count++] = sprite;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Loads the data as a Sprite[] (Default options), if it exists
+        /// </summary>
+        public bool LoadDataAsFixedSpritesheet(string fileName, Vector2 size, out Sprite[] output) =>
+            LoadDataAsFixedSpritesheet(fileName, size, out output, new SpriteImportOptions());
 
         /// <summary>
         /// Whenever a sprite is created, it gets dereferenced in the next scene, so add it to a persistent object to keep it around in memory
@@ -229,7 +275,7 @@ namespace BlasII.ModdingAPI.Files
         /// </summary>
         internal string[] LoadConfig()
         {
-            return ReadFileLines(configPath, out string[] output) ? output : System.Array.Empty<string>();
+            return ReadFileLines(configPath, out string[] output) ? output : Array.Empty<string>();
         }
 
         /// <summary>
@@ -248,7 +294,7 @@ namespace BlasII.ModdingAPI.Files
         /// </summary>
         internal string[] LoadKeybindings()
         {
-            return ReadFileLines(keybindingsPath, out string[] output) ? output : System.Array.Empty<string>();
+            return ReadFileLines(keybindingsPath, out string[] output) ? output : Array.Empty<string>();
         }
 
         /// <summary>
@@ -274,7 +320,7 @@ namespace BlasII.ModdingAPI.Files
         /// </summary>
         internal string[] LoadLocalization()
         {
-            return ReadFileLines(localizationPath, out string[] output) ? output : System.Array.Empty<string>();
+            return ReadFileLines(localizationPath, out string[] output) ? output : Array.Empty<string>();
         }
 
         // Obsolete
@@ -285,42 +331,13 @@ namespace BlasII.ModdingAPI.Files
         [Obsolete("Replaced with LoadDataAsSpritesheet")]
         public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
         {
-            if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+            return LoadDataAsFixedSpritesheet(fileName, new Vector2(size, size), out output, new SpriteImportOptions()
             {
-                output = null;
-                return false;
-            }
-
-            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-            texture.LoadImage(bytes, false);
-
-            if (usePointFilter)
-                texture.filterMode = FilterMode.Point;
-
-            int totalWidth = texture.width, totalHeight = texture.height, count = 0;
-            output = new Sprite[totalWidth * totalHeight / size / size];
-
-            for (int i = totalHeight - size; i >= 0; i -= size)
-            {
-                for (int j = 0; j < totalWidth; j += size)
-                {
-                    Sprite sprite = Sprite.Create(texture, new Rect(j, i, size, size), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
-                    RegisterSpriteOnObject(sprite);
-                    output[count] = sprite;
-                    count++;
-                }
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Loads the data as a Sprite[], if it exists
-        /// </summary>
-        [Obsolete("Replaced with LoadDataAsSpritesheet")]
-        public bool LoadDataAsTexture(string fileName, out Sprite[] output)
-        {
-            return LoadDataAsTexture(fileName, out output, 30, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
+                PixelsPerUnit = pixelsPerUnit,
+                UsePointFilter = usePointFilter,
+                Pivot = pivot,
+                Border = border
+            });
         }
 
         /// <summary>
@@ -329,7 +346,20 @@ namespace BlasII.ModdingAPI.Files
         [Obsolete("Replaced with LoadDataAsSpritesheet")]
         public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter)
         {
-            return LoadDataAsTexture(fileName, out output, size, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
+            return LoadDataAsFixedSpritesheet(fileName, new Vector2(size, size), out output, new SpriteImportOptions()
+            {
+                PixelsPerUnit = pixelsPerUnit,
+                UsePointFilter = usePointFilter
+            });
+        }
+
+        /// <summary>
+        /// Loads the data as a Sprite[], if it exists
+        /// </summary>
+        [Obsolete("Replaced with LoadDataAsSpritesheet")]
+        public bool LoadDataAsTexture(string fileName, out Sprite[] output)
+        {
+            return LoadDataAsFixedSpritesheet(fileName, new Vector2(30, 30), out output);
         }
 
         /// <summary>
@@ -338,14 +368,13 @@ namespace BlasII.ModdingAPI.Files
         [Obsolete("Pass in new SpriteImportOptions instead")]
         public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
         {
-            var options = new SpriteImportOptions()
+            return LoadDataAsSprite(fileName, out output, new SpriteImportOptions()
             {
                 PixelsPerUnit = pixelsPerUnit,
                 UsePointFilter = usePointFilter,
                 Pivot = pivot,
                 Border = border
-            };
-            return LoadDataAsSprite(fileName, options, out output);
+            });
         }
 
         /// <summary>
@@ -354,12 +383,11 @@ namespace BlasII.ModdingAPI.Files
         [Obsolete("Pass in new SpriteImportOptions instead")]
         public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter)
         {
-            var options = new SpriteImportOptions()
+            return LoadDataAsSprite(fileName, out output, new SpriteImportOptions()
             {
                 PixelsPerUnit = pixelsPerUnit,
                 UsePointFilter = usePointFilter
-            };
-            return LoadDataAsSprite(fileName, options, out output);
+            });
         }
     }
 }
