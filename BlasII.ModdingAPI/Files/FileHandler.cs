@@ -125,7 +125,27 @@ namespace BlasII.ModdingAPI.Files
         }
 
         /// <summary>
-        /// Loads the data as a sprite, if it exists
+        /// Loads the data as a Texture2D, if it exists
+        /// </summary>
+        public bool LoadDataAsTexture(string fileName, out Texture2D output)
+        {
+            if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+            {
+                output = null;
+                return false;
+            }
+
+            output = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            output.LoadImage(bytes, false);
+
+            var sprite = Sprite.Create(output, new Rect(0, 0, output.width, output.height), Vector2.zero);
+            RegisterSpriteOnObject(sprite);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Loads the data as a Sprite, if it exists
         /// </summary>
         public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
         {
@@ -148,7 +168,7 @@ namespace BlasII.ModdingAPI.Files
         }
 
         /// <summary>
-        /// Loads the data as a sprite, if it exists
+        /// Loads the data as a Sprite, if it exists
         /// </summary>
         public bool LoadDataAsSprite(string fileName, out Sprite output)
         {
@@ -156,7 +176,7 @@ namespace BlasII.ModdingAPI.Files
         }
 
         /// <summary>
-        /// Loads the data as a sprite, if it exists
+        /// Loads the data as a Sprite, if it exists
         /// </summary>
         public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter)
         {
@@ -164,7 +184,7 @@ namespace BlasII.ModdingAPI.Files
         }
 
         /// <summary>
-        /// Loads the data as a sprite[], if it exists
+        /// Loads the data as a Sprite[], if it exists
         /// </summary>
         public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
         {
@@ -198,7 +218,7 @@ namespace BlasII.ModdingAPI.Files
         }
 
         /// <summary>
-        /// Loads the data as a sprite[], if it exists
+        /// Loads the data as a Sprite[], if it exists
         /// </summary>
         public bool LoadDataAsTexture(string fileName, out Sprite[] output)
         {
@@ -206,7 +226,7 @@ namespace BlasII.ModdingAPI.Files
         }
 
         /// <summary>
-        /// Loads the data as a sprite[], if it exists
+        /// Loads the data as a Sprite[], if it exists
         /// </summary>
         public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter)
         {
