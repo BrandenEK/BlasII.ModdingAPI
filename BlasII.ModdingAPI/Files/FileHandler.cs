@@ -150,7 +150,7 @@ namespace BlasII.ModdingAPI.Files
         /// <summary>
         /// Loads the data as a Sprite, if it exists
         /// </summary>
-        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
+        public bool LoadDataAsSprite(string fileName, SpriteImportOptions options, out Sprite output)
         {
             if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
             {
@@ -161,61 +161,53 @@ namespace BlasII.ModdingAPI.Files
             var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
             texture.LoadImage(bytes, false);
 
-            if (usePointFilter)
+            if (options.UsePointFilter)
                 texture.filterMode = FilterMode.Point;
 
-            output = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
+            var rect = new Rect(0, 0, texture.width, texture.height);
+            output = Sprite.Create(texture, rect, options.Pivot, options.PixelsPerUnit, 0, options.MeshType, options.Border);
             RegisterSpriteOnObject(output);
 
             return true;
         }
 
         /// <summary>
-        /// Loads the data as a Sprite, if it exists
+        /// Loads the data as a Sprite (Default options), if it exists
         /// </summary>
-        public bool LoadDataAsSprite(string fileName, out Sprite output)
-        {
-            return LoadDataAsSprite(fileName, out output, 32, true, new Vector2(0.5f, 0.5f), Vector4.zero);
-        }
+        public bool LoadDataAsSprite(string fileName, out Sprite output) =>
+            LoadDataAsSprite(fileName, new SpriteImportOptions(), out output);
 
-        /// <summary>
-        /// Loads the data as a Sprite, if it exists
-        /// </summary>
-        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter)
-        {
-            return LoadDataAsSprite(fileName, out output, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
-        }
 
-        public bool LoadDataAsSpritesheet(string fileName, out Sprite[] output)
-        {
-            if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
-            {
-                output = null;
-                return false;
-            }
+        //public bool LoadDataAsSpritesheet(string fileName, out Sprite[] output)
+        //{
+        //    if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        //    {
+        //        output = null;
+        //        return false;
+        //    }
 
-            var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
-            texture.LoadImage(bytes, false);
+        //    var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+        //    texture.LoadImage(bytes, false);
 
-            if (usePointFilter)
-                texture.filterMode = FilterMode.Point;
+        //    if (usePointFilter)
+        //        texture.filterMode = FilterMode.Point;
 
-            int totalWidth = texture.width, totalHeight = texture.height, count = 0;
-            output = new Sprite[totalWidth * totalHeight / size / size];
+        //    int totalWidth = texture.width, totalHeight = texture.height, count = 0;
+        //    output = new Sprite[totalWidth * totalHeight / size / size];
 
-            for (int i = totalHeight - size; i >= 0; i -= size)
-            {
-                for (int j = 0; j < totalWidth; j += size)
-                {
-                    Sprite sprite = Sprite.Create(texture, new Rect(j, i, size, size), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
-                    RegisterSpriteOnObject(sprite);
-                    output[count] = sprite;
-                    count++;
-                }
-            }
+        //    for (int i = totalHeight - size; i >= 0; i -= size)
+        //    {
+        //        for (int j = 0; j < totalWidth; j += size)
+        //        {
+        //            Sprite sprite = Sprite.Create(texture, new Rect(j, i, size, size), pivot, pixelsPerUnit, 0, SpriteMeshType.Tight, border);
+        //            RegisterSpriteOnObject(sprite);
+        //            output[count] = sprite;
+        //            count++;
+        //        }
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         /// <summary>
         /// Whenever a sprite is created, it gets dereferenced in the next scene, so add it to a persistent object to keep it around in memory
@@ -338,6 +330,36 @@ namespace BlasII.ModdingAPI.Files
         public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter)
         {
             return LoadDataAsTexture(fileName, out output, size, pixelsPerUnit, usePointFilter, new Vector2(0.5f, 0.5f), Vector4.zero);
+        }
+
+        /// <summary>
+        /// Loads the data as a Sprite, if it exists
+        /// </summary>
+        [Obsolete("Pass in new SpriteImportOptions instead")]
+        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
+        {
+            var options = new SpriteImportOptions()
+            {
+                PixelsPerUnit = pixelsPerUnit,
+                UsePointFilter = usePointFilter,
+                Pivot = pivot,
+                Border = border
+            };
+            return LoadDataAsSprite(fileName, options, out output);
+        }
+
+        /// <summary>
+        /// Loads the data as a Sprite, if it exists
+        /// </summary>
+        [Obsolete("Pass in new SpriteImportOptions instead")]
+        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter)
+        {
+            var options = new SpriteImportOptions()
+            {
+                PixelsPerUnit = pixelsPerUnit,
+                UsePointFilter = usePointFilter
+            };
+            return LoadDataAsSprite(fileName, options, out output);
         }
     }
 }

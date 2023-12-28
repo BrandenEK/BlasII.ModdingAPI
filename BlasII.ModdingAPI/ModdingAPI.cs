@@ -1,4 +1,5 @@
 ﻿using BlasII.ModdingAPI.Assets;
+using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.UI;
 using Il2CppTGK.Game.Components.UI;
@@ -20,7 +21,7 @@ namespace BlasII.ModdingAPI
         protected internal override void OnInitialize()
         {
             LocalizationHandler.RegisterDefaultLanguage("en");
-            FileHandler.LoadDataAsSprite("cursor.png", out _cursorIcon, 40, true);
+            FileHandler.LoadDataAsSprite("cursor.png", new SpriteImportOptions() { PixelsPerUnit = 40 }, out _cursorIcon);
 
             AssetStorage.Initialize();
             InputStorage.Initialize();
