@@ -58,8 +58,7 @@ namespace BlasII.ModdingAPI.UI
             {
                 Name = name,
                 Parent = parent,
-            })
-                .AddImage();
+            }).AddImage();
         }
 
         /// <summary> Creates an Image </summary>
@@ -69,8 +68,7 @@ namespace BlasII.ModdingAPI.UI
             return Create(new RectCreationOptions()
             {
                 Name = name
-            })
-                .AddImage();
+            }).AddImage();
         }
 
         /// <summary> Creates a TextMeshProUGUI </summary>
@@ -81,8 +79,7 @@ namespace BlasII.ModdingAPI.UI
             {
                 Name = name,
                 Parent = parent
-            })
-                .AddText(new TextCreationOptions());
+            }).AddText(new TextCreationOptions());
         }
 
         /// <summary> Creates a TextMeshProUGUI </summary>
@@ -92,8 +89,7 @@ namespace BlasII.ModdingAPI.UI
             return Create(new RectCreationOptions()
             {
                 Name = name
-            })
-                .AddText(new TextCreationOptions());
+            }).AddText(new TextCreationOptions());
         }
 
         #endregion Obsolete
