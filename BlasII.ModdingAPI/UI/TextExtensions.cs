@@ -10,18 +10,15 @@ namespace BlasII.ModdingAPI.UI
     /// </summary>
     public static class TextExtensions
     {
-        /// <summary>
-        /// Resets contents, color, size, alignment, wrapping, and font to default
-        /// </summary>
-        public static TextMeshProUGUI ResetToDefault(this TextMeshProUGUI text)
+        public static TextMeshProUGUI ApplyOptions(this TextMeshProUGUI text, TextCreationOptions options)
         {
-            return text
-                .SetContents(string.Empty)
-                .SetColor(Color.white)
-                .SetFontSize(16)
-                .SetAlignment(TextAlignmentOptions.Center)
-                .SetWrapping(false)
-                .SetFont(UIModder.Fonts.Default);
+            text.text = options.Contents;
+            text.color = options.Color;
+            text.fontSize = options.FontSize;
+            text.alignment = options.Alignment;
+            text.enableWordWrapping = options.WordWrap;
+            text.font = options.Font;
+            return text;
         }
 
         /// <summary>
