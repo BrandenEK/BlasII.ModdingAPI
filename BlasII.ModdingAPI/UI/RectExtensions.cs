@@ -25,7 +25,7 @@ namespace BlasII.ModdingAPI.UI
             return rect.gameObject.AddComponent<TextMeshProUGUI>().ApplyOptions(options);
         }
 
-        public static RectTransform ApplyOptions(this RectTransform rect, RectCreationOptions options)
+        internal static RectTransform ApplyOptions(this RectTransform rect, RectCreationOptions options)
         {
             rect.name = options.Name;
             rect.SetParent(options.Parent, false);
@@ -37,7 +37,7 @@ namespace BlasII.ModdingAPI.UI
             return rect;
         }
 
-        public static RectCreationOptions CopyOptions(this RectTransform rect)
+        internal static RectCreationOptions CopyOptions(this RectTransform rect)
         {
             return new RectCreationOptions()
             {

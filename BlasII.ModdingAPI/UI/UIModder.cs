@@ -27,22 +27,6 @@ namespace BlasII.ModdingAPI.UI
             return new GameObject().AddComponent<RectTransform>().ApplyOptions(options);
         }
 
-        ///// <summary>
-        ///// Creates an Image with the specified options
-        ///// </summary>
-        //public static Image CreateImage(RectCreationOptions rectOptions)
-        //{
-        //    return CreateRect(rectOptions).gameObject.AddComponent<Image>();
-        //}
-
-        ///// <summary>
-        ///// Creates a TextMeshProUGUI with the specified options
-        ///// </summary>
-        //public static TextMeshProUGUI CreateText(RectCreationOptions rectOptions, TextCreationOptions textOptions)
-        //{
-        //    return CreateRect(rectOptions).gameObject.AddComponent<TextMeshProUGUI>().ApplyOptions(textOptions);
-        //}
-
         #region Obsolete
 
         /// <summary> Creates a RectTransform </summary>
