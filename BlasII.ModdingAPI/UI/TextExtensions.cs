@@ -35,21 +35,6 @@ namespace BlasII.ModdingAPI.UI
                 .SetFont(other.font);
         }
 
-        /// <summary>
-        /// Displays the properties of the UI
-        /// </summary>
-        public static string DisplayProperties(this TextMeshProUGUI text)
-        {
-            var sb = new StringBuilder("\n\n");
-            sb.AppendLine("Contents: " + text.text);
-            sb.AppendLine("Color: " + text.color);
-            sb.AppendLine("Font size: " + text.fontSize);
-            sb.AppendLine("Alignment: " + text.alignment);
-            sb.AppendLine("Wrapping: " + text.enableWordWrapping);
-            sb.AppendLine("Font: " + text.font?.name ?? "null");
-            return sb.ToString();
-        }
-
         /// <summary> Updates the contents </summary>
         public static TextMeshProUGUI SetContents(this TextMeshProUGUI text, string contents)
         {
@@ -98,9 +83,15 @@ namespace BlasII.ModdingAPI.UI
         public static UIPixelTextWithShadow AddShadow(this TextMeshProUGUI text)
         {
             // Create new overhead text
-            var newText = UIModder.CreateRect("Text", text.transform)
-                .SetPosition(0, 4).SetSize(text.rectTransform.sizeDelta)
-                .AddText().CopyFrom(text);
+            var newText = UIModder.Create(new RectCreationOptions()
+            {
+                Name = "Text",
+                Parent = text.transform,
+                Position = new Vector2(0, 4),
+                Size = text.rectTransform.sizeDelta
+            })
+                .AddText(new TextCreationOptions())
+                .CopyFrom(text);
 
             // Update old shadow text
             text.rectTransform.ChangePosition(0, -2);

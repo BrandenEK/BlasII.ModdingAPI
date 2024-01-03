@@ -1,5 +1,4 @@
 ﻿using Il2CppTMPro;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,24 +10,15 @@ namespace BlasII.ModdingAPI.UI
     public static class RectExtensions
     {
         /// <summary>
-        /// Adds an Image component to the UI
+        /// Adds an Image component with the specified options
         /// </summary>
-        public static Image AddImage(this RectTransform rect)
+        public static Image AddImage(this RectTransform rect, ImageCreationOptions options)
         {
-            return rect.gameObject.AddComponent<Image>().ResetToDefault();
+            return rect.gameObject.AddComponent<Image>().ApplyOptions(options);
         }
 
         /// <summary>
-        /// Adds a TextMeshProUGUI component to the UI
-        /// </summary>
-        [System.Obsolete("Use new TextCreationOptions instead")]
-        public static TextMeshProUGUI AddText(this RectTransform rect)
-        {
-            return rect.AddText(new TextCreationOptions());
-        }
-
-        /// <summary>
-        /// Adds a TextMeshProUGUI component to the UI
+        /// Adds a TextMeshProUGUI component with the specified options
         /// </summary>
         public static TextMeshProUGUI AddText(this RectTransform rect, TextCreationOptions options)
         {
@@ -127,6 +117,24 @@ namespace BlasII.ModdingAPI.UI
         {
             rect.anchoredPosition += position;
             return rect;
+        }
+
+        /// <summary>
+        /// Adds an Image component to the UI
+        /// </summary>
+        [System.Obsolete("Use new ImageCreationOptions instead")]
+        public static Image AddImage(this RectTransform rect)
+        {
+            return rect.AddImage(new ImageCreationOptions());
+        }
+
+        /// <summary>
+        /// Adds a TextMeshProUGUI component to the UI
+        /// </summary>
+        [System.Obsolete("Use new TextCreationOptions instead")]
+        public static TextMeshProUGUI AddText(this RectTransform rect)
+        {
+            return rect.AddText(new TextCreationOptions());
         }
     }
 }
