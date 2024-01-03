@@ -15,9 +15,19 @@ namespace BlasII.ModdingAPI.Menus
 
         public RealCursor(Transform menu)
         {
-            _cursor = UIModder.CreateRect("Cursor", menu)
-                .SetXRange(0, 0).SetYRange(0, 0).SetPivot(0, 1).SetSize(40, 40)
-                .AddImage().SetSprite(Main.ModdingAPI.CursorIcon).rectTransform;
+            _cursor = UIModder.Create(new RectCreationOptions()
+            {
+                Name = "Cursor",
+                Parent = menu,
+                XRange = Vector2.zero,
+                YRange = Vector2.zero,
+                Pivot = new Vector2(0, 1),
+                Size = new Vector2(40, 40)
+            }).AddImage(new ImageCreationOptions()
+            {
+                Sprite = Main.ModdingAPI.CursorIcon
+            })
+            .rectTransform;
         }
 
         public void UpdatePosition(Vector2 mousePosition)

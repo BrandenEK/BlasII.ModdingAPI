@@ -1,5 +1,4 @@
-﻿using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI.UI
@@ -9,35 +8,20 @@ namespace BlasII.ModdingAPI.UI
     /// </summary>
     public static class ImageExtensions
     {
-        /// <summary>
-        /// Resets sprite and color to default
-        /// </summary>
-        public static Image ResetToDefault(this Image image)
+        internal static Image ApplyOptions(this Image image, ImageCreationOptions options)
         {
-            return image
-                .SetSprite(null)
-                .SetColor(Color.white);
+            image.sprite = options.Sprite;
+            image.color = options.Color;
+            return image;
         }
 
-        /// <summary>
-        /// Copies the properties from the other Image
-        /// </summary>
-        public static Image CopyFrom(this Image image, Image other)
+        internal static ImageCreationOptions CopyOptions(this Image image)
         {
-            return image
-                .SetSprite(other.sprite)
-                .SetColor(other.color);
-        }
-
-        /// <summary>
-        /// Displays the properties of the UI
-        /// </summary>
-        public static string DisplayProperties(this Image image)
-        {
-            var sb = new StringBuilder("\n\n");
-            sb.AppendLine("Sprite: " + image.sprite?.name ?? "null");
-            sb.AppendLine("Color: " + image.color);
-            return sb.ToString();
+            return new ImageCreationOptions()
+            {
+                Sprite = image.sprite,
+                Color = image.color
+            };
         }
 
         /// <summary> Updates the sprite </summary>

@@ -1,6 +1,5 @@
 ﻿using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
-using System.Text;
 using UnityEngine;
 
 namespace BlasII.ModdingAPI.UI
@@ -11,46 +10,52 @@ namespace BlasII.ModdingAPI.UI
     public static class TextExtensions
     {
         /// <summary>
-        /// Resets contents, color, size, alignment, wrapping, and font to default
+        /// Turns the text object into a ShadowPixelText component
         /// </summary>
-        public static TextMeshProUGUI ResetToDefault(this TextMeshProUGUI text)
+        public static UIPixelTextWithShadow AddShadow(this TextMeshProUGUI text)
         {
-            return text
-                .SetContents(string.Empty)
-                .SetColor(Color.white)
-                .SetFontSize(16)
-                .SetAlignment(TextAlignmentOptions.Center)
-                .SetWrapping(false)
-                .SetFont(UIModder.Fonts.Default);
+            // Create new overhead text
+            var newText = UIModder.Create(new RectCreationOptions()
+            {
+                Name = "Text",
+                Parent = text.transform,
+                Position = new Vector2(0, 4),
+                Size = text.rectTransform.sizeDelta
+            }).AddText(text.CopyOptions());
+
+            // Update old shadow text
+            text.rectTransform.ChangePosition(0, -2);
+            text.SetColor(new Color(0.004f, 0.008f, 0.008f));
+
+            // Add pixel text component
+            UIPixelTextWithShadow shadow = text.gameObject.AddComponent<UIPixelTextWithShadow>();
+            shadow.normalText = newText;
+            shadow.shadowText = text;
+            return shadow;
         }
 
-        /// <summary>
-        /// Copies the properties from the other TextMeshProUGUI
-        /// </summary>
-        public static TextMeshProUGUI CopyFrom(this TextMeshProUGUI text, TextMeshProUGUI other)
+        internal static TextMeshProUGUI ApplyOptions(this TextMeshProUGUI text, TextCreationOptions options)
         {
-            return text
-                .SetContents(other.text)
-                .SetColor(other.color)
-                .SetFontSize(other.fontSize)
-                .SetAlignment(other.alignment)
-                .SetWrapping(other.enableWordWrapping)
-                .SetFont(other.font);
+            text.text = options.Contents;
+            text.color = options.Color;
+            text.fontSize = options.FontSize;
+            text.alignment = options.Alignment;
+            text.enableWordWrapping = options.WordWrap;
+            text.font = options.Font;
+            return text;
         }
 
-        /// <summary>
-        /// Displays the properties of the UI
-        /// </summary>
-        public static string DisplayProperties(this TextMeshProUGUI text)
+        internal static TextCreationOptions CopyOptions(this TextMeshProUGUI text)
         {
-            var sb = new StringBuilder("\n\n");
-            sb.AppendLine("Contents: " + text.text);
-            sb.AppendLine("Color: " + text.color);
-            sb.AppendLine("Font size: " + text.fontSize);
-            sb.AppendLine("Alignment: " + text.alignment);
-            sb.AppendLine("Wrapping: " + text.enableWordWrapping);
-            sb.AppendLine("Font: " + text.font?.name ?? "null");
-            return sb.ToString();
+            return new TextCreationOptions()
+            {
+                Contents = text.text,
+                Color = text.color,
+                FontSize = text.fontSize,
+                Alignment = text.alignment,
+                WordWrap = text.enableWordWrapping,
+                Font = text.font
+            };
         }
 
         /// <summary> Updates the contents </summary>
@@ -93,27 +98,6 @@ namespace BlasII.ModdingAPI.UI
         {
             text.font = font;
             return text;
-        }
-
-        /// <summary>
-        /// Turns the text object into a ShadowPixelText component
-        /// </summary>
-        public static UIPixelTextWithShadow AddShadow(this TextMeshProUGUI text)
-        {
-            // Create new overhead text
-            var newText = UIModder.CreateRect("Text", text.transform)
-                .SetPosition(0, 4).SetSize(text.rectTransform.sizeDelta)
-                .AddText().CopyFrom(text);
-
-            // Update old shadow text
-            text.rectTransform.ChangePosition(0, -2);
-            text.SetColor(new Color(0.004f, 0.008f, 0.008f));
-
-            // Add pixel text component
-            UIPixelTextWithShadow shadow = text.gameObject.AddComponent<UIPixelTextWithShadow>();
-            shadow.normalText = newText;
-            shadow.shadowText = text;
-            return shadow;
         }
     }
 }

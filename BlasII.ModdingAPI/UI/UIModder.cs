@@ -20,47 +20,79 @@ namespace BlasII.ModdingAPI.UI
         public static Parents Parents { get; private set; } = new();
 
         /// <summary>
-        /// Creates a RectTransform with default parameters
+        /// Creates a RectTransform with the specified options
         /// </summary>
+        public static RectTransform Create(RectCreationOptions options)
+        {
+            return new GameObject().AddComponent<RectTransform>().ApplyOptions(options);
+        }
+
+        #region Obsolete
+
+        /// <summary> Creates a RectTransform </summary>
+        [System.Obsolete("Use new RectCreationOptions instead")]
         public static RectTransform CreateRect(string name, Transform parent)
         {
-            var rect = new GameObject(name).AddComponent<RectTransform>();
-            rect.SetParent(parent, false);
-            return rect.ResetToDefault();
+            return Create(new RectCreationOptions()
+            {
+                Name = name,
+                Parent = parent
+            });
         }
 
-        /// <summary>
-        /// Creates a RectTransform with default parameters
-        /// </summary>
-        public static RectTransform CreateRect(string name) => CreateRect(name, Parents.Default);
+        /// <summary> Creates a RectTransform </summary>
+        [System.Obsolete("Use new RectCreationOptions instead")]
+        public static RectTransform CreateRect(string name)
+        {
+            return Create(new RectCreationOptions()
+            {
+                Name = name
+            });
+        }
 
-        /// <summary>
-        /// Creates an Image with default parameters
-        /// </summary>
+        /// <summary> Creates an Image </summary>
+        [System.Obsolete("Use new ImageCreationOptions instead")]
         public static Image CreateImage(string name, Transform parent)
         {
-            var rect = CreateRect(name, parent);
-            return rect.AddImage();
+            return Create(new RectCreationOptions()
+            {
+                Name = name,
+                Parent = parent,
+            }).AddImage();
         }
 
-        /// <summary>
-        /// Creates an Image with default parameters
-        /// </summary>
-        public static Image CreateImage(string name) => CreateImage(name, Parents.Default);
+        /// <summary> Creates an Image </summary>
+        [System.Obsolete("Use new ImageCreationOptions instead")]
+        public static Image CreateImage(string name)
+        {
+            return Create(new RectCreationOptions()
+            {
+                Name = name
+            }).AddImage();
+        }
 
-        /// <summary>
-        /// Creates a TextMeshProUGUI with default parameters
-        /// </summary>
+        /// <summary> Creates a TextMeshProUGUI </summary>
+        [System.Obsolete("Use new TextCreationOptions instead")]
         public static TextMeshProUGUI CreateText(string name, Transform parent)
         {
-            var rect = CreateRect(name, parent);
-            return rect.AddText();
+            return Create(new RectCreationOptions()
+            {
+                Name = name,
+                Parent = parent
+            }).AddText(new TextCreationOptions());
         }
 
-        /// <summary>
-        /// Creates a TextMeshProUGUI with default parameters
-        /// </summary>
-        public static TextMeshProUGUI CreateText(string name) => CreateText(name, Parents.Default);
+        /// <summary> Creates a TextMeshProUGUI </summary>
+        [System.Obsolete("Use new TextCreationOptions instead")]
+        public static TextMeshProUGUI CreateText(string name)
+        {
+            return Create(new RectCreationOptions()
+            {
+                Name = name
+            }).AddText(new TextCreationOptions());
+        }
+
+        #endregion Obsolete
     }
 
     /// <summary>

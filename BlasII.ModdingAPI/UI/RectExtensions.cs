@@ -1,5 +1,4 @@
 ﻿using Il2CppTMPro;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,63 +10,50 @@ namespace BlasII.ModdingAPI.UI
     public static class RectExtensions
     {
         /// <summary>
-        /// Adds an Image component to the UI
+        /// Adds an Image component with the specified options
         /// </summary>
-        public static Image AddImage(this RectTransform rect)
+        public static Image AddImage(this RectTransform rect, ImageCreationOptions options)
         {
-            return rect.gameObject.AddComponent<Image>().ResetToDefault();
+            return rect.gameObject.AddComponent<Image>().ApplyOptions(options);
         }
 
         /// <summary>
-        /// Adds a TextMeshProUGUI component to the UI
+        /// Adds a TextMeshProUGUI component with the specified options
         /// </summary>
-        public static TextMeshProUGUI AddText(this RectTransform rect)
+        public static TextMeshProUGUI AddText(this RectTransform rect, TextCreationOptions options)
         {
-            return rect.gameObject.AddComponent<TextMeshProUGUI>().ResetToDefault();
+            return rect.gameObject.AddComponent<TextMeshProUGUI>().ApplyOptions(options);
         }
 
-        /// <summary>
-        /// Resets xrange, yrange, pivot, position, and size to default
-        /// </summary>
-        public static RectTransform ResetToDefault(this RectTransform rect)
+        internal static RectTransform ApplyOptions(this RectTransform rect, RectCreationOptions options)
         {
-            return rect
-                .SetXRange(0.5f, 0.5f)
-                .SetYRange(0.5f, 0.5f)
-                .SetPivot(0.5f, 0.5f)
-                .SetPosition(0, 0)
-                .SetSize(100, 100);
+            rect.name = options.Name;
+            rect.SetParent(options.Parent, false);
+            rect.anchorMin = new Vector2(options.XRange.x, options.YRange.x);
+            rect.anchorMax = new Vector2(options.XRange.y, options.YRange.y);
+            rect.pivot = options.Pivot;
+            rect.anchoredPosition = options.Position;
+            rect.sizeDelta = options.Size;
+            return rect;
         }
 
-        /// <summary>
-        /// Copies the properties from the other RectTransform
-        /// </summary>
-        public static RectTransform CopyFrom(this RectTransform rect, RectTransform other)
+        internal static RectCreationOptions CopyOptions(this RectTransform rect)
         {
-            return rect
-                .SetXRange(other.anchorMin.x, other.anchorMax.x)
-                .SetYRange(other.anchorMin.y, other.anchorMax.y)
-                .SetPivot(other.pivot)
-                .SetPosition(other.anchoredPosition)
-                .SetSize(other.sizeDelta);
-        }
-
-        /// <summary>
-        /// Displays the properties of the UI
-        /// </summary>
-        public static string DisplayProperties(this RectTransform rect)
-        {
-            var sb = new StringBuilder("\n\n");
-            sb.AppendLine("X range: " + new Vector2(rect.anchorMin.x, rect.anchorMax.x));
-            sb.AppendLine("Y range: " + new Vector2(rect.anchorMin.y, rect.anchorMax.y));
-            sb.AppendLine("Pivot: " + rect.pivot);
-            sb.AppendLine("Position: " + rect.anchoredPosition);
-            sb.AppendLine("Size: " + rect.sizeDelta);
-            return sb.ToString();
+            return new RectCreationOptions()
+            {
+                Name = rect.name,
+                Parent = rect.parent,
+                XRange = new Vector2(rect.anchorMin.x, rect.anchorMax.x),
+                YRange = new Vector2(rect.anchorMin.y, rect.anchorMax.y),
+                Pivot = rect.pivot,
+                Position = rect.anchoredPosition,
+                Size = rect.sizeDelta
+            };
         }
 
         /// <summary> Updates the x anchors </summary>
-        public static RectTransform SetXRange(this RectTransform rect, float min, float max) => rect.SetXRange(new Vector2(min, max));
+        public static RectTransform SetXRange(this RectTransform rect, float min, float max) =>
+            rect.SetXRange(new Vector2(min, max));
 
         /// <summary> Updates the x anchors </summary>
         public static RectTransform SetXRange(this RectTransform rect, Vector2 range)
@@ -78,7 +64,8 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary> Updates the y anchors </summary>
-        public static RectTransform SetYRange(this RectTransform rect, float min, float max) => rect.SetYRange(new Vector2(min, max));
+        public static RectTransform SetYRange(this RectTransform rect, float min, float max) =>
+            rect.SetYRange(new Vector2(min, max));
 
         /// <summary> Updates the y anchors </summary>
         public static RectTransform SetYRange(this RectTransform rect, Vector2 range)
@@ -89,7 +76,8 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary> Updates the pivot </summary>
-        public static RectTransform SetPivot(this RectTransform rect, float x, float y) => rect.SetPivot(new Vector2(x, y));
+        public static RectTransform SetPivot(this RectTransform rect, float x, float y) =>
+            rect.SetPivot(new Vector2(x, y));
 
         /// <summary> Updates the pivot </summary>
         public static RectTransform SetPivot(this RectTransform rect, Vector2 pivot)
@@ -99,7 +87,8 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary> Updates the x and y position </summary>
-        public static RectTransform SetPosition(this RectTransform rect, float x, float y) => rect.SetPosition(new Vector2(x, y));
+        public static RectTransform SetPosition(this RectTransform rect, float x, float y) =>
+            rect.SetPosition(new Vector2(x, y));
 
         /// <summary> Updates the x and y position </summary>
         public static RectTransform SetPosition(this RectTransform rect, Vector2 position)
@@ -109,7 +98,8 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary> Updates the width and height </summary>
-        public static RectTransform SetSize(this RectTransform rect, float width, float height) => rect.SetSize(new Vector2(width, height));
+        public static RectTransform SetSize(this RectTransform rect, float width, float height) =>
+            rect.SetSize(new Vector2(width, height));
 
         /// <summary> Updates the width and height </summary>
         public static RectTransform SetSize(this RectTransform rect, Vector2 size)
@@ -119,13 +109,32 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary> Modifies the x and y position </summary>
-        public static RectTransform ChangePosition(this RectTransform rect, float x, float y) => rect.ChangePosition(new Vector2(x, y));
+        public static RectTransform ChangePosition(this RectTransform rect, float x, float y) =>
+            rect.ChangePosition(new Vector2(x, y));
 
         /// <summary> Modifies the x and y position </summary>
         public static RectTransform ChangePosition(this RectTransform rect, Vector2 position)
         {
             rect.anchoredPosition += position;
             return rect;
+        }
+
+        /// <summary>
+        /// Adds an Image component to the UI
+        /// </summary>
+        [System.Obsolete("Use new ImageCreationOptions instead")]
+        public static Image AddImage(this RectTransform rect)
+        {
+            return rect.AddImage(new ImageCreationOptions());
+        }
+
+        /// <summary>
+        /// Adds a TextMeshProUGUI component to the UI
+        /// </summary>
+        [System.Obsolete("Use new TextCreationOptions instead")]
+        public static TextMeshProUGUI AddText(this RectTransform rect)
+        {
+            return rect.AddText(new TextCreationOptions());
         }
     }
 }

@@ -55,18 +55,22 @@ namespace BlasII.ModdingAPI
             }
 
             // Create shadow text
-            UIModder.CreateRect("ModList", UIModder.Parents.MainMenu.GetChild(0))
-                .SetXRange(0, 0)
-                .SetYRange(1, 1)
-                .SetPivot(0, 1)
-                .SetSize(400, 100)
-                .SetPosition(30, -18)
-                .AddText()
-                .SetContents(sb.ToString())
-                .SetAlignment(TextAlignmentOptions.TopLeft)
-                .SetFontSize(40)
-                .SetColor(new Color(0.773f, 0.451f, 0.314f))
-                .AddShadow();
+            UIModder.Create(new RectCreationOptions()
+            {
+                Name = "ModList",
+                Parent = UIModder.Parents.MainMenu.GetChild(0),
+                XRange = Vector2.zero,
+                YRange = Vector2.one,
+                Pivot = new Vector2(0, 1),
+                Position = new Vector2(30, -18),
+                Size = new Vector2(400, 100)
+            }).AddText(new TextCreationOptions()
+            {
+                Contents = sb.ToString(),
+                Alignment = TextAlignmentOptions.TopLeft,
+                FontSize = 40,
+                Color = new Color(0.773f, 0.451f, 0.314f)
+            }).AddShadow();
 
             // Store game version
             var versionObject = Object.FindObjectOfType<SetGameVersionText>();
