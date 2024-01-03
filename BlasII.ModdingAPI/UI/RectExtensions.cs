@@ -26,6 +26,32 @@ namespace BlasII.ModdingAPI.UI
             return rect.gameObject.AddComponent<TextMeshProUGUI>().ResetToDefault();
         }
 
+        public static RectTransform ApplyOptions(this RectTransform rect, RectCreationOptions options)
+        {
+            rect.name = options.Name;
+            rect.SetParent(options.Parent, false);
+            rect.anchorMin = new Vector2(options.XRange.x, options.YRange.x);
+            rect.anchorMax = new Vector2(options.XRange.y, options.YRange.y);
+            rect.pivot = options.Pivot;
+            rect.anchoredPosition = options.Position;
+            rect.sizeDelta = options.Size;
+            return rect;
+        }
+
+        public static RectCreationOptions CopyOptions(this RectTransform rect)
+        {
+            return new RectCreationOptions()
+            {
+                Name = rect.name,
+                Parent = rect.parent,
+                XRange = new Vector2(rect.anchorMin.x, rect.anchorMax.x),
+                YRange = new Vector2(rect.anchorMin.y, rect.anchorMax.y),
+                Pivot = rect.pivot,
+                Position = rect.anchoredPosition,
+                Size = rect.sizeDelta
+            };
+        }
+
         /// <summary>
         /// Resets xrange, yrange, pivot, position, and size to default
         /// </summary>

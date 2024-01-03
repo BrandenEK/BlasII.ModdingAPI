@@ -113,9 +113,13 @@ namespace BlasII.ModdingAPI.Menus
                 cancelBtn.GetComponentInChildren<UIPixelTextWithShadow>(), isFirst ? "btncnc" : "btnpvs");
 
             // Create holder for options and all settings
-            UIModder.CreateRect("Main Section", settingsMenu.transform)
-                .SetSize(1800, 750)
-                .SetPosition(0, -30);
+            UIModder.CreateRect(new RectCreationOptions()
+            {
+                Name = "Main Section",
+                Parent = settingsMenu.transform,
+                Position = new Vector2(0, -30),
+                Size = new Vector2(1800, 750)
+            });
 
             return settingsMenu.AddComponent<MenuComponent>();
         }

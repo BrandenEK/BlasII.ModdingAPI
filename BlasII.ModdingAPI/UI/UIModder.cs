@@ -20,19 +20,14 @@ namespace BlasII.ModdingAPI.UI
         public static Parents Parents { get; private set; } = new();
 
         /// <summary>
-        /// Creates a RectTransform with default parameters
+        /// Creates a RectTransform with the specified options
         /// </summary>
-        public static RectTransform CreateRect(string name, Transform parent)
+        public static RectTransform CreateRect(RectCreationOptions options)
         {
-            var rect = new GameObject(name).AddComponent<RectTransform>();
-            rect.SetParent(parent, false);
-            return rect.ResetToDefault();
+            return new GameObject().AddComponent<RectTransform>().ApplyOptions(options);
         }
 
-        /// <summary>
-        /// Creates a RectTransform with default parameters
-        /// </summary>
-        public static RectTransform CreateRect(string name) => CreateRect(name, Parents.Default);
+
 
         /// <summary>
         /// Creates an Image with default parameters
@@ -61,6 +56,31 @@ namespace BlasII.ModdingAPI.UI
         /// Creates a TextMeshProUGUI with default parameters
         /// </summary>
         public static TextMeshProUGUI CreateText(string name) => CreateText(name, Parents.Default);
+
+        #region Obsolete
+
+        /// <summary> Creates a RectTransform </summary>
+        [System.Obsolete("Use new RectCreationOptions instead")]
+        public static RectTransform CreateRect(string name, Transform parent)
+        {
+            return CreateRect(new RectCreationOptions()
+            {
+                Name = name,
+                Parent = parent
+            });
+        }
+
+        /// <summary> Creates a RectTransform </summary>
+        [System.Obsolete("Use new RectCreationOptions instead")]
+        public static RectTransform CreateRect(string name)
+        {
+            return CreateRect(new RectCreationOptions()
+            {
+                Name = name
+            });
+        }
+
+        #endregion Obsolete
     }
 
     /// <summary>
