@@ -5,3 +5,11 @@ btncnt: Continue game
 btncnc: Cancel
 btnnxt: Next
 btnpvs: Previous
+
+lang: es
+
+btnbgn: Empezar juego
+btncnt: Continuar juego
+btncnc: Cancelar
+btnnxt: Siguiente
+btnpvs: Anterior
