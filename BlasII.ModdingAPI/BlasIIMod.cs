@@ -1,5 +1,4 @@
-﻿using BlasII.ModdingAPI.Audio;
-using BlasII.ModdingAPI.Config;
+﻿using BlasII.ModdingAPI.Config;
 using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.Localization;
@@ -36,12 +35,6 @@ namespace BlasII.ModdingAPI
         public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;
 
         // Handlers
-
-        /// <summary>
-        /// Handles playing audio, such as UI sfx
-        /// </summary>
-        public AudioHandler AudioHandler => _audioHandler;
-        private readonly AudioHandler _audioHandler;
 
         /// <summary>
         /// Handles storing and retrieving config properties
@@ -167,7 +160,6 @@ namespace BlasII.ModdingAPI
             this.version = version;
 
             // Set handlers
-            _audioHandler = new AudioHandler();
             _configHandler = new ConfigHandler(this);
             _fileHandler = new FileHandler(this);
             _inputHandler = new InputHandler(this);
