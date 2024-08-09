@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BlasII.ModdingAPI.Helpers;
+using System;
 using System.Collections.Generic;
 
 namespace BlasII.ModdingAPI.Messages
@@ -30,7 +31,7 @@ namespace BlasII.ModdingAPI.Messages
                 return;
 
             _mod.Log($"Sending message '{message}' [{content}] to {receiver}");
-            if (_mod.IsModLoaded(receiver, out BlasIIMod mod))
+            if (ModHelper.TryGetModById(receiver, out BlasIIMod mod))
             {
                 mod.MessageHandler.Receive(_mod.Id, message, content ?? string.Empty);
             }

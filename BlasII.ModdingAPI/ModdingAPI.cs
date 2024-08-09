@@ -1,5 +1,6 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Files;
+using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.UI;
 using Il2CppTGK.Game.Components.UI;
@@ -32,7 +33,7 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnSceneLoaded(string sceneName)
         {
-            if (sceneName == "MainMenu")
+            if (SceneHelper.MenuSceneLoaded)
             {
                 if (!_initializedUI)
                 {
@@ -49,7 +50,7 @@ namespace BlasII.ModdingAPI
         {
             // Calculate mod list text
             var sb = new StringBuilder();
-            foreach (var mod in Main.ModLoader.AllMods)
+            foreach (var mod in ModHelper.LoadedMods)
             {
                 sb.AppendLine($"{mod.Name} v{mod.Version}");
             }
@@ -84,7 +85,7 @@ namespace BlasII.ModdingAPI
             if (dashIndex >= 0)
                 versionText = versionText[..dashIndex];
 
-            Main.ModLoader.GameVersion = versionText;
+            VersionHelper.GameVersion = versionText;
         }
     }
 }

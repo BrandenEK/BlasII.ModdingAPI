@@ -1,5 +1,4 @@
-﻿using BlasII.ModdingAPI.Audio;
-using BlasII.ModdingAPI.Config;
+﻿using BlasII.ModdingAPI.Config;
 using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.Localization;
@@ -16,48 +15,38 @@ namespace BlasII.ModdingAPI
     {
         // Mod info
 
+        /// <summary>
+        /// The unique id of the mod
+        /// </summary>
+        public string Id => id;
         private readonly string id;
-        internal string Id => id;
-
-        private readonly string name;
-        internal string Name => name;
-
-        private readonly string author;
-        internal string Author => author;
-
-        private readonly string version;
-        internal string Version => version;
-
-        // Helpers
 
         /// <summary>
-        /// Handles scene loading, such as checking if on main menu
+        /// The display name of the mod
         /// </summary>
-        public LoadStatus LoadStatus => loadStatus;
-        private readonly LoadStatus loadStatus = new();
+        public string Name => name;
+        private readonly string name;
+
+        /// <summary>
+        /// The developer of the mod
+        /// </summary>
+        public string Author => author;
+        private readonly string author;
+
+        /// <summary>
+        /// The file version of the mod
+        /// </summary>
+        public string Version => version;
+        private readonly string version;
+
+        // Helpers
 
         /// <summary>
         /// A persistent gameobject for all mods to use
         /// </summary>
         public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;
 
-        /// <summary>
-        /// The build version of the game executable
-        /// </summary>
-        public string GameVersion => Main.ModLoader.GameVersion;
-
-        /// <summary>
-        /// Checks whether a mod is loaded, and returns it if so
-        /// </summary>
-        public bool IsModLoaded(string modId, out BlasIIMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
-
         // Handlers
-
-        /// <summary>
-        /// Handles playing audio, such as UI sfx
-        /// </summary>
-        public AudioHandler AudioHandler => _audioHandler;
-        private readonly AudioHandler _audioHandler;
 
         /// <summary>
         /// Handles storing and retrieving config properties
@@ -183,7 +172,6 @@ namespace BlasII.ModdingAPI
             this.version = version;
 
             // Set handlers
-            _audioHandler = new AudioHandler();
             _configHandler = new ConfigHandler(this);
             _fileHandler = new FileHandler(this);
             _inputHandler = new InputHandler(this);
