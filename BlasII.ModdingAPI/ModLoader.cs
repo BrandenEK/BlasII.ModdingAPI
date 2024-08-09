@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using BlasII.ModdingAPI.Helpers;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,9 +13,6 @@ namespace BlasII.ModdingAPI
 
         private bool _initialized = false;
         private bool _loadedMenu = false;
-
-        private string _currentScene = string.Empty;
-        public string CurrentScene => _currentScene;
 
         public string GameVersion { get; internal set; } = "Unknown";
 
@@ -44,7 +42,8 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void Initialize()
         {
-            if (_initialized) return;
+            if (_initialized)
+                return;
 
             _modObject = new GameObject("Mod object");
             Object.DontDestroyOnLoad(_modObject);
@@ -71,7 +70,8 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void Update()
         {
-            if (!_initialized) return;
+            if (!_initialized)
+                return;
 
             ProcessModFunction(mod => mod.OnUpdate());
         }
@@ -81,7 +81,8 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void LateUpdate()
         {
-            if (!_initialized) return;
+            if (!_initialized)
+                return;
 
             ProcessModFunction(mod => mod.OnLateUpdate());
         }
@@ -91,7 +92,8 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void SceneLoaded(string sceneName)
         {
-            if (_currentScene != string.Empty) return;
+            if (SceneHelper.CurrentScene != string.Empty)
+                return;
 
             if (sceneName == "MainMenu")
             {
@@ -101,8 +103,8 @@ namespace BlasII.ModdingAPI
             }
 
             Main.LogSpecial(ModInfo.MOD_NAME, "Loaded scene: " + sceneName);
-            _currentScene = sceneName;
 
+            SceneHelper.CurrentScene = sceneName;
             ProcessModFunction(mod => mod.OnSceneLoaded(sceneName));
         }
 
@@ -111,9 +113,8 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void SceneUnloaded(string sceneName)
         {
+            SceneHelper.CurrentScene = string.Empty;
             ProcessModFunction(mod => mod.OnSceneUnloaded(sceneName));
-
-            _currentScene = string.Empty;
         }
 
         /// <summary>
@@ -122,7 +123,7 @@ namespace BlasII.ModdingAPI
         public void UnitySceneLoaded(string sceneName)
         {
             if (sceneName == "Empty")
-                _currentScene = string.Empty;
+                SceneHelper.CurrentScene = string.Empty;
         }
 
         /// <summary>

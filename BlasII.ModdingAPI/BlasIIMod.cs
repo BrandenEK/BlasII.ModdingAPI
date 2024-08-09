@@ -31,12 +31,6 @@ namespace BlasII.ModdingAPI
         // Helpers
 
         /// <summary>
-        /// Handles scene loading, such as checking if on main menu
-        /// </summary>
-        public LoadStatus LoadStatus => loadStatus;
-        private readonly LoadStatus loadStatus = new();
-
-        /// <summary>
         /// A persistent gameobject for all mods to use
         /// </summary>
         public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;

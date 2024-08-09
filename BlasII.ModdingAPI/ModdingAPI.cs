@@ -1,5 +1,6 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Files;
+using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.UI;
 using Il2CppTGK.Game.Components.UI;
@@ -32,7 +33,7 @@ namespace BlasII.ModdingAPI
 
         protected internal override void OnSceneLoaded(string sceneName)
         {
-            if (sceneName == "MainMenu")
+            if (SceneHelper.MenuSceneLoaded)
             {
                 if (!_initializedUI)
                 {
