@@ -14,8 +14,6 @@ namespace BlasII.ModdingAPI
         private bool _initialized = false;
         private bool _loadedMenu = false;
 
-        public string GameVersion { get; internal set; } = "Unknown";
-
         private GameObject _modObject;
         public GameObject ModObject => _modObject;
 

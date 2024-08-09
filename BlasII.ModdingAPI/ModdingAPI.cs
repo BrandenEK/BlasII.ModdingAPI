@@ -85,7 +85,7 @@ namespace BlasII.ModdingAPI
             if (dashIndex >= 0)
                 versionText = versionText[..dashIndex];
 
-            Main.ModLoader.GameVersion = versionText;
+            VersionHelper.GameVersion = versionText;
         }
     }
 }

@@ -36,11 +36,6 @@ namespace BlasII.ModdingAPI
         public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;
 
         /// <summary>
-        /// The build version of the game executable
-        /// </summary>
-        public string GameVersion => Main.ModLoader.GameVersion;
-
-        /// <summary>
         /// Checks whether a mod is loaded, and returns it if so
         /// </summary>
         public bool IsModLoaded(string modId, out BlasIIMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
