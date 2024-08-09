@@ -141,5 +141,20 @@ namespace BlasII.ModdingAPI
             Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", System.Drawing.Color.Green);
             _mods.Add(mod);
         }
+
+        public static void LogSpecial(string modName, string message)
+        {
+            int length = message.Length;
+            var sb = new StringBuilder();
+            for (int i = 0; i < length; i++)
+                sb.Append('-');
+            string line = sb.ToString();
+
+            LogCustom(modName, string.Empty, Color.White);
+            LogCustom(modName, line, Color.White);
+            LogCustom(modName, message, Color.White);
+            LogCustom(modName, line, Color.White);
+            LogCustom(modName, string.Empty, Color.White);
+        }
     }
 }

@@ -24,58 +24,69 @@ public static class ModLog
         _modNames.Add(mod.GetType().Assembly, mod.Name);
     }
 
-    private static void LogInternal(object message, LogLevel level, Assembly assembly)
+    internal static void Log(object message, string name, Color color)
+    {
+        MelonLogger.Msg(color, name, message.ToString());
+    }
+
+    internal static void Log(object message, Assembly assembly, Color color)
     {
         string name = _modNames.TryGetValue(assembly, out string modName) ? modName : UNKNOWN_MOD;
-        MelonLogger.Msg(_colorMapping[level], name, message.ToString());
+        Log(message, name, color);
     }
+
+    internal static void Log(object message, string name, LogLevel level) =>
+        Log(message, name, _colorMapping[level]);
+
+    internal static void Log(object message, Assembly assembly, LogLevel level) =>
+        Log(message, assembly, _colorMapping[level]);
 
     /// <summary>
     /// Logs an information message
     /// </summary>
-    public static void Info(object message) => LogInternal(message, LogLevel.Info, Assembly.GetCallingAssembly());
+    public static void Info(object message) => Log(message, Assembly.GetCallingAssembly(), LogLevel.Info);
     /// <summary>
     /// Logs an information message through the specified mod
     /// </summary>
-    public static void Info(object message, BlasIIMod mod) => LogInternal(message, LogLevel.Info, mod.GetType().Assembly);
+    public static void Info(object message, BlasIIMod mod) => Log(message, mod.Name, LogLevel.Info);
 
     /// <summary>
     /// Logs a warning message
     /// </summary>
-    public static void Warn(object message) => LogInternal(message, LogLevel.Warning, Assembly.GetCallingAssembly());
+    public static void Warn(object message) => Log(message, Assembly.GetCallingAssembly(), LogLevel.Warning);
     /// <summary>
     /// Logs a warning message through the specified mod
     /// </summary>
-    public static void Warn(object message, BlasIIMod mod) => LogInternal(message, LogLevel.Warning, mod.GetType().Assembly);
+    public static void Warn(object message, BlasIIMod mod) => Log(message, mod.Name, LogLevel.Warning);
 
     /// <summary>
     /// Logs an error message
     /// </summary>
-    public static void Error(object message) => LogInternal(message, LogLevel.Error, Assembly.GetCallingAssembly());
+    public static void Error(object message) => Log(message, Assembly.GetCallingAssembly(), LogLevel.Error);
     /// <summary>
     /// Logs an error message through the specified mod
     /// </summary>
-    public static void Error(object message, BlasIIMod mod) => LogInternal(message, LogLevel.Error, mod.GetType().Assembly);
+    public static void Error(object message, BlasIIMod mod) => Log(message, mod.Name, LogLevel.Error);
 
     /// <summary>
     /// Logs a fatal error message
     /// </summary>
-    public static void Fatal(object message) => LogInternal(message, LogLevel.Fatal, Assembly.GetCallingAssembly());
+    public static void Fatal(object message) => Log(message, Assembly.GetCallingAssembly(), LogLevel.Fatal);
     /// <summary>
     /// Logs a fatal error message through the specified mod
     /// </summary>
-    public static void Fatal(object message, BlasIIMod mod) => LogInternal(message, LogLevel.Fatal, mod.GetType().Assembly);
+    public static void Fatal(object message, BlasIIMod mod) => Log(message, mod.Name, LogLevel.Fatal);
 
     /// <summary>
     /// Logs a debug message
     /// </summary>
-    public static void Debug(object message) => LogInternal(message, LogLevel.Debug, Assembly.GetCallingAssembly());
+    public static void Debug(object message) => Log(message, Assembly.GetCallingAssembly(), LogLevel.Debug);
     /// <summary>
     /// Logs a debug message through the specified mod
     /// </summary>
-    public static void Debug(object message, BlasIIMod mod) => LogInternal(message, LogLevel.Debug, mod.GetType().Assembly);
+    public static void Debug(object message, BlasIIMod mod) => Log(message, mod.Name, LogLevel.Debug);
 
-    private enum LogLevel
+    internal enum LogLevel
     {
         Info,
         Warning,
@@ -92,19 +103,4 @@ public static class ModLog
         {  LogLevel.Fatal, Color.DarkRed },
         {  LogLevel.Debug, Color.Gray },
     };
-
-    public static void LogSpecial(string modName, string message)
-    {
-        int length = message.Length;
-        var sb = new StringBuilder();
-        for (int i = 0; i < length; i++)
-            sb.Append('-');
-        string line = sb.ToString();
-
-        LogCustom(modName, string.Empty, Color.White);
-        LogCustom(modName, line, Color.White);
-        LogCustom(modName, message, Color.White);
-        LogCustom(modName, line, Color.White);
-        LogCustom(modName, string.Empty, Color.White);
-    }
 }
