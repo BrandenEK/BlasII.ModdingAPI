@@ -1,6 +1,6 @@
 # Blasphemous 2 Modding API
 
-<img src="https://img.shields.io/github/downloads/BrandenEK/BlasII.ModdingAPI/total?color=6495ED&style=for-the-badge">
+<img src="https://img.shields.io/github/downloads/BrandenEK/BlasII.ModdingAPI/total?color=872124&style=for-the-badge">
 
 ---
 
