@@ -50,7 +50,7 @@ namespace BlasII.ModdingAPI
         {
             // Calculate mod list text
             var sb = new StringBuilder();
-            foreach (var mod in Main.ModLoader.AllMods)
+            foreach (var mod in ModHelper.LoadedMods)
             {
                 sb.AppendLine($"{mod.Name} v{mod.Version}");
             }

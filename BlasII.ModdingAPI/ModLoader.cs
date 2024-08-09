@@ -7,9 +7,7 @@ namespace BlasII.ModdingAPI
 {
     internal class ModLoader
     {
-        private readonly List<BlasIIMod> mods = new();
-
-        public IEnumerable<BlasIIMod> AllMods => mods;
+        private readonly List<BlasIIMod> _mods = new();
 
         private bool _initialized = false;
         private bool _loadedMenu = false;
@@ -17,12 +15,17 @@ namespace BlasII.ModdingAPI
         private GameObject _modObject;
         public GameObject ModObject => _modObject;
 
+        public ModLoader()
+        {
+            ModHelper.LoadedMods = _mods;
+        }
+
         /// <summary>
         /// Loops over the list of registered mods and performs an action on each one
         /// </summary>
         public void ProcessModFunction(System.Action<BlasIIMod> action)
         {
-            foreach (var mod in mods)
+            foreach (var mod in _mods)
             {
                 try
                 {
@@ -129,22 +132,14 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public void RegisterMod(BlasIIMod mod)
         {
-            if (mods.Any(m => m.Id == mod.Id))
+            if (_mods.Any(m => m.Id == mod.Id))
             {
                 Main.LogError("Mod Loader", $"Mod with id '{mod.Id}' already exists!");
                 return;
             }
 
             Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", System.Drawing.Color.Green);
-            mods.Add(mod);
-        }
-
-        /// <summary>
-        /// Checks whether a mod is already loaded
-        /// </summary>
-        public bool IsModLoaded(string modId, out BlasIIMod mod)
-        {
-            return (mod = mods.FirstOrDefault(m => m.Id == modId)) != null;
+            _mods.Add(mod);
         }
     }
 }

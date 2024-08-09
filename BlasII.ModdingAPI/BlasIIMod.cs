@@ -35,11 +35,6 @@ namespace BlasII.ModdingAPI
         /// </summary>
         public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;
 
-        /// <summary>
-        /// Checks whether a mod is loaded, and returns it if so
-        /// </summary>
-        public bool IsModLoaded(string modId, out BlasIIMod mod) => Main.ModLoader.IsModLoaded(modId, out mod);
-
         // Handlers
 
         /// <summary>

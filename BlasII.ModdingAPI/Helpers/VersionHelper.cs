@@ -2,7 +2,7 @@
 namespace BlasII.ModdingAPI.Helpers;
 
 /// <summary>
-/// Provides version information about the game
+/// Provides information about the version of the game
 /// </summary>
 public static class VersionHelper
 {
