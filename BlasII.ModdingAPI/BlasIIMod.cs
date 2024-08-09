@@ -15,17 +15,29 @@ namespace BlasII.ModdingAPI
     {
         // Mod info
 
+        /// <summary>
+        /// The unique id of the mod
+        /// </summary>
+        public string Id => id;
         private readonly string id;
-        internal string Id => id;
 
+        /// <summary>
+        /// The display name of the mod
+        /// </summary>
+        public string Name => name;
         private readonly string name;
-        internal string Name => name;
 
+        /// <summary>
+        /// The developer of the mod
+        /// </summary>
+        public string Author => author;
         private readonly string author;
-        internal string Author => author;
 
+        /// <summary>
+        /// The file version of the mod
+        /// </summary>
+        public string Version => version;
         private readonly string version;
-        internal string Version => version;
 
         // Helpers
 
