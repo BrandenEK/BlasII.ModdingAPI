@@ -11,20 +11,40 @@ namespace BlasII.ModdingAPI.Files
     /// </summary>
     public class FileHandler
     {
-        private readonly string rootPath;
         private readonly string configPath;
+        private readonly string contentPath;
         private readonly string dataPath;
         private readonly string keybindingsPath;
-        private readonly string levelsPath; // Might not be needed
         private readonly string localizationPath;
+
+        /// <summary>
+        /// The full path of the game's root folder
+        /// </summary>
+        public string RootFolder { get; } = $"{Directory.GetCurrentDirectory()}/";
+
+        /// <summary>
+        /// The full path of the game's modding folder
+        /// </summary>
+        public string ModdingFolder { get; } = Path.GetFullPath("Modding/");
+
+        /// <summary>
+        /// The full path of this mod's content folder
+        /// </summary>
+        public string ContentFolder
+        {
+            get
+            {
+                EnsureDirectoryExists(contentPath);
+                return contentPath;
+            }
+        }
 
         internal FileHandler(BlasIIMod mod)
         {
-            rootPath = $"{Directory.GetCurrentDirectory()}/";
             configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
+            contentPath = Path.GetFullPath($"Modding/content/{mod.Name}/");
             dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
             keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
-            levelsPath = Path.GetFullPath($"Modding/levels/{mod.Name}/");
             localizationPath = Path.GetFullPath($"Modding/localization/{mod.Name}.txt");
         }
 
@@ -73,14 +93,6 @@ namespace BlasII.ModdingAPI.Files
 
             output = null;
             return false;
-        }
-
-        /// <summary>
-        /// Writes data to a text file in the game's root directory
-        /// </summary>
-        public void WriteToFile(string fileName, string text)
-        {
-            File.WriteAllText(rootPath + fileName, text);
         }
 
         /// <summary>
@@ -276,7 +288,7 @@ namespace BlasII.ModdingAPI.Files
         /// </summary>
         internal string[] LoadConfig()
         {
-            return ReadFileLines(configPath, out string[] output) ? output : Array.Empty<string>();
+            return ReadFileLines(configPath, out string[] output) ? output : [];
         }
 
         /// <summary>
@@ -295,7 +307,7 @@ namespace BlasII.ModdingAPI.Files
         /// </summary>
         internal string[] LoadKeybindings()
         {
-            return ReadFileLines(keybindingsPath, out string[] output) ? output : Array.Empty<string>();
+            return ReadFileLines(keybindingsPath, out string[] output) ? output : [];
         }
 
         /// <summary>
@@ -307,13 +319,6 @@ namespace BlasII.ModdingAPI.Files
             File.WriteAllLines(keybindingsPath, keys);
         }
 
-        // Levels
-
-        internal void LoadLevels()
-        {
-
-        }
-
         // Localization
 
         /// <summary>
@@ -321,74 +326,7 @@ namespace BlasII.ModdingAPI.Files
         /// </summary>
         internal string[] LoadLocalization()
         {
-            return ReadFileLines(localizationPath, out string[] output) ? output : Array.Empty<string>();
-        }
-
-        // Obsolete
-
-        /// <summary>
-        /// Loads the data as a Sprite[], if it exists
-        /// </summary>
-        [Obsolete("Replaced with LoadDataAsSpritesheet")]
-        public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
-        {
-            return LoadDataAsFixedSpritesheet(fileName, new Vector2(size, size), out output, new SpriteImportOptions()
-            {
-                PixelsPerUnit = pixelsPerUnit,
-                UsePointFilter = usePointFilter,
-                Pivot = pivot,
-                Border = border
-            });
-        }
-
-        /// <summary>
-        /// Loads the data as a Sprite[], if it exists
-        /// </summary>
-        [Obsolete("Replaced with LoadDataAsSpritesheet")]
-        public bool LoadDataAsTexture(string fileName, out Sprite[] output, int size, int pixelsPerUnit, bool usePointFilter)
-        {
-            return LoadDataAsFixedSpritesheet(fileName, new Vector2(size, size), out output, new SpriteImportOptions()
-            {
-                PixelsPerUnit = pixelsPerUnit,
-                UsePointFilter = usePointFilter
-            });
-        }
-
-        /// <summary>
-        /// Loads the data as a Sprite[], if it exists
-        /// </summary>
-        [Obsolete("Replaced with LoadDataAsSpritesheet")]
-        public bool LoadDataAsTexture(string fileName, out Sprite[] output)
-        {
-            return LoadDataAsFixedSpritesheet(fileName, new Vector2(30, 30), out output);
-        }
-
-        /// <summary>
-        /// Loads the data as a Sprite, if it exists
-        /// </summary>
-        [Obsolete("Pass in new SpriteImportOptions instead")]
-        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter, Vector2 pivot, Vector4 border)
-        {
-            return LoadDataAsSprite(fileName, out output, new SpriteImportOptions()
-            {
-                PixelsPerUnit = pixelsPerUnit,
-                UsePointFilter = usePointFilter,
-                Pivot = pivot,
-                Border = border
-            });
-        }
-
-        /// <summary>
-        /// Loads the data as a Sprite, if it exists
-        /// </summary>
-        [Obsolete("Pass in new SpriteImportOptions instead")]
-        public bool LoadDataAsSprite(string fileName, out Sprite output, int pixelsPerUnit, bool usePointFilter)
-        {
-            return LoadDataAsSprite(fileName, out output, new SpriteImportOptions()
-            {
-                PixelsPerUnit = pixelsPerUnit,
-                UsePointFilter = usePointFilter
-            });
+            return ReadFileLines(localizationPath, out string[] output) ? output : [];
         }
     }
 }
