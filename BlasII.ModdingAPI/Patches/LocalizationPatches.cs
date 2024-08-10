@@ -2,7 +2,7 @@
 using HarmonyLib;
 using Il2CppI2.Loc;
 
-namespace BlasII.ModdingAPI.Localization
+namespace BlasII.ModdingAPI.Patches
 {
     /// <summary>
     /// Whenever the selected language is changed, update all items and handlers
