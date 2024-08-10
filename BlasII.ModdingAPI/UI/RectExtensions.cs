@@ -18,12 +18,22 @@ namespace BlasII.ModdingAPI.UI
         }
 
         /// <summary>
+        /// Adds an Image component with default options
+        /// </summary>
+        public static Image AddImage(this RectTransform rect) => rect.AddImage(new ImageCreationOptions());
+
+        /// <summary>
         /// Adds a TextMeshProUGUI component with the specified options
         /// </summary>
         public static TextMeshProUGUI AddText(this RectTransform rect, TextCreationOptions options)
         {
             return rect.gameObject.AddComponent<TextMeshProUGUI>().ApplyOptions(options);
         }
+
+        /// <summary>
+        /// Adds a TextMeshProUGUI component with default options
+        /// </summary>
+        public static TextMeshProUGUI AddText(this RectTransform rect) => rect.AddText(new TextCreationOptions());
 
         internal static RectTransform ApplyOptions(this RectTransform rect, RectCreationOptions options)
         {
@@ -117,24 +127,6 @@ namespace BlasII.ModdingAPI.UI
         {
             rect.anchoredPosition += position;
             return rect;
-        }
-
-        /// <summary>
-        /// Adds an Image component to the UI
-        /// </summary>
-        [System.Obsolete("Use new ImageCreationOptions instead")]
-        public static Image AddImage(this RectTransform rect)
-        {
-            return rect.AddImage(new ImageCreationOptions());
-        }
-
-        /// <summary>
-        /// Adds a TextMeshProUGUI component to the UI
-        /// </summary>
-        [System.Obsolete("Use new TextCreationOptions instead")]
-        public static TextMeshProUGUI AddText(this RectTransform rect)
-        {
-            return rect.AddText(new TextCreationOptions());
         }
     }
 }
