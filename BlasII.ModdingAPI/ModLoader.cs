@@ -1,4 +1,5 @@
-﻿using BlasII.ModdingAPI.Helpers;
+﻿using BlasII.ModdingAPI.Extensions;
+using BlasII.ModdingAPI.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

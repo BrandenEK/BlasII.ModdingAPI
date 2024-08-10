@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BlasII.ModdingAPI
+namespace BlasII.ModdingAPI.Extensions
 {
     internal static class ModExtensions
     {
