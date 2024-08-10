@@ -38,13 +38,6 @@ namespace BlasII.ModdingAPI
         public string Version => version;
         private readonly string version;
 
-        // Helpers
-
-        /// <summary>
-        /// A persistent gameobject for all mods to use
-        /// </summary>
-        public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;
-
         // Handlers
 
         /// <summary>

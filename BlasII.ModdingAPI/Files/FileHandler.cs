@@ -1,3 +1,4 @@
+using BlasII.ModdingAPI.Helpers;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -261,7 +262,7 @@ namespace BlasII.ModdingAPI.Files
         private void RegisterSpriteOnObject(Sprite sprite)
         {
             var obj = new GameObject(sprite?.name ?? "Empty");
-            obj.transform.SetParent(Main.ModLoader.ModObject.transform);
+            obj.transform.SetParent(ObjectHelper.ModObject.transform);
 
             var sr = obj.AddComponent<SpriteRenderer>();
             sr.sprite = sprite;
