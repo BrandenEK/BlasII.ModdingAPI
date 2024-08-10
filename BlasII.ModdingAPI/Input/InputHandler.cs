@@ -108,7 +108,7 @@ namespace BlasII.ModdingAPI.Input
         {
             if (_registered)
             {
-                _mod.LogWarning("InputHandler has already been registered!");
+                ModLog.Warn("InputHandler has already been registered!", _mod);
                 return;
             }
             _registered = true;
@@ -163,7 +163,7 @@ namespace BlasII.ModdingAPI.Input
                 // If the keybinding was not a valid type, skip
                 if (!System.Enum.TryParse(typeof(KeyCode), value, out object keyCode))
                 {
-                    _mod.LogError($"Keybinding '{key}' is invalid.  Using default instead.");
+                    ModLog.Error($"Keybinding '{key}' is invalid.  Using default instead.", _mod);
                     continue;
                 }
 

@@ -15,7 +15,7 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         public void RegisterNewGameMenu(BaseMenu menu)
         {
-            Main.ModdingAPI.Log($"Registering NewGame menu: " + menu.GetType().Name);
+            ModLog.Info($"Registering NewGame menu: " + menu.GetType().Name);
             menu.OwnerMod = _mod;
             MenuModder.AddNewGameMenu(menu);
         }
@@ -25,7 +25,7 @@ namespace BlasII.ModdingAPI.Menus
         /// </summary>
         public void RegisterLoadGameMenu(BaseMenu menu)
         {
-            Main.ModdingAPI.Log($"Registering LoadGame menu: " + menu.GetType().Name);
+            ModLog.Info($"Registering LoadGame menu: " + menu.GetType().Name);
             menu.OwnerMod = _mod;
             MenuModder.AddLoadGameMenu(menu);
         }

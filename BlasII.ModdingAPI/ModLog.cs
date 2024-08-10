@@ -86,6 +86,15 @@ public static class ModLog
     /// </summary>
     public static void Debug(object message, BlasIIMod mod) => Log(message, mod.Name, LogLevel.Debug);
 
+    /// <summary>
+    /// Logs a custom message
+    /// </summary>
+    public static void Custom(object message, Color color) => Log(message, Assembly.GetCallingAssembly(), color);
+    /// <summary>
+    /// Logs a custom message through the specified mod
+    /// </summary>
+    public static void Custom(object message, Color color, BlasIIMod mod) => Log(message, mod.Name, color);
+
     internal enum LogLevel
     {
         Info,
