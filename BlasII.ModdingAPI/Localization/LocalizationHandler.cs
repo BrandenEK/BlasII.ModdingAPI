@@ -56,7 +56,7 @@ namespace BlasII.ModdingAPI.Localization
                 return _textByLanguage[_defaultLanguage][key];
             }
 
-            _mod.LogError($"Failed to localize '{key}' to any language.");
+            ModLog.Error($"Failed to localize '{key}' to any language.", _mod);
             return ERROR_TEXT;
         }
 
@@ -101,7 +101,7 @@ namespace BlasII.ModdingAPI.Localization
         {
             if (_registered)
             {
-                _mod.LogWarning("LocalizationHandler has already been registered!");
+                ModLog.Warn("LocalizationHandler has already been registered!", _mod);
                 return;
             }
             _registered = true;

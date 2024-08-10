@@ -54,7 +54,7 @@ namespace BlasII.ModdingAPI.Persistence
             }
             catch (Exception)
             {
-                Main.ModdingAPI.LogError("Failed to save data for slot " + slot);
+                ModLog.Error("Failed to save data for slot " + slot);
             }
         }
 
@@ -87,7 +87,7 @@ namespace BlasII.ModdingAPI.Persistence
             }
             catch (Exception)
             {
-                Main.ModdingAPI.LogError("Failed to load data for slot " + slot);
+                ModLog.Error("Failed to load data for slot " + slot);
                 return new Dictionary<string, SaveData>();
             }
         }
@@ -104,7 +104,7 @@ namespace BlasII.ModdingAPI.Persistence
             }
             catch (Exception)
             {
-                Main.ModdingAPI.LogError("Failed to delete data for slot " + slot);
+                ModLog.Error("Failed to delete data for slot " + slot);
             }
         }
 

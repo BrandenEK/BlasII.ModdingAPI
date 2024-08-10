@@ -74,7 +74,7 @@ namespace BlasII.ModdingAPI.Input
                 }
             }
 
-            Main.ModdingAPI.LogError("Failed to load input data for " + button);
+            ModLog.Error("Failed to load input data for " + button);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace BlasII.ModdingAPI.Input
                 }
             }
 
-            Main.ModdingAPI.LogError("Failed to load input data for " + axis);
+            ModLog.Error("Failed to load input data for " + axis);
         }
     }
 }

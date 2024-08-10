@@ -21,13 +21,13 @@ namespace BlasII.ModdingAPI.Config
         {
             if (!_properties.TryGetValue(key, out object value))
             {
-                _mod.LogError($"Property '{key}' does not exist!");
+                ModLog.Error($"Property '{key}' does not exist!", _mod);
                 return default;
             }
 
             if (value.GetType() != typeof(T))
             {
-                _mod.LogError($"Property '{key}' is the wrong type!");
+                ModLog.Error($"Property '{key}' is the wrong type!", _mod);
                 return default;
             }
 
@@ -41,13 +41,13 @@ namespace BlasII.ModdingAPI.Config
         {
             if (!_properties.TryGetValue(key, out object currentValue))
             {
-                _mod.LogError($"Property '{key}' does not exist!");
+                ModLog.Error($"Property '{key}' does not exist!", _mod);
                 return;
             }
 
             if (currentValue.GetType() != typeof(T))
             {
-                _mod.LogError($"Property '{key}' is the wrong type!");
+                ModLog.Error($"Property '{key}' is the wrong type!", _mod);
                 return;
             }
 
@@ -71,7 +71,7 @@ namespace BlasII.ModdingAPI.Config
         {
             if (_registered)
             {
-                _mod.LogWarning("ConfigHandler has already been registered!");
+                ModLog.Warn("ConfigHandler has already been registered!", _mod);
                 return;
             }
             _registered = true;
@@ -126,7 +126,7 @@ namespace BlasII.ModdingAPI.Config
                 // If the property was not a valid type, skip
                 if (!ParseProperty(value, defaultValue, out object realValue))
                 {
-                    _mod.LogError($"Property '{key}' is invalid.  Using default instead.");
+                    ModLog.Error($"Property '{key}' is invalid.  Using default instead.", _mod);
                     continue;
                 }
 

@@ -1,7 +1,7 @@
 ﻿using BlasII.ModdingAPI.Helpers;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using System.Text;
 
 namespace BlasII.ModdingAPI
 {
@@ -12,8 +12,8 @@ namespace BlasII.ModdingAPI
         private bool _initialized = false;
         private bool _loadedMenu = false;
 
-        private GameObject _modObject;
-        public GameObject ModObject => _modObject;
+        private UnityEngine.GameObject _modObject;
+        public UnityEngine.GameObject ModObject => _modObject;
 
         public ModLoader()
         {
@@ -33,7 +33,7 @@ namespace BlasII.ModdingAPI
                 }
                 catch (System.Exception e)
                 {
-                    mod.LogError($"Encountered error: {e.Message}\n{e.CleanStackTrace()}");
+                    ModLog.Error($"Encountered error: {e.Message}\n{e.CleanStackTrace()}", mod);
                 }
             }
         }
@@ -46,12 +46,13 @@ namespace BlasII.ModdingAPI
             if (_initialized)
                 return;
 
-            _modObject = new GameObject("Mod object");
-            Object.DontDestroyOnLoad(_modObject);
+            LogSpecial("Initialization");
+            _modObject = new UnityEngine.GameObject("Mod object");
+            UnityEngine.Object.DontDestroyOnLoad(_modObject);
 
-            Main.Log(ModInfo.MOD_NAME, "Initializing mods...");
+            ModLog.Info("Initializing mods...");
             ProcessModFunction(mod => mod.OnInitialize());
-            Main.Log(ModInfo.MOD_NAME, "All mods initialized!");
+            ModLog.Info("All mods initialized!");
             ProcessModFunction(mod => mod.OnAllInitialized());
             _initialized = true;
         }
@@ -63,7 +64,7 @@ namespace BlasII.ModdingAPI
         {
             ProcessModFunction(mod => mod.OnDispose());
 
-            Main.Log(ModInfo.MOD_NAME, "All mods disposed!");
+            ModLog.Info("All mods disposed!");
         }
 
         /// <summary>
@@ -103,7 +104,7 @@ namespace BlasII.ModdingAPI
                 _loadedMenu = true;
             }
 
-            Main.LogSpecial(ModInfo.MOD_NAME, "Loaded scene: " + sceneName);
+            LogSpecial("Loaded scene: " + sceneName);
 
             SceneHelper.CurrentScene = sceneName;
             ProcessModFunction(mod => mod.OnSceneLoaded(sceneName));
@@ -134,12 +135,30 @@ namespace BlasII.ModdingAPI
         {
             if (_mods.Any(m => m.Id == mod.Id))
             {
-                Main.LogError("Mod Loader", $"Mod with id '{mod.Id}' already exists!");
+                ModLog.Log($"Mod with id '{mod.Id}' already exists!", "Mod Loader", ModLog.LogLevel.Error);
                 return;
             }
 
-            Main.LogCustom("Mod Loader", $"Registering mod: {mod.Id} ({mod.Version})", System.Drawing.Color.Green);
+            ModLog.Log($"Registering mod: {mod.Id} ({mod.Version})", "Mod Loader", System.Drawing.Color.Green);
             _mods.Add(mod);
+        }
+
+        /// <summary>
+        /// Formats the message for scene loading
+        /// </summary>
+        private void LogSpecial(string message)
+        {
+            var sb = new StringBuilder();
+            int length = message.Length;
+            for (int i = 0; i < length; i++)
+                sb.Append('-');
+            string line = sb.ToString();
+
+            ModLog.Info(string.Empty);
+            ModLog.Info(line);
+            ModLog.Info(message);
+            ModLog.Info(line);
+            ModLog.Info(string.Empty);
         }
     }
 }

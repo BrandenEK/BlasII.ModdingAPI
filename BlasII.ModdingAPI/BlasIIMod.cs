@@ -4,7 +4,6 @@ using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.Localization;
 using BlasII.ModdingAPI.Menus;
 using BlasII.ModdingAPI.Messages;
-using System.Drawing;
 
 namespace BlasII.ModdingAPI
 {
@@ -136,28 +135,6 @@ namespace BlasII.ModdingAPI
         /// </summary>
         protected internal virtual void OnExitGame() { }
 
-        // Logging
-
-        /// <summary>
-        /// Logs a message in gray to the console
-        /// </summary>
-        public void Log(object message) => Main.Log(Name, message);
-
-        /// <summary>
-        /// Logs a message in yellow to the console
-        /// </summary>
-        public void LogWarning(object warning) => Main.LogWarning(Name, warning);
-
-        /// <summary>
-        /// Logs a message in red to the console
-        /// </summary>
-        public void LogError(object error) => Main.LogError(Name, error);
-
-        /// <summary>
-        /// Logs a message in any color to the console
-        /// </summary>
-        public void LogCustom(object message, Color color) => Main.LogCustom(Name, message, color);
-
         // Constructor
 
         /// <summary>
@@ -181,6 +158,7 @@ namespace BlasII.ModdingAPI
 
             // Register mod
             Main.ModLoader.RegisterMod(this);
+            ModLog.Register(this);
         }
     }
 }
