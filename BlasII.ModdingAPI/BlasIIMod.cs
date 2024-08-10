@@ -135,6 +135,11 @@ namespace BlasII.ModdingAPI
         /// </summary>
         protected internal virtual void OnExitGame() { }
 
+        /// <summary>
+        /// Called when mods are able to register services
+        /// </summary>
+        protected internal virtual void OnRegisterServices(ModServiceProvider provider) { }
+
         // Constructor
 
         /// <summary>

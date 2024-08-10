@@ -52,8 +52,10 @@ namespace BlasII.ModdingAPI
 
             ModLog.Info("Initializing mods...");
             ProcessModFunction(mod => mod.OnInitialize());
-            ModLog.Info("All mods initialized!");
+            ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
             ProcessModFunction(mod => mod.OnAllInitialized());
+            ModLog.Info("All mods initialized!");
+
             _initialized = true;
         }
 
