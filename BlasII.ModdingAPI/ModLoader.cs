@@ -1,7 +1,9 @@
-﻿using BlasII.ModdingAPI.Helpers;
+﻿using BlasII.ModdingAPI.Extensions;
+using BlasII.ModdingAPI.Helpers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using UnityEngine;
 
 namespace BlasII.ModdingAPI
 {
@@ -11,9 +13,6 @@ namespace BlasII.ModdingAPI
 
         private bool _initialized = false;
         private bool _loadedMenu = false;
-
-        private UnityEngine.GameObject _modObject;
-        public UnityEngine.GameObject ModObject => _modObject;
 
         public ModLoader()
         {
@@ -47,13 +46,15 @@ namespace BlasII.ModdingAPI
                 return;
 
             LogSpecial("Initialization");
-            _modObject = new UnityEngine.GameObject("Mod object");
-            UnityEngine.Object.DontDestroyOnLoad(_modObject);
+            ObjectHelper.ModObject = new GameObject("Mod object");
+            Object.DontDestroyOnLoad(ObjectHelper.ModObject);
 
             ModLog.Info("Initializing mods...");
             ProcessModFunction(mod => mod.OnInitialize());
-            ModLog.Info("All mods initialized!");
+            ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
             ProcessModFunction(mod => mod.OnAllInitialized());
+            ModLog.Info("All mods initialized!");
+
             _initialized = true;
         }
 
@@ -63,7 +64,6 @@ namespace BlasII.ModdingAPI
         public void Dispose()
         {
             ProcessModFunction(mod => mod.OnDispose());
-
             ModLog.Info("All mods disposed!");
         }
 

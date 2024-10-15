@@ -27,72 +27,10 @@ namespace BlasII.ModdingAPI.UI
             return new GameObject().AddComponent<RectTransform>().ApplyOptions(options);
         }
 
-        #region Obsolete
-
-        /// <summary> Creates a RectTransform </summary>
-        [System.Obsolete("Use new RectCreationOptions instead")]
-        public static RectTransform CreateRect(string name, Transform parent)
-        {
-            return Create(new RectCreationOptions()
-            {
-                Name = name,
-                Parent = parent
-            });
-        }
-
-        /// <summary> Creates a RectTransform </summary>
-        [System.Obsolete("Use new RectCreationOptions instead")]
-        public static RectTransform CreateRect(string name)
-        {
-            return Create(new RectCreationOptions()
-            {
-                Name = name
-            });
-        }
-
-        /// <summary> Creates an Image </summary>
-        [System.Obsolete("Use new ImageCreationOptions instead")]
-        public static Image CreateImage(string name, Transform parent)
-        {
-            return Create(new RectCreationOptions()
-            {
-                Name = name,
-                Parent = parent,
-            }).AddImage();
-        }
-
-        /// <summary> Creates an Image </summary>
-        [System.Obsolete("Use new ImageCreationOptions instead")]
-        public static Image CreateImage(string name)
-        {
-            return Create(new RectCreationOptions()
-            {
-                Name = name
-            }).AddImage();
-        }
-
-        /// <summary> Creates a TextMeshProUGUI </summary>
-        [System.Obsolete("Use new TextCreationOptions instead")]
-        public static TextMeshProUGUI CreateText(string name, Transform parent)
-        {
-            return Create(new RectCreationOptions()
-            {
-                Name = name,
-                Parent = parent
-            }).AddText(new TextCreationOptions());
-        }
-
-        /// <summary> Creates a TextMeshProUGUI </summary>
-        [System.Obsolete("Use new TextCreationOptions instead")]
-        public static TextMeshProUGUI CreateText(string name)
-        {
-            return Create(new RectCreationOptions()
-            {
-                Name = name
-            }).AddText(new TextCreationOptions());
-        }
-
-        #endregion Obsolete
+        /// <summary>
+        /// Creates a RectTransform with default options
+        /// </summary>
+        public static RectTransform Create() => Create(new RectCreationOptions());
     }
 
     /// <summary>
@@ -103,10 +41,10 @@ namespace BlasII.ModdingAPI.UI
         internal TMP_FontAsset Default => Blasphemous;
 
         /// <summary> Pixelated Blasphemous font </summary>
-        public TMP_FontAsset Blasphemous { get; internal set; }
+        public TMP_FontAsset Blasphemous { get; private set; }
 
         /// <summary> Standard Arial font </summary>
-        public TMP_FontAsset Arial { get; internal set; }
+        public TMP_FontAsset Arial { get; private set; }
 
         /// <summary>
         /// Locates and stores font objects
@@ -126,7 +64,7 @@ namespace BlasII.ModdingAPI.UI
         internal Transform Default => Canvas;
 
         /// <summary> Parent of all UI </summary>
-        public Transform Canvas { get; internal set; }
+        public Transform Canvas { get; private set; }
 
         /// <summary> Parent of the main menu UI </summary>
         public Transform MainMenu => Canvas?.Find("Interfaces/MainMenuWindow_prefab(Clone)");

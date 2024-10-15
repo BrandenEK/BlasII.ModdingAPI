@@ -38,13 +38,6 @@ namespace BlasII.ModdingAPI
         public string Version => version;
         private readonly string version;
 
-        // Helpers
-
-        /// <summary>
-        /// A persistent gameobject for all mods to use
-        /// </summary>
-        public UnityEngine.GameObject ModObject => Main.ModLoader.ModObject;
-
         // Handlers
 
         /// <summary>
@@ -134,6 +127,11 @@ namespace BlasII.ModdingAPI
         /// Called when quiting a game, after returning to the main menu
         /// </summary>
         protected internal virtual void OnExitGame() { }
+
+        /// <summary>
+        /// Called when mods are able to register services
+        /// </summary>
+        protected internal virtual void OnRegisterServices(ModServiceProvider provider) { }
 
         // Constructor
 
