@@ -1,8 +1,6 @@
 ﻿using BlasII.ModdingAPI.Assets;
-using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
-using BlasII.ModdingAPI.UI;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Linq;
@@ -15,19 +13,8 @@ internal class ModdingAPI : BlasIIMod
 {
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
-    private bool _initializedUI = false;
-
-    private Sprite _cursorIcon;
-    public Sprite CursorIcon => _cursorIcon;
-
     protected internal override void OnInitialize()
     {
-        LocalizationHandler.RegisterDefaultLanguage("en");
-        FileHandler.LoadDataAsSprite("cursor.png", out _cursorIcon, new SpriteImportOptions()
-        {
-            PixelsPerUnit = 40
-        });
-
         AssetStorage.Initialize();
         InputStorage.Initialize();
     }
@@ -36,15 +23,10 @@ internal class ModdingAPI : BlasIIMod
     {
         if (SceneHelper.MenuSceneLoaded)
         {
-            if (!_initializedUI)
-            {
-                UIModder.Fonts.Initialize();
-                UIModder.Parents.Initialize();
-                _initializedUI = true;
-                FindGameVersion();
-            }
-
             DisplayModListOnMenu();
+
+            if (VersionHelper.GameVersion == "Unknown")
+                FindGameVersion();
         }
     }
 
