@@ -284,20 +284,20 @@ public class FileHandler
     // Config
 
     /// <summary>
-    /// Loads the contents of the config file, or an empty list
+    /// Loads the contents of the config file, or an empty string
     /// </summary>
-    internal string[] LoadConfig()
+    internal string LoadConfig()
     {
-        return ReadFileLines(configPath, out string[] output) ? output : [];
+        return ReadFileContents(configPath, out string output) ? output : string.Empty;
     }
 
     /// <summary>
     /// Saves the contents of the config file
     /// </summary>
-    internal void SaveConfig(string[] properties)
+    internal void SaveConfig(string config)
     {
         EnsureDirectoryExists(configPath);
-        File.WriteAllLines(configPath, properties);
+        File.WriteAllText(configPath, config);
     }
 
     // Keybindings
