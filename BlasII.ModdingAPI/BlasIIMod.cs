@@ -2,7 +2,6 @@
 using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.Localization;
-using BlasII.ModdingAPI.Menus;
 using BlasII.ModdingAPI.Messages;
 
 namespace BlasII.ModdingAPI;
@@ -55,11 +54,6 @@ public abstract class BlasIIMod
     /// Handles translations, such as automatic localization on language change
     /// </summary>
     public LocalizationHandler LocalizationHandler { get; }
-
-    /// <summary>
-    /// Handles displaying menus when beginning or loading a game
-    /// </summary>
-    public MenuHandler MenuHandler { get; }
 
     /// <summary>
     /// Handles sending and receiving messages, such as listening for specific broadcasts
@@ -141,7 +135,6 @@ public abstract class BlasIIMod
         FileHandler = new FileHandler(this);
         InputHandler = new InputHandler(this);
         LocalizationHandler = new LocalizationHandler(this);
-        MenuHandler = new MenuHandler(this);
         MessageHandler = new MessageHandler(this);
 
         // Register mod
