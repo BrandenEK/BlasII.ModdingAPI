@@ -27,4 +27,3 @@ For example, to create a mod that adds the Boots of Pleading item, I would run t
 
 ## Installation
 This mod is available for download through the [Blasphemous Mod Installer](https://github.com/BrandenEK/Blasphemous.Modding.Installer)
-- Required dependencies: None
