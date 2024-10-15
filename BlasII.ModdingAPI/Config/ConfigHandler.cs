@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using System.IO;
 
 namespace BlasII.ModdingAPI.Config;
 
@@ -20,7 +21,7 @@ public class ConfigHandler
         T config;
         try
         {
-            config = JsonConvert.DeserializeObject<T>(_mod.FileHandler.LoadConfig());
+            config = JsonConvert.DeserializeObject<T>(File.ReadAllText(ConfigPath));
         }
         catch
         {
@@ -44,6 +45,16 @@ public class ConfigHandler
         };
 
         string json = JsonConvert.SerializeObject(config, jss);
-        _mod.FileHandler.SaveConfig(JsonConvert.SerializeObject(config));
+        File.WriteAllText(ConfigPath, json);
+    }
+
+    private string ConfigPath
+    {
+        get
+        {
+            var path = new FileInfo(Path.Combine(_mod.FileHandler.ModdingFolder, "config", $"{_mod.Name}.cfg"));
+            path.Directory.Create();
+            return path.FullName;
+        }
     }
 }
