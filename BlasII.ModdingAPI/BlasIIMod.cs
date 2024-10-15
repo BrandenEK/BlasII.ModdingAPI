@@ -17,64 +17,54 @@ namespace BlasII.ModdingAPI
         /// <summary>
         /// The unique id of the mod
         /// </summary>
-        public string Id => id;
-        private readonly string id;
+        public string Id { get; }
 
         /// <summary>
         /// The display name of the mod
         /// </summary>
-        public string Name => name;
-        private readonly string name;
+        public string Name { get; }
 
         /// <summary>
         /// The developer of the mod
         /// </summary>
-        public string Author => author;
-        private readonly string author;
+        public string Author { get; }
 
         /// <summary>
         /// The file version of the mod
         /// </summary>
-        public string Version => version;
-        private readonly string version;
+        public string Version { get; }
 
         // Handlers
 
         /// <summary>
         /// Handles storing and retrieving config properties
         /// </summary>
-        public ConfigHandler ConfigHandler => _configHandler;
-        private readonly ConfigHandler _configHandler;
+        public ConfigHandler ConfigHandler { get; }
 
         /// <summary>
         /// Handles file IO, such as such loading data or writing to a file
         /// </summary>
-        public FileHandler FileHandler => _fileHandler;
-        private readonly FileHandler _fileHandler;
+        public FileHandler FileHandler { get; }
 
         /// <summary>
         /// Handles player input, such as custom keybindings
         /// </summary>
-        public InputHandler InputHandler => _inputHandler;
-        private readonly InputHandler _inputHandler;
+        public InputHandler InputHandler { get; }
 
         /// <summary>
         /// Handles translations, such as automatic localization on language change
         /// </summary>
-        public LocalizationHandler LocalizationHandler => _localizationHandler;
-        private readonly LocalizationHandler _localizationHandler;
+        public LocalizationHandler LocalizationHandler { get; }
 
         /// <summary>
         /// Handles displaying menus when beginning or loading a game
         /// </summary>
-        public MenuHandler MenuHandler => _menuHandler;
-        private readonly MenuHandler _menuHandler;
+        public MenuHandler MenuHandler { get; }
 
         /// <summary>
         /// Handles sending and receiving messages, such as listening for specific broadcasts
         /// </summary>
-        public MessageHandler MessageHandler => _messageHandler;
-        private readonly MessageHandler _messageHandler;
+        public MessageHandler MessageHandler { get; }
 
         // Events
 
@@ -141,18 +131,18 @@ namespace BlasII.ModdingAPI
         public BlasIIMod(string id, string name, string author, string version)
         {
             // Set data
-            this.id = id;
-            this.name = name;
-            this.author = author;
-            this.version = version;
+            Id = id;
+            Name = name;
+            Author = author;
+            Version = version;
 
             // Set handlers
-            _configHandler = new ConfigHandler(this);
-            _fileHandler = new FileHandler(this);
-            _inputHandler = new InputHandler(this);
-            _localizationHandler = new LocalizationHandler(this);
-            _menuHandler = new MenuHandler(this);
-            _messageHandler = new MessageHandler(this);
+            ConfigHandler = new ConfigHandler(this);
+            FileHandler = new FileHandler(this);
+            InputHandler = new InputHandler(this);
+            LocalizationHandler = new LocalizationHandler(this);
+            MenuHandler = new MenuHandler(this);
+            MessageHandler = new MessageHandler(this);
 
             // Register mod
             Main.ModLoader.RegisterMod(this);
