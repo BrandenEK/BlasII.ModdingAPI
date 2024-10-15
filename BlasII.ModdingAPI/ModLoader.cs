@@ -5,160 +5,159 @@ using System.Linq;
 using System.Text;
 using UnityEngine;
 
-namespace BlasII.ModdingAPI
+namespace BlasII.ModdingAPI;
+
+internal class ModLoader
 {
-    internal class ModLoader
+    private readonly List<BlasIIMod> _mods = new();
+
+    private bool _initialized = false;
+    private bool _loadedMenu = false;
+
+    public ModLoader()
     {
-        private readonly List<BlasIIMod> _mods = new();
+        ModHelper.LoadedMods = _mods;
+    }
 
-        private bool _initialized = false;
-        private bool _loadedMenu = false;
-
-        public ModLoader()
+    /// <summary>
+    /// Loops over the list of registered mods and performs an action on each one
+    /// </summary>
+    public void ProcessModFunction(System.Action<BlasIIMod> action)
+    {
+        foreach (var mod in _mods)
         {
-            ModHelper.LoadedMods = _mods;
-        }
-
-        /// <summary>
-        /// Loops over the list of registered mods and performs an action on each one
-        /// </summary>
-        public void ProcessModFunction(System.Action<BlasIIMod> action)
-        {
-            foreach (var mod in _mods)
+            try
             {
-                try
-                {
-                    action(mod);
-                }
-                catch (System.Exception e)
-                {
-                    ModLog.Error($"Encountered error: {e.Message}\n{e.CleanStackTrace()}", mod);
-                }
+                action(mod);
+            }
+            catch (System.Exception e)
+            {
+                ModLog.Error($"Encountered error: {e.Message}\n{e.CleanStackTrace()}", mod);
             }
         }
+    }
 
-        /// <summary>
-        /// Initializes all mods
-        /// </summary>
-        public void Initialize()
+    /// <summary>
+    /// Initializes all mods
+    /// </summary>
+    public void Initialize()
+    {
+        if (_initialized)
+            return;
+
+        LogSpecial("Initialization");
+        ObjectHelper.ModObject = new GameObject("Mod object");
+        Object.DontDestroyOnLoad(ObjectHelper.ModObject);
+
+        ModLog.Info("Initializing mods...");
+        ProcessModFunction(mod => mod.OnInitialize());
+        ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
+        ProcessModFunction(mod => mod.OnAllInitialized());
+        ModLog.Info("All mods initialized!");
+
+        _initialized = true;
+    }
+
+    /// <summary>
+    /// Disposes all mods
+    /// </summary>
+    public void Dispose()
+    {
+        ProcessModFunction(mod => mod.OnDispose());
+        ModLog.Info("All mods disposed!");
+    }
+
+    /// <summary>
+    /// Updates all mods
+    /// </summary>
+    public void Update()
+    {
+        if (!_initialized)
+            return;
+
+        ProcessModFunction(mod => mod.OnUpdate());
+    }
+
+    /// <summary>
+    /// Late updates all mods
+    /// </summary>
+    public void LateUpdate()
+    {
+        if (!_initialized)
+            return;
+
+        ProcessModFunction(mod => mod.OnLateUpdate());
+    }
+
+    /// <summary>
+    /// Processes a LoadScene event for all mods
+    /// </summary>
+    public void SceneLoaded(string sceneName)
+    {
+        if (SceneHelper.CurrentScene != string.Empty)
+            return;
+
+        if (sceneName == "MainMenu")
         {
-            if (_initialized)
-                return;
-
-            LogSpecial("Initialization");
-            ObjectHelper.ModObject = new GameObject("Mod object");
-            Object.DontDestroyOnLoad(ObjectHelper.ModObject);
-
-            ModLog.Info("Initializing mods...");
-            ProcessModFunction(mod => mod.OnInitialize());
-            ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
-            ProcessModFunction(mod => mod.OnAllInitialized());
-            ModLog.Info("All mods initialized!");
-
-            _initialized = true;
+            if (_loadedMenu)
+                ProcessModFunction(mod => mod.OnExitGame());
+            _loadedMenu = true;
         }
 
-        /// <summary>
-        /// Disposes all mods
-        /// </summary>
-        public void Dispose()
-        {
-            ProcessModFunction(mod => mod.OnDispose());
-            ModLog.Info("All mods disposed!");
-        }
+        LogSpecial("Loaded scene: " + sceneName);
 
-        /// <summary>
-        /// Updates all mods
-        /// </summary>
-        public void Update()
-        {
-            if (!_initialized)
-                return;
+        SceneHelper.CurrentScene = sceneName;
+        ProcessModFunction(mod => mod.OnSceneLoaded(sceneName));
+    }
 
-            ProcessModFunction(mod => mod.OnUpdate());
-        }
+    /// <summary>
+    /// Processes an UnloadScene event for all mods
+    /// </summary>
+    public void SceneUnloaded(string sceneName)
+    {
+        SceneHelper.CurrentScene = string.Empty;
+        ProcessModFunction(mod => mod.OnSceneUnloaded(sceneName));
+    }
 
-        /// <summary>
-        /// Late updates all mods
-        /// </summary>
-        public void LateUpdate()
-        {
-            if (!_initialized)
-                return;
-
-            ProcessModFunction(mod => mod.OnLateUpdate());
-        }
-
-        /// <summary>
-        /// Processes a LoadScene event for all mods
-        /// </summary>
-        public void SceneLoaded(string sceneName)
-        {
-            if (SceneHelper.CurrentScene != string.Empty)
-                return;
-
-            if (sceneName == "MainMenu")
-            {
-                if (_loadedMenu)
-                    ProcessModFunction(mod => mod.OnExitGame());
-                _loadedMenu = true;
-            }
-
-            LogSpecial("Loaded scene: " + sceneName);
-
-            SceneHelper.CurrentScene = sceneName;
-            ProcessModFunction(mod => mod.OnSceneLoaded(sceneName));
-        }
-
-        /// <summary>
-        /// Processes an UnloadScene event for all mods
-        /// </summary>
-        public void SceneUnloaded(string sceneName)
-        {
+    /// <summary>
+    /// Sets the unloaded flag when the main menu is loaded
+    /// </summary>
+    public void UnitySceneLoaded(string sceneName)
+    {
+        if (sceneName == "Empty")
             SceneHelper.CurrentScene = string.Empty;
-            ProcessModFunction(mod => mod.OnSceneUnloaded(sceneName));
-        }
+    }
 
-        /// <summary>
-        /// Sets the unloaded flag when the main menu is loaded
-        /// </summary>
-        public void UnitySceneLoaded(string sceneName)
+    /// <summary>
+    /// Registers a new mod whenever it is first created
+    /// </summary>
+    public void RegisterMod(BlasIIMod mod)
+    {
+        if (_mods.Any(m => m.Id == mod.Id))
         {
-            if (sceneName == "Empty")
-                SceneHelper.CurrentScene = string.Empty;
+            ModLog.Log($"Mod with id '{mod.Id}' already exists!", "Mod Loader", ModLog.LogLevel.Error);
+            return;
         }
 
-        /// <summary>
-        /// Registers a new mod whenever it is first created
-        /// </summary>
-        public void RegisterMod(BlasIIMod mod)
-        {
-            if (_mods.Any(m => m.Id == mod.Id))
-            {
-                ModLog.Log($"Mod with id '{mod.Id}' already exists!", "Mod Loader", ModLog.LogLevel.Error);
-                return;
-            }
+        ModLog.Log($"Registering mod: {mod.Id} ({mod.Version})", "Mod Loader", System.Drawing.Color.Green);
+        _mods.Add(mod);
+    }
 
-            ModLog.Log($"Registering mod: {mod.Id} ({mod.Version})", "Mod Loader", System.Drawing.Color.Green);
-            _mods.Add(mod);
-        }
+    /// <summary>
+    /// Formats the message for scene loading
+    /// </summary>
+    private void LogSpecial(string message)
+    {
+        var sb = new StringBuilder();
+        int length = message.Length;
+        for (int i = 0; i < length; i++)
+            sb.Append('-');
+        string line = sb.ToString();
 
-        /// <summary>
-        /// Formats the message for scene loading
-        /// </summary>
-        private void LogSpecial(string message)
-        {
-            var sb = new StringBuilder();
-            int length = message.Length;
-            for (int i = 0; i < length; i++)
-                sb.Append('-');
-            string line = sb.ToString();
-
-            ModLog.Info(string.Empty);
-            ModLog.Info(line);
-            ModLog.Info(message);
-            ModLog.Info(line);
-            ModLog.Info(string.Empty);
-        }
+        ModLog.Info(string.Empty);
+        ModLog.Info(line);
+        ModLog.Info(message);
+        ModLog.Info(line);
+        ModLog.Info(string.Empty);
     }
 }

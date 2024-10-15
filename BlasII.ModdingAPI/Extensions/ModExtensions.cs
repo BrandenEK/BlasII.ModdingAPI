@@ -1,13 +1,12 @@
 ﻿using System;
 
-namespace BlasII.ModdingAPI.Extensions
+namespace BlasII.ModdingAPI.Extensions;
+
+internal static class ModExtensions
 {
-    internal static class ModExtensions
+    public static string CleanStackTrace(this Exception exception)
     {
-        public static string CleanStackTrace(this Exception exception)
-        {
-            var split = exception.StackTrace?.Split(Environment.NewLine);
-            return split == null || split.Length < 2 ? exception.StackTrace : string.Join(Environment.NewLine, split[..^2]);
-        }
+        var split = exception.StackTrace?.Split(Environment.NewLine);
+        return split == null || split.Length < 2 ? exception.StackTrace : string.Join(Environment.NewLine, split[..^2]);
     }
 }
