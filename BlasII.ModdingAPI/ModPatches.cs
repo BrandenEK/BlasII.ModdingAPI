@@ -33,3 +33,23 @@ class Mod_LoadMenu_Patch
 {
     public static void Postfix() => Main.ModLoader.SceneLoaded("MainMenu");
 }
+
+[HarmonyPatch(typeof(MainMenuWindowLogic), nameof(MainMenuWindowLogic.NewGame))]
+class Mod_NewGame_Patch
+{
+    public static void Postfix(bool __runOriginal)
+    {
+        if (__runOriginal)
+            Main.ModLoader.ProcessModFunction(mod => mod.OnNewGame());
+    }
+}
+
+[HarmonyPatch(typeof(MainMenuWindowLogic), nameof(MainMenuWindowLogic.LoadGame))]
+class Mod_LoadGame_Patch
+{
+    public static void Postfix(bool __runOriginal)
+    {
+        if (__runOriginal)
+            Main.ModLoader.ProcessModFunction(mod => mod.OnLoadGame());
+    }
+}
