@@ -2,7 +2,7 @@
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
 
-namespace BlasII.ModdingAPI.Patches
+namespace BlasII.ModdingAPI
 {
     [HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnAllInitialized))]
     class Mod_AllInitialized_Patch

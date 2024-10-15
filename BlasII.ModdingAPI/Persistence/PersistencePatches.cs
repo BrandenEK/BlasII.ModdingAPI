@@ -3,9 +3,8 @@ using Il2CppTGK.Game.Managers;
 using Il2CppTGK.Game;
 using Il2CppTGK.Persistence;
 using System.Reflection;
-using BlasII.ModdingAPI.Persistence;
 
-namespace BlasII.ModdingAPI.Patches
+namespace BlasII.ModdingAPI.Persistence
 {
     [HarmonyPatch]
     class Mod_Save1_Patch
