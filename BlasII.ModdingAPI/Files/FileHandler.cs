@@ -11,7 +11,7 @@ namespace BlasII.ModdingAPI.Files;
 /// </summary>
 public class FileHandler
 {
-    private readonly string configPath;
+    //private readonly string configPath;
     private readonly string contentPath;
     private readonly string dataPath;
     private readonly string keybindingsPath;
@@ -41,7 +41,7 @@ public class FileHandler
 
     internal FileHandler(BlasIIMod mod)
     {
-        configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
+        //configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
         contentPath = Path.GetFullPath($"Modding/content/{mod.Name}/");
         dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
         keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
@@ -283,22 +283,22 @@ public class FileHandler
 
     // Config
 
-    /// <summary>
-    /// Loads the contents of the config file, or an empty string
-    /// </summary>
-    internal string LoadConfig()
-    {
-        return ReadFileContents(configPath, out string output) ? output : string.Empty;
-    }
+    ///// <summary>
+    ///// Loads the contents of the config file, or an empty string
+    ///// </summary>
+    //internal string LoadConfig()
+    //{
+    //    return ReadFileContents(configPath, out string output) ? output : string.Empty;
+    //}
 
-    /// <summary>
-    /// Saves the contents of the config file
-    /// </summary>
-    internal void SaveConfig(string config)
-    {
-        EnsureDirectoryExists(configPath);
-        File.WriteAllText(configPath, config);
-    }
+    ///// <summary>
+    ///// Saves the contents of the config file
+    ///// </summary>
+    //internal void SaveConfig(string config)
+    //{
+    //    EnsureDirectoryExists(configPath);
+    //    File.WriteAllText(configPath, config);
+    //}
 
     // Keybindings
 
