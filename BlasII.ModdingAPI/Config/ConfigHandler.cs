@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.IO;
 
 namespace BlasII.ModdingAPI.Config;
 
@@ -9,163 +11,50 @@ public class ConfigHandler
 {
     private readonly BlasIIMod _mod;
 
-    private bool _registered = false;
-    private readonly Dictionary<string, object> _properties = new();
-
     internal ConfigHandler(BlasIIMod mod) => _mod = mod;
 
     /// <summary>
-    /// Gets the value of the specified property in the config
+    /// Loads the properties from the config file
     /// </summary>
-    public T GetProperty<T>(string key)
+    public T Load<T>() where T : new()
     {
-        if (!_properties.TryGetValue(key, out object value))
+        T config;
+        try
         {
-            ModLog.Error($"Property '{key}' does not exist!", _mod);
-            return default;
+            config = JsonConvert.DeserializeObject<T>(File.ReadAllText(ConfigPath));
+        }
+        catch
+        {
+            ModLog.Error($"Failed to read config - Using default", _mod);
+            config = new T();
         }
 
-        if (value.GetType() != typeof(T))
-        {
-            ModLog.Error($"Property '{key}' is the wrong type!", _mod);
-            return default;
-        }
-
-        return (T)value;
-    }
-
-    /// <summary>
-    /// Sets the value of the specified property in the config
-    /// </summary>
-    public void SetProperty<T>(string key, T value)
-    {
-        if (!_properties.TryGetValue(key, out object currentValue))
-        {
-            ModLog.Error($"Property '{key}' does not exist!", _mod);
-            return;
-        }
-
-        if (currentValue.GetType() != typeof(T))
-        {
-            ModLog.Error($"Property '{key}' is the wrong type!", _mod);
-            return;
-        }
-
-        _properties[key] = value;
+        Save(config);
+        return config;
     }
 
     /// <summary>
     /// Saves the current properties to the config file
     /// </summary>
-    public void SaveConfig()
+    public void Save<T>(T config)
     {
-        _mod.FileHandler.SaveConfig(SerializeProperties());
+        JsonSerializerSettings jss = new()
+        {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            Formatting = Formatting.Indented
+        };
+
+        string json = JsonConvert.SerializeObject(config, jss);
+        File.WriteAllText(ConfigPath, json);
     }
 
-    // Custom properties
-
-    /// <summary>
-    /// Specifies which properties will be loaded from the config file and registers their defaults
-    /// </summary>
-    public void RegisterDefaultProperties(Dictionary<string, object> defaults)
+    private string ConfigPath
     {
-        if (_registered)
+        get
         {
-            ModLog.Warn("ConfigHandler has already been registered!", _mod);
-            return;
+            var path = new FileInfo(Path.Combine(_mod.FileHandler.ModdingFolder, "config", $"{_mod.Name}.cfg"));
+            path.Directory.Create();
+            return path.FullName;
         }
-        _registered = true;
-
-        foreach (var mapping in defaults)
-        {
-            _properties.Add(mapping.Key, mapping.Value);
-        }
-
-        DeserializeProperties(_mod.FileHandler.LoadConfig());
-        _mod.FileHandler.SaveConfig(SerializeProperties());
-    }
-
-    /// <summary>
-    /// Converts the properties dictionary to a string[] to be saved to a file
-    /// </summary>
-    private string[] SerializeProperties()
-    {
-        string[] properties = new string[_properties.Count];
-        int currentIdx = 0;
-
-        foreach (var mapping in _properties)
-        {
-            properties[currentIdx++] = $"{mapping.Key}: {mapping.Value}";
-        }
-
-        return properties;
-    }
-
-    /// <summary>
-    /// Before initialization, load all properties as strings into a temporary list
-    /// </summary>
-    private void DeserializeProperties(string[] properties)
-    {
-        foreach (string line in properties)
-        {
-            // Skip lines without a colon
-            int colon = line.IndexOf(':');
-            if (colon < 0)
-                continue;
-
-            // Get key and value for each pair
-            string key = line[..colon].Trim();
-            string value = line[(colon + 1)..].Trim();
-
-            // If the property wasn't in the defaults, skip
-            if (!_properties.TryGetValue(key, out object defaultValue))
-            {
-                continue;
-            }
-
-            // If the property was not a valid type, skip
-            if (!ParseProperty(value, defaultValue, out object realValue))
-            {
-                ModLog.Error($"Property '{key}' is invalid.  Using default instead.", _mod);
-                continue;
-            }
-
-            // Update the valid property
-            _properties[key] = realValue;
-        }
-    }
-
-    /// <summary>
-    /// Attempts to parse the property into its specified type and returns whether it is valid
-    /// </summary>
-    private bool ParseProperty(string newValue, object defaultValue, out object realValue)
-    {
-        bool isValid;
-
-        switch (defaultValue)
-        {
-            case bool _:
-                isValid = bool.TryParse(newValue, out bool boolValue);
-                realValue = boolValue;
-                break;
-            case int _:
-                isValid = int.TryParse(newValue, out int intValue);
-                realValue = intValue;
-                break;
-            case float _:
-                isValid = float.TryParse(newValue, out float floatValue);
-                realValue = floatValue;
-                break;
-            case string _:
-                isValid = true;
-                realValue = newValue;
-                break;
-            default:
-                isValid = false;
-                realValue = null;
-                break;
-        }
-
-        return isValid;
     }
 }
