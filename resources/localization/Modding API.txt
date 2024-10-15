@@ -1,7 +1,0 @@
-lang: en
-
-btnbgn: Begin game
-btncnt: Continue game
-btncnc: Cancel
-btnnxt: Next
-btnpvs: Previous
