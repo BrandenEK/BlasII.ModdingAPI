@@ -41,6 +41,7 @@ internal class ModdingAPI : BlasIIMod
                 UIModder.Fonts.Initialize();
                 UIModder.Parents.Initialize();
                 _initializedUI = true;
+                FindGameVersion();
             }
 
             DisplayModListOnMenu();
@@ -82,7 +83,10 @@ internal class ModdingAPI : BlasIIMod
         st.richText = true;
         st.text = fullText.ToString();
         st.rectTransform.anchoredPosition = new Vector2(-1, 2);
+    }
 
+    private void FindGameVersion()
+    {
         // Store game version
         var versionObject = Object.FindObjectOfType<SetGameVersionText>();
         string versionText = versionObject.GetComponentInChildren<TextMeshProUGUI>().text;
@@ -96,6 +100,8 @@ internal class ModdingAPI : BlasIIMod
             versionText = versionText[..dashIndex];
 
         VersionHelper.GameVersion = versionText;
+        ModLog.Info($"Detected game version: " + versionText);
+
     }
 
     private int GetModPriority(BlasIIMod mod)
