@@ -6,6 +6,7 @@ using Il2CppTMPro;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI;
 
@@ -32,6 +33,12 @@ internal class ModdingAPI : BlasIIMod
 
     private void DisplayModListOnMenu()
     {
+        // Find parent and font
+        Transform parent = Object.FindObjectOfType<CanvasScaler>()?.transform.Find("Interfaces/MainMenuWindow_prefab(Clone)").GetChild(0);
+        TMP_FontAsset font = Object.FindObjectOfType<TextMeshProUGUI>()?.font;
+        if (parent == null || font == null)
+            return;
+
         // Create text for mod list
         StringBuilder fullText = new();
         StringBuilder shadowText = new();
@@ -41,30 +48,31 @@ internal class ModdingAPI : BlasIIMod
             shadowText.AppendLine(GetModText(mod, false));
         }
 
-        // Create shadow text
-        var obj = UIModder.Create(new RectCreationOptions()
-        {
-            Name = "ModList",
-            Parent = UIModder.Parents.MainMenu.GetChild(0),
-            XRange = new Vector2(0, 1),
-            YRange = new Vector2(0, 1),
-            Pivot = new Vector2(0, 1),
-            Position = new Vector2(20, -15),
-            Size = new Vector2(400, 100)
-        }).AddText(new TextCreationOptions()
-        {
-            Contents = shadowText.ToString(),
-            Alignment = TextAlignmentOptions.TopLeft,
-            FontSize = 32,
-            Color = Color.black
-        });
+        // Create rect transform for shadow
+        RectTransform r = new GameObject().AddComponent<RectTransform>();
+        r.name = "Mod list";
+        r.SetParent(parent, false);
+        r.anchorMin = Vector2.zero;
+        r.anchorMax = Vector2.one;
+        r.pivot = new Vector2(0, 1);
+        r.anchoredPosition = new Vector2(20, -15);
+        r.sizeDelta = new Vector2(400, 100);
+
+        // Create text for shadow
+        TextMeshProUGUI t = r.gameObject.AddComponent<TextMeshProUGUI>();
+        t.alignment = TextAlignmentOptions.TopLeft;
+        t.color = Color.black;
+        t.enableWordWrapping = false;
+        t.font = font;
+        t.fontSize = 32;
+        t.text = shadowText.ToString();
 
         // Duplicate shadow for real text
-        GameObject real = Object.Instantiate(obj.gameObject, obj.transform);
+        GameObject real = Object.Instantiate(r.gameObject, r.transform);
         TextMeshProUGUI st = real.GetComponent<TextMeshProUGUI>();
+        st.rectTransform.anchoredPosition = new Vector2(-1, 2);
         st.richText = true;
         st.text = fullText.ToString();
-        st.rectTransform.anchoredPosition = new Vector2(-1, 2);
     }
 
     private void FindGameVersion()
@@ -83,7 +91,6 @@ internal class ModdingAPI : BlasIIMod
 
         VersionHelper.GameVersion = versionText;
         ModLog.Info($"Detected game version: " + versionText);
-
     }
 
     private int GetModPriority(BlasIIMod mod)
