@@ -20,12 +20,12 @@ public class FileHandler
     /// <summary>
     /// The full path of the game's root folder
     /// </summary>
-    public string RootFolder { get; } = $"{Directory.GetCurrentDirectory()}/";
+    public string RootFolder { get; } = Directory.GetCurrentDirectory();
 
     /// <summary>
     /// The full path of the game's modding folder
     /// </summary>
-    public string ModdingFolder { get; } = Path.GetFullPath("Modding/");
+    public string ModdingFolder { get; } = Path.Combine(Directory.GetCurrentDirectory(), "Modding");
 
     /// <summary>
     /// The full path of this mod's content folder
@@ -42,10 +42,10 @@ public class FileHandler
     internal FileHandler(BlasIIMod mod)
     {
         //configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
-        contentPath = Path.GetFullPath($"Modding/content/{mod.Name}/");
-        dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
-        keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
-        localizationPath = Path.GetFullPath($"Modding/localization/{mod.Name}.txt");
+        contentPath = Path.Combine(ModdingFolder, "content", mod.Name);
+        dataPath = Path.Combine(ModdingFolder, "data", mod.Name);
+        keybindingsPath = Path.Combine(ModdingFolder, "keybindings", $"{mod.Name}.txt");
+        localizationPath = Path.Combine(ModdingFolder, "localization", $"{mod.Name}.txt");
     }
 
     // General

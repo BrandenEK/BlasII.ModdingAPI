@@ -18,6 +18,8 @@ internal class ModdingAPI : BlasIIMod
     {
         AssetStorage.Initialize();
         InputStorage.Initialize();
+
+        ModLog.Warn(FileHandler.ContentFolder);
     }
 
     protected internal override void OnSceneLoaded(string sceneName)
