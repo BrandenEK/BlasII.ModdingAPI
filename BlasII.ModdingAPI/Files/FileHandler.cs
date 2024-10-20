@@ -112,7 +112,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsText(string fileName, out string output)
     {
-        return ReadFileContents(dataPath + fileName, out output);
+        return ReadFileContents(Path.Combine(dataPath, fileName), out output);
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsJson<T>(string fileName, out T output)
     {
-        if (ReadFileContents(dataPath + fileName, out string text))
+        if (ReadFileContents(Path.Combine(dataPath, fileName), out string text))
         {
             output = JsonConvert.DeserializeObject<T>(text);
             return true;
@@ -135,7 +135,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsArray(string fileName, out string[] output)
     {
-        return ReadFileLines(dataPath + fileName, out output);
+        return ReadFileLines(Path.Combine(dataPath, fileName), out output);
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsTexture(string fileName, out Texture2D output)
     {
-        if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        if (!ReadFileBytes(Path.Combine(dataPath, fileName), out byte[] bytes))
         {
             output = null;
             return false;
@@ -163,7 +163,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsSprite(string fileName, out Sprite output, SpriteImportOptions options)
     {
-        if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        if (!ReadFileBytes(Path.Combine(dataPath, fileName), out byte[] bytes))
         {
             output = null;
             return false;
@@ -193,7 +193,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsVariableSpritesheet(string fileName, Rect[] rects, out Sprite[] output, SpriteImportOptions options)
     {
-        if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        if (!ReadFileBytes(Path.Combine(dataPath, fileName), out byte[] bytes))
         {
             output = null;
             return false;
@@ -233,7 +233,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsFixedSpritesheet(string fileName, Vector2 size, out Sprite[] output, SpriteImportOptions options)
     {
-        if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        if (!ReadFileBytes(Path.Combine(dataPath, fileName), out byte[] bytes))
         {
             output = null;
             return false;
