@@ -58,7 +58,7 @@
     <!-- Create ModInfo class from relevant data -->
     <PropertyGroup>
       <GeneratedText>
-        <![CDATA[ namespace $(RootNamespace) { internal static class ModInfo { public const string MOD_ID = "$(AssemblyName)"%3B public const string MOD_NAME = "$(Title)"%3B public const string MOD_AUTHOR = "$(Authors)"%3B public const string MOD_VERSION = "$(Version)"%3B } } ]]>
+        <![CDATA[ namespace $(RootNamespace) { internal static class ModInfo { public const string MOD_ID = "$(AssemblyName)"%3B public const string MOD_NAME = "$(Product)"%3B public const string MOD_AUTHOR = "$(Company)"%3B public const string MOD_VERSION = "$(Version)"%3B } } ]]>
       </GeneratedText>
       <GeneratedFilePath>$(IntermediateOutputPath)ModInfo.cs</GeneratedFilePath>
     </PropertyGroup>
