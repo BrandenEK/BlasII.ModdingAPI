@@ -38,7 +38,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ env.MOD_VERSION }}
+        tag_name: ${{ github.ref }}
         release_name: ${{ env.MOD_TITLE }} v${{ github.ref_name }}
 
     - name: Upload Release

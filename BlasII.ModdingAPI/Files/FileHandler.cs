@@ -20,12 +20,12 @@ public class FileHandler
     /// <summary>
     /// The full path of the game's root folder
     /// </summary>
-    public string RootFolder { get; } = $"{Directory.GetCurrentDirectory()}/";
+    public string RootFolder { get; } = Directory.GetCurrentDirectory();
 
     /// <summary>
     /// The full path of the game's modding folder
     /// </summary>
-    public string ModdingFolder { get; } = Path.GetFullPath("Modding/");
+    public string ModdingFolder { get; } = Path.Combine(Directory.GetCurrentDirectory(), "Modding");
 
     /// <summary>
     /// The full path of this mod's content folder
@@ -42,10 +42,10 @@ public class FileHandler
     internal FileHandler(BlasIIMod mod)
     {
         //configPath = Path.GetFullPath($"Modding/config/{mod.Name}.cfg");
-        contentPath = Path.GetFullPath($"Modding/content/{mod.Name}/");
-        dataPath = Path.GetFullPath($"Modding/data/{mod.Name}/");
-        keybindingsPath = Path.GetFullPath($"Modding/keybindings/{mod.Name}.txt");
-        localizationPath = Path.GetFullPath($"Modding/localization/{mod.Name}.txt");
+        contentPath = Path.Combine(ModdingFolder, "content", mod.Name);
+        dataPath = Path.Combine(ModdingFolder, "data", mod.Name);
+        keybindingsPath = Path.Combine(ModdingFolder, "keybindings", $"{mod.Name}.txt");
+        localizationPath = Path.Combine(ModdingFolder, "localization", $"{mod.Name}.txt");
     }
 
     // General
@@ -112,7 +112,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsText(string fileName, out string output)
     {
-        return ReadFileContents(dataPath + fileName, out output);
+        return ReadFileContents(Path.Combine(dataPath, fileName), out output);
     }
 
     /// <summary>
@@ -120,7 +120,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsJson<T>(string fileName, out T output)
     {
-        if (ReadFileContents(dataPath + fileName, out string text))
+        if (ReadFileContents(Path.Combine(dataPath, fileName), out string text))
         {
             output = JsonConvert.DeserializeObject<T>(text);
             return true;
@@ -135,7 +135,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsArray(string fileName, out string[] output)
     {
-        return ReadFileLines(dataPath + fileName, out output);
+        return ReadFileLines(Path.Combine(dataPath, fileName), out output);
     }
 
     /// <summary>
@@ -143,7 +143,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsTexture(string fileName, out Texture2D output)
     {
-        if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        if (!ReadFileBytes(Path.Combine(dataPath, fileName), out byte[] bytes))
         {
             output = null;
             return false;
@@ -163,7 +163,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsSprite(string fileName, out Sprite output, SpriteImportOptions options)
     {
-        if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        if (!ReadFileBytes(Path.Combine(dataPath, fileName), out byte[] bytes))
         {
             output = null;
             return false;
@@ -193,7 +193,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsVariableSpritesheet(string fileName, Rect[] rects, out Sprite[] output, SpriteImportOptions options)
     {
-        if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        if (!ReadFileBytes(Path.Combine(dataPath, fileName), out byte[] bytes))
         {
             output = null;
             return false;
@@ -233,7 +233,7 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsFixedSpritesheet(string fileName, Vector2 size, out Sprite[] output, SpriteImportOptions options)
     {
-        if (!ReadFileBytes(dataPath + fileName, out byte[] bytes))
+        if (!ReadFileBytes(Path.Combine(dataPath, fileName), out byte[] bytes))
         {
             output = null;
             return false;
