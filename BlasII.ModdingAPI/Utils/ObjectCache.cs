@@ -1,12 +1,11 @@
 ﻿using System;
-using UnityEngine;
 
 namespace BlasII.ModdingAPI.Utils;
 
 /// <summary>
 /// A wrapper for a cacheable object that needs to be found first
 /// </summary>
-public class ObjectCache<T>(Func<T> search) where T : MonoBehaviour
+public class ObjectCache<T>(Func<T> search) where T : class
 {
     private readonly Func<T> _search = search;
     private T _value = null;
@@ -24,4 +23,9 @@ public class ObjectCache<T>(Func<T> search) where T : MonoBehaviour
             return _value;
         }
     }
+
+    /// <summary>
+    /// Casts the object cache to the contained value
+    /// </summary>
+    public static implicit operator T(ObjectCache<T> cache) => cache.Value;
 }
