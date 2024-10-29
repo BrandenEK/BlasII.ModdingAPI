@@ -18,6 +18,33 @@ internal class ModdingAPI : BlasIIMod
     {
         AssetStorage.Initialize();
         InputStorage.Initialize();
+
+        LocalizationHandler.RegisterDefaultLanguage("en");
+        ModLog.Info(LocalizationHandler.Localize("btnbgn"));
+        try
+        {
+            ModLog.Info(LocalizationHandler.Localize("{0} and {1}", "btnbgn", "btncnc"));
+        }
+        catch
+        {
+            ModLog.Error("Failed");
+        }
+        try
+        {
+            ModLog.Info(LocalizationHandler.Localize("{0} and hardcoded", new string[] { "btnbgn", "btncnc" }));
+        }
+        catch
+        {
+            ModLog.Error("Failed");
+        }
+        try
+        {
+            ModLog.Info(LocalizationHandler.Localize("{0} and a {0}", "errror"));
+        }
+        catch
+        {
+            ModLog.Error("Failed");
+        }
     }
 
     protected internal override void OnSceneLoaded(string sceneName)

@@ -3,6 +3,7 @@ using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BlasII.ModdingAPI.Localization;
@@ -58,6 +59,15 @@ public class LocalizationHandler
 
         ModLog.Error($"Failed to localize '{key}' to any language.", _mod);
         return ERROR_TEXT;
+    }
+
+    /// <summary>
+    /// Localizes the formatted text into the current language
+    /// </summary>
+    public string Localize(string format, params string[] keys)
+    {
+        var localizedKeys = keys.Select(Localize).ToArray();
+        return string.Format(format, localizedKeys);
     }
 
     /// <summary>
