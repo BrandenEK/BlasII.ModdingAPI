@@ -5,7 +5,7 @@ namespace BlasII.ModdingAPI.Utils;
 /// <summary>
 /// A wrapper for a cacheable object that needs to be found first
 /// </summary>
-public class ObjectCache<T>(Func<T> search) where T : class
+public class ObjectCache<T>(Func<T> search) where T : UnityEngine.Object
 {
     private readonly Func<T> _search = search;
     private T _value = null;
