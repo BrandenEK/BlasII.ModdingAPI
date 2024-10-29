@@ -11,12 +11,14 @@ internal interface ILocalizer
 internal class LocalizeTMPro : ILocalizer
 {
     private readonly TMP_Text _text;
-    private readonly string _key;
+    private readonly string _format;
+    private readonly string[] _keys;
 
-    public LocalizeTMPro(TMP_Text text, string key)
+    public LocalizeTMPro(TMP_Text text, string format, string[] keys)
     {
         _text = text;
-        _key = key;
+        _format = format;
+        _keys = keys;
     }
 
     /// <summary>
@@ -27,7 +29,7 @@ internal class LocalizeTMPro : ILocalizer
         if (_text == null)
             return false;
 
-        _text.text = handler.Localize(_key);
+        _text.text = handler.Localize(_format, _keys);
         return true;
     }
 }
@@ -35,12 +37,14 @@ internal class LocalizeTMPro : ILocalizer
 internal class LocalizePixelText : ILocalizer
 {
     private readonly UIPixelTextWithShadow _text;
-    private readonly string _key;
+    private readonly string _format;
+    private readonly string[] _keys;
 
-    public LocalizePixelText(UIPixelTextWithShadow text, string key)
+    public LocalizePixelText(UIPixelTextWithShadow text, string format, string[] keys)
     {
         _text = text;
-        _key = key;
+        _format = format;
+        _keys = keys;
     }
 
     /// <summary>
@@ -51,7 +55,7 @@ internal class LocalizePixelText : ILocalizer
         if (_text == null)
             return false;
 
-        _text.SetText(handler.Localize(_key));
+        _text.SetText(handler.Localize(_format, _keys));
         return true;
     }
 }

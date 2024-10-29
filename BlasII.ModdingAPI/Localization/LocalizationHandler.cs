@@ -3,6 +3,7 @@ using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace BlasII.ModdingAPI.Localization;
@@ -61,13 +62,22 @@ public class LocalizationHandler
     }
 
     /// <summary>
+    /// Localizes the formatted text into the current language
+    /// </summary>
+    public string Localize(string format, params string[] keys)
+    {
+        var localizedKeys = keys.Select(Localize).ToArray();
+        return string.Format(format, localizedKeys);
+    }
+
+    /// <summary>
     /// Registers this text object to be localized whenever the current language changes
     /// </summary>
-    public void AddTMProLocalizer(TMP_Text text, string key)
+    public void AddTMProLocalizer(TMP_Text text, string format, params string[] keys)
     {
         RemoveVanillaLocalizers(text.gameObject);
 
-        var localizer = new LocalizeTMPro(text, key);
+        var localizer = new LocalizeTMPro(text, format, keys);
         localizer.Localize(this);
         _localizers.Add(localizer);
     }
@@ -75,14 +85,24 @@ public class LocalizationHandler
     /// <summary>
     /// Registers this text object to be localized whenever the current language changes
     /// </summary>
-    public void AddPixelTextLocalizer(UIPixelTextWithShadow text, string key)
+    public void AddTMProLocalizer(TMP_Text text, string key) => AddTMProLocalizer(text, "{0}", key);
+
+    /// <summary>
+    /// Registers this text object to be localized whenever the current language changes
+    /// </summary>
+    public void AddPixelTextLocalizer(UIPixelTextWithShadow text, string format, params string[] keys)
     {
         RemoveVanillaLocalizers(text.gameObject);
 
-        var localizer = new LocalizePixelText(text, key);
+        var localizer = new LocalizePixelText(text, format, keys);
         localizer.Localize(this);
         _localizers.Add(localizer);
     }
+
+    /// <summary>
+    /// Registers this text object to be localized whenever the current language changes
+    /// </summary>
+    public void AddPixelTextLocalizer(UIPixelTextWithShadow text, string key) => AddPixelTextLocalizer(text, "{0}", key);
 
     /// <summary>
     /// Finds any vanilla localizers on a gameobject and destroys them
