@@ -100,6 +100,7 @@ internal class ModdingAPI : BlasIIMod
         st.rectTransform.anchoredPosition = new Vector2(-1, 2);
         st.richText = true;
         st.text = fullText.ToString();
+        LocalizationHandler.AddTMProLocalizer(st, "{0} and a {1}", "btnbgn", "bpvs");
     }
 
     private void FindGameVersion()

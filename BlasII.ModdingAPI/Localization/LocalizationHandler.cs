@@ -73,11 +73,11 @@ public class LocalizationHandler
     /// <summary>
     /// Registers this text object to be localized whenever the current language changes
     /// </summary>
-    public void AddTMProLocalizer(TMP_Text text, string key)
+    public void AddTMProLocalizer(TMP_Text text, string format, params string[] keys)
     {
         RemoveVanillaLocalizers(text.gameObject);
 
-        var localizer = new LocalizeTMPro(text, key);
+        var localizer = new LocalizeTMPro(text, format, keys);
         localizer.Localize(this);
         _localizers.Add(localizer);
     }
@@ -85,14 +85,24 @@ public class LocalizationHandler
     /// <summary>
     /// Registers this text object to be localized whenever the current language changes
     /// </summary>
-    public void AddPixelTextLocalizer(UIPixelTextWithShadow text, string key)
+    public void AddTMProLocalizer(TMP_Text text, string key) => AddTMProLocalizer(text, "{0}", key);
+
+    /// <summary>
+    /// Registers this text object to be localized whenever the current language changes
+    /// </summary>
+    public void AddPixelTextLocalizer(UIPixelTextWithShadow text, string format, params string[] keys)
     {
         RemoveVanillaLocalizers(text.gameObject);
 
-        var localizer = new LocalizePixelText(text, key);
+        var localizer = new LocalizePixelText(text, format, keys);
         localizer.Localize(this);
         _localizers.Add(localizer);
     }
+
+    /// <summary>
+    /// Registers this text object to be localized whenever the current language changes
+    /// </summary>
+    public void AddPixelTextLocalizer(UIPixelTextWithShadow text, string key) => AddPixelTextLocalizer(text, "{0}", key);
 
     /// <summary>
     /// Finds any vanilla localizers on a gameobject and destroys them
