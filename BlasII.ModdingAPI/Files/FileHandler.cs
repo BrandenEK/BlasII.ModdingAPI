@@ -34,7 +34,7 @@ public class FileHandler
     {
         get
         {
-            EnsureDirectoryExists(contentPath);
+            Directory.CreateDirectory(contentPath);
             return contentPath;
         }
     }
@@ -100,7 +100,7 @@ public class FileHandler
     /// </summary>
     private void EnsureDirectoryExists(string path)
     {
-        string directory = Path.GetDirectoryName(path);
+        string directory = Path.GetDirectoryName(path); // Only works with file paths, not folders
         if (!Directory.Exists(directory))
             Directory.CreateDirectory(directory);
     }
