@@ -24,9 +24,25 @@ public class GenericDoubleStorage<T, E> : IEnumerable<DoubleIdAsset<T, E>> where
     public T this[string id] => _assets.FirstOrDefault(x => x.Id == id)?.Value;
 
     /// <summary>
+    /// Attempts to retrieve an asset with the specified id
+    /// </summary>
+    public bool TryGetValue(string id, out T value)
+    {
+        return (value = _assets.FirstOrDefault(x => x.Id == id)?.Value) != null;
+    }
+
+    /// <summary>
     /// Retrieves an asset with the specified id
     /// </summary>
     public T this[E id] => _assets.FirstOrDefault(x => x.StaticId.Equals(id))?.Value;
+
+    /// <summary>
+    /// Attempts to retrieve an asset with the specified id
+    /// </summary>
+    public bool TryGetValue(E id, out T value)
+    {
+        return (value = _assets.FirstOrDefault(x => x.StaticId.Equals(id))?.Value) != null;
+    }
 
     IEnumerator<DoubleIdAsset<T, E>> IEnumerable<DoubleIdAsset<T, E>>.GetEnumerator()
     {

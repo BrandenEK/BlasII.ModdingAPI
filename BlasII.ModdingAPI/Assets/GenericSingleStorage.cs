@@ -22,6 +22,14 @@ public class GenericSingleStorage<T> : IEnumerable<SingleIdAsset<T>> where T : S
     /// </summary>
     public T this[string id] => _assets.FirstOrDefault(x => x.Id == id)?.Value;
 
+    /// <summary>
+    /// Attempts to retrieve an asset with the specified id
+    /// </summary>
+    public bool TryGetValue(string id, out T value)
+    {
+        return (value = _assets.FirstOrDefault(x => x.Id == id)?.Value) != null;
+    }
+
     IEnumerator<SingleIdAsset<T>> IEnumerable<SingleIdAsset<T>>.GetEnumerator()
     {
         return _assets.GetEnumerator();

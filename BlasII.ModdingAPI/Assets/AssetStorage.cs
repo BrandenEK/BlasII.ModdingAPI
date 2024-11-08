@@ -83,6 +83,10 @@ public static class AssetStorage
         {
             ModLog.Warn(w.Id + ": " + w.StaticId);
         }
+        ModLog.Error(Weapons[WEAPON_IDS.RosaryBlade].name);
+        ModLog.Error(Weapons[WEAPON_IDS.Rapier].name);
+        ModLog.Error(Weapons["WE06"].name);
+
         foreach (var item in Beads)
         {
             ModLog.Info(item.Id + ": " + item.Value.caption);
