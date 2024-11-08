@@ -15,20 +15,10 @@ namespace BlasII.ModdingAPI.Assets;
 /// </summary>
 public static class AssetStorage
 {
-    /// <summary> Stores all RosaryBeadItemID assets (RB00) </summary>
-    public static TypedStorage<RosaryBeadItemID> Beads { get; private set; }
-    /// <summary> Stores all PrayerItemID assets (PR00) </summary>
-    public static TypedStorage<PrayerItemID> Prayers { get; private set; }
-    /// <summary> Stores all FigureItemID assets (FG00) </summary>
-    public static TypedStorage<FigureItemID> Figures { get; private set; }
-    /// <summary> Stores all QuestItemID assets (QI00) </summary>
-    public static TypedStorage<QuestItemID> QuestItems { get; private set; }
-
-    /// <summary> Stores all IAbilityTypeRef assets (AB00) </summary>
-    public static TypedStorage<IAbilityTypeRef> Abilities { get; private set; }
+    
 
     /// <summary> Stores all WeaponID assets (WE00) </summary>
-    public static TypedStorage<WeaponID> Weapons { get; private set; }
+    public static GenericDoubleStorage<WeaponID, WEAPON_IDS> Weapons { get; private set; }
     /// <summary> Stores all WeaponMemoryID assets (WM00) </summary>
     public static TypedStorage<WeaponMemoryID> WeaponMemories { get; private set; }
 
@@ -43,25 +33,24 @@ public static class AssetStorage
     /// <summary> Stores all ModifiableStatID assets (NAME) </summary>
     public static TypedStorage<ModifiableStatID> ModifiableStats { get; private set; }
 
+    /// <summary> Stores all RosaryBeadItemID assets (RB00) </summary>
+    public static GenericSingleStorage<RosaryBeadItemID> Beads { get; private set; }
+    /// <summary> Stores all PrayerItemID assets (PR00) </summary>
+    public static GenericSingleStorage<PrayerItemID> Prayers { get; private set; }
+    /// <summary> Stores all FigureItemID assets (FG00) </summary>
+    public static GenericSingleStorage<FigureItemID> Figures { get; private set; }
+    /// <summary> Stores all QuestItemID assets (QI00) </summary>
+    public static GenericSingleStorage<QuestItemID> QuestItems { get; private set; }
+
+    /// <summary> Stores all IAbilityTypeRef assets (AB00) </summary>
+    public static GenericDoubleStorage<IAbilityTypeRef, ABILITY_IDS> Abilities { get; private set; }
+
     /// <summary>
     /// Initializes and loads all tracked assets
     /// </summary>
     internal static void Initialize()
     {
-        Beads = new TypedStorage<RosaryBeadItemID>(
-            AssetLoader.LoadObjectsOfType<RosaryBeadItemID>());
-        Prayers = new TypedStorage<PrayerItemID>(
-            AssetLoader.LoadObjectsOfType<PrayerItemID>());
-        Figures = new TypedStorage<FigureItemID>(
-            AssetLoader.LoadObjectsOfType<FigureItemID>());
-        QuestItems = new TypedStorage<QuestItemID>(
-            AssetLoader.LoadObjectsOfType<QuestItemID>());
 
-        Abilities = new TypedStorage<IAbilityTypeRef>(
-            AssetLoader.LoadObjectsOfType<IAbilityTypeRef>("AB", AbilityNames));
-
-        Weapons = new TypedStorage<WeaponID>(
-            AssetLoader.LoadObjectsOfType<WeaponID>("WE", WeaponNames));
         WeaponMemories = new TypedStorage<WeaponMemoryID>(
             AssetLoader.LoadObjectsOfType<WeaponMemoryID>("WM"));
 
@@ -75,16 +64,30 @@ public static class AssetStorage
             AssetLoader.LoadObjectsOfType<BonuseableValueStatID>());
         ModifiableStats = new TypedStorage<ModifiableStatID>(
             AssetLoader.LoadObjectsOfType<ModifiableStatID>());
-    }
 
-    enum WeaponIds
-    {
-        BrokenSword,
-        Censer,
-        MeaCulpa,
-        NoWeapon,
-        Rapier,
-        RosaryBlade,
+        Beads = new GenericSingleStorage<RosaryBeadItemID>(
+            AssetLoader.LoadSingleItem<RosaryBeadItemID>());
+        Prayers = new GenericSingleStorage<PrayerItemID>(
+            AssetLoader.LoadSingleItem<PrayerItemID>());
+        Figures = new GenericSingleStorage<FigureItemID>(
+            AssetLoader.LoadSingleItem<FigureItemID>());
+        QuestItems = new GenericSingleStorage<QuestItemID>(
+            AssetLoader.LoadSingleItem<QuestItemID>());
+
+        Abilities = new GenericDoubleStorage<IAbilityTypeRef, ABILITY_IDS>(
+            AssetLoader.LoadDoubleStandard<IAbilityTypeRef, ABILITY_IDS>("AB"));
+        Weapons = new GenericDoubleStorage<WeaponID, WEAPON_IDS>(
+            AssetLoader.LoadDoubleStandard<WeaponID, WEAPON_IDS>("WE"));
+
+        foreach (var w in Weapons)
+        {
+            ModLog.Warn(w.Id + ": " + w.StaticId);
+        }
+        foreach (var item in Beads)
+        {
+            ModLog.Info(item.Id + ": " + item.Value.caption);
+        }
+        ModLog.Error(Beads["RB02"].description);
     }
 
     /// <summary>
@@ -92,13 +95,13 @@ public static class AssetStorage
     /// </summary>
     internal static void LocalizeAllItems()
     {
-        foreach (var bead in Beads.AllAssets)
+        foreach (var bead in Beads)
             LocalizeItem(bead.Value);
-        foreach (var prayer in Prayers.AllAssets)
+        foreach (var prayer in Prayers)
             LocalizeItem(prayer.Value);
-        foreach (var figure in Figures.AllAssets)
+        foreach (var figure in Figures)
             LocalizeItem(figure.Value);
-        foreach (var questItem in QuestItems.AllAssets)
+        foreach (var questItem in QuestItems)
             LocalizeItem(questItem.Value);
 
         static void LocalizeItem(ItemID item)
