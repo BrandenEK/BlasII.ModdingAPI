@@ -2,7 +2,6 @@
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
 using Il2CppTGK.Game.Components.UI;
-using Il2CppTGK.Inventory;
 using Il2CppTMPro;
 using System.Linq;
 using System.Text;
@@ -29,12 +28,6 @@ internal class ModdingAPI : BlasIIMod
 
             if (VersionHelper.GameVersion == "Unknown")
                 FindGameVersion();
-
-            var beads = new GenericSingleStorage<RosaryBeadItemID>(AssetLoader.LoadObjectsOfType<RosaryBeadItemID>, x => x.OrderBy(x => x.Key));
-            foreach (var bead in beads)
-            {
-                ModLog.Info(bead.Key + ": " + bead.Value.caption);
-            }
         }
     }
 

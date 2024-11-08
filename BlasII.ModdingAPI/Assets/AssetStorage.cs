@@ -7,7 +7,6 @@ using Il2CppTGK.Game.Components.StatsSystem;
 using Il2CppTGK.Game.Components.StatsSystem.Data;
 using Il2CppTGK.Game.WeaponMemory;
 using Il2CppTGK.Inventory;
-using System.Collections.Generic;
 
 namespace BlasII.ModdingAPI.Assets;
 
@@ -76,20 +75,6 @@ public static class AssetStorage
             AssetLoader.LoadObjectsOfType<BonuseableValueStatID>());
         ModifiableStats = new TypedStorage<ModifiableStatID>(
             AssetLoader.LoadObjectsOfType<ModifiableStatID>());
-
-        List<DoubleIdAsset<WeaponID, WeaponIds>> weapons = new List<DoubleIdAsset<WeaponID, WeaponIds>>()
-        {
-            new DoubleIdAsset<WeaponID, WeaponIds>("WE01", WeaponIds.BrokenSword, null),
-            new DoubleIdAsset<WeaponID, WeaponIds>("WE02", WeaponIds.Censer, null),
-        };
-        GenericDoubleStorage<WeaponID, WeaponIds> store = new GenericDoubleStorage<WeaponID, WeaponIds>(weapons);
-
-        foreach (var w in store)
-        {
-            ModLog.Error(w.Id + ": " + w.StaticId);
-        }
-        ModLog.Info(store["WE01"]);
-        ModLog.Info(store[WeaponIds.Censer]);
     }
 
     enum WeaponIds
