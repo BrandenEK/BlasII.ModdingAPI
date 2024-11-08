@@ -41,12 +41,22 @@ public class GenericSingleStorage<T> : IEnumerable<SingleIdAsset<T>> where T : S
     }
 }
 
+/// <summary>
+/// Represents an asset with one id
+/// </summary>
 public class SingleIdAsset<T> where T : ScriptableObject
 {
+    /// <summary>
+    /// The id of the asset
+    /// </summary>
     public string Id { get; }
+
+    /// <summary>
+    /// The actual asset in memory
+    /// </summary>
     public T Value { get; }
 
-    public SingleIdAsset(string id, T value)
+    internal SingleIdAsset(string id, T value)
     {
         Id = id;
         Value = value;

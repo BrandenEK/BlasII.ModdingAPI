@@ -55,13 +55,27 @@ public class GenericDoubleStorage<T, E> : IEnumerable<DoubleIdAsset<T, E>> where
     }
 }
 
+/// <summary>
+/// Represents an asset with two ids
+/// </summary>
 public class DoubleIdAsset<T, E> where T : ScriptableObject where E : struct, Enum
 {
+    /// <summary>
+    /// The id of the asset
+    /// </summary>
     public string Id { get; }
+
+    /// <summary>
+    /// The unchanging id of the asset
+    /// </summary>
     public E StaticId { get; }
+
+    /// <summary>
+    /// The actual asset in memory
+    /// </summary>
     public T Value { get; }
 
-    public DoubleIdAsset(string id, E staticId, T value)
+    internal DoubleIdAsset(string id, E staticId, T value)
     {
         Id = id;
         StaticId = staticId;
