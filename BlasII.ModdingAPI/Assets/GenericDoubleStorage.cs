@@ -9,7 +9,7 @@ namespace BlasII.ModdingAPI.Assets;
 /// <summary>
 /// Stores ScriptableObject assets of a generic type
 /// </summary>
-public class GenericDoubleStorage<T, E> : IEnumerable<DoubleIdAsset<T, E>> where T : ScriptableObject where E : Enum
+public class GenericDoubleStorage<T, E> : IEnumerable<DoubleIdAsset<T, E>> where T : ScriptableObject where E : struct, Enum
 {
     private readonly IEnumerable<DoubleIdAsset<T, E>> _assets;
 
@@ -55,7 +55,7 @@ public class GenericDoubleStorage<T, E> : IEnumerable<DoubleIdAsset<T, E>> where
     }
 }
 
-public class DoubleIdAsset<T, E> where T : ScriptableObject where E : Enum
+public class DoubleIdAsset<T, E> where T : ScriptableObject where E : struct, Enum
 {
     public string Id { get; }
     public E StaticId { get; }

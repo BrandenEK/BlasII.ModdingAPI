@@ -73,31 +73,6 @@ public static class AssetStorage
             AssetLoader.LoadSingleStandard<BonuseableValueStatID>());
         ModifiableStats = new GenericSingleStorage<ModifiableStatID>(
             AssetLoader.LoadSingleStandard<ModifiableStatID>());
-
-        foreach (var w in Weapons)
-        {
-            ModLog.Warn(w.Id + ": " + w.StaticId);
-        }
-        ModLog.Error(Weapons[WEAPON_IDS.RosaryBlade].name);
-        ModLog.Error(Weapons[WEAPON_IDS.Rapier].name);
-        ModLog.Error(Weapons["WE06"].name);
-
-        foreach (var w in WeaponMemories)
-        {
-            ModLog.Warn(w.Id + ": " + w.StaticId);
-        }
-
-        foreach (var w in Abilities)
-        {
-            ModLog.Warn(w.Id + ": " + w.StaticId);
-        }
-        ModLog.Error((Abilities.TryGetValue(ABILITY_IDS.AirDash, out var value) ? value : null).name);
-
-        foreach (var item in Beads)
-        {
-            ModLog.Info(item.Id + ": " + item.Value.caption);
-        }
-        ModLog.Error(Beads["RB02"].description);
     }
 
     /// <summary>
@@ -147,62 +122,4 @@ public static class AssetStorage
             return _playerStats;
         }
     }
-
-    private static string[] AbilityNames => new string[]
-    {
-        "AirDashTypeRef",
-        "AirJumpTypeRef",
-        "AirRecoveryTypeRef",
-        "ApplyDirectionalImpulseAbilityTypeRef",
-        "AttackAbilityTypeRef",
-        "BladeBerserkModeActivatorTypeRef",
-        "BladeParryTypeRef",
-        "CenserChargedAttackAbilityTypeRef",
-        "CenserIgniterTypeRef",
-        "ChangeWeaponTypeRef",
-        "CharacterFacingDirectionOnAirTypeRef",
-        "CharacterFacingDirectionRef",
-        "CrouchTypeRef",
-        "DashTypeRef",
-        "DragAbilityTypeRef",
-        "EtherealLeversUseTypeRef",
-        "ExecutionAbilityTypeRef",
-        "FacingDirectionTypeRef",
-        "FastPrayerTypeRef",
-        "FlaskUseTypeRef",
-        "FullPrayerTypeRef",
-        "GhostClimbAbilityTypeRef",
-        "GravityTypeRef",
-        "HardLandingTypeRef",
-        "HorizontalImpulseAbilityTypeRef",
-        "HorizontalMovementAbilityTypeRef",
-        "HorizontalMovementOnAirTypeRef",
-        "InstadeathAbilityTypeRef",
-        "InteractableUseTypeRef",
-        "JumpDownTypeRef",
-        "JumpTypeRef",
-        "LadderClimbTypeRef",
-        "LedgeClimbTypeRef",
-        "LedgeWallClimbTypeRef",
-        "MagicRingClimbTypeRef",
-        "RapierParryTypeRef",
-        "RapierTeleportTypeRef",
-        "StaggerTypeRef",
-        "SuperArmorAbilityRefType",
-        "ThrowObjectAbilityTypeRef",
-        "ThrowObjectDirectionAbilityRef",
-        "ThrowObjectToTargetAbilityRef",
-        "VerticalImpulseAbilityTypeRef",
-        "WallClimbAbilityTypeRef",
-        "WallJumpTypeRef",
-        "ZipLineSlideTypeRef",
-        "GroundRecoveryTypeRef",
-    };
-
-    private static string[] WeaponNames => new string[]
-    {
-        "Censer",
-        "RosaryBlade",
-        "Rapier",
-    };
 }
