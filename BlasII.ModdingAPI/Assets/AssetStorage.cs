@@ -16,65 +16,63 @@ namespace BlasII.ModdingAPI.Assets;
 public static class AssetStorage
 {
     /// <summary> Stores all RosaryBeadItemID assets (RB00) </summary>
-    public static TypedStorage<RosaryBeadItemID> Beads { get; private set; }
+    public static GenericSingleStorage<RosaryBeadItemID> Beads { get; private set; }
     /// <summary> Stores all PrayerItemID assets (PR00) </summary>
-    public static TypedStorage<PrayerItemID> Prayers { get; private set; }
+    public static GenericSingleStorage<PrayerItemID> Prayers { get; private set; }
     /// <summary> Stores all FigureItemID assets (FG00) </summary>
-    public static TypedStorage<FigureItemID> Figures { get; private set; }
+    public static GenericSingleStorage<FigureItemID> Figures { get; private set; }
     /// <summary> Stores all QuestItemID assets (QI00) </summary>
-    public static TypedStorage<QuestItemID> QuestItems { get; private set; }
+    public static GenericSingleStorage<QuestItemID> QuestItems { get; private set; }
 
     /// <summary> Stores all IAbilityTypeRef assets (AB00) </summary>
-    public static TypedStorage<IAbilityTypeRef> Abilities { get; private set; }
-
+    public static GenericDoubleStorage<IAbilityTypeRef, ABILITY_IDS> Abilities { get; private set; }
     /// <summary> Stores all WeaponID assets (WE00) </summary>
-    public static TypedStorage<WeaponID> Weapons { get; private set; }
+    public static GenericDoubleStorage<WeaponID, WEAPON_IDS> Weapons { get; private set; }
     /// <summary> Stores all WeaponMemoryID assets (WM00) </summary>
-    public static TypedStorage<WeaponMemoryID> WeaponMemories { get; private set; }
+    public static GenericDoubleStorage<WeaponMemoryID, WEAPON_MEMORY_IDS> WeaponMemories { get; private set; }
 
     /// <summary> Stores all MainStatID assets (NAME) </summary>
-    public static TypedStorage<MainStatID> MainStats { get; private set; }
+    public static GenericSingleStorage<MainStatID> MainStats { get; private set; }
     /// <summary> Stores all ValueStatID assets (NAME) </summary>
-    public static TypedStorage<ValueStatID> ValueStats { get; private set; }
+    public static GenericSingleStorage<ValueStatID> ValueStats { get; private set; }
     /// <summary> Stores all RangeStatID assets (NAME) </summary>
-    public static TypedStorage<RangeStatID> RangeStats { get; private set; }
+    public static GenericSingleStorage<RangeStatID> RangeStats { get; private set; }
     /// <summary> Stores all BonuseableValueStatID assets (NAME) </summary>
-    public static TypedStorage<BonuseableValueStatID> BonusStats { get; private set; }
+    public static GenericSingleStorage<BonuseableValueStatID> BonusStats { get; private set; }
     /// <summary> Stores all ModifiableStatID assets (NAME) </summary>
-    public static TypedStorage<ModifiableStatID> ModifiableStats { get; private set; }
+    public static GenericSingleStorage<ModifiableStatID> ModifiableStats { get; private set; }
 
     /// <summary>
     /// Initializes and loads all tracked assets
     /// </summary>
     internal static void Initialize()
     {
-        Beads = new TypedStorage<RosaryBeadItemID>(
-            AssetLoader.LoadObjectsOfType<RosaryBeadItemID>());
-        Prayers = new TypedStorage<PrayerItemID>(
-            AssetLoader.LoadObjectsOfType<PrayerItemID>());
-        Figures = new TypedStorage<FigureItemID>(
-            AssetLoader.LoadObjectsOfType<FigureItemID>());
-        QuestItems = new TypedStorage<QuestItemID>(
-            AssetLoader.LoadObjectsOfType<QuestItemID>());
+        Beads = new GenericSingleStorage<RosaryBeadItemID>(
+            AssetLoader.LoadSingleItem<RosaryBeadItemID>());
+        Prayers = new GenericSingleStorage<PrayerItemID>(
+            AssetLoader.LoadSingleItem<PrayerItemID>());
+        Figures = new GenericSingleStorage<FigureItemID>(
+            AssetLoader.LoadSingleItem<FigureItemID>());
+        QuestItems = new GenericSingleStorage<QuestItemID>(
+            AssetLoader.LoadSingleItem<QuestItemID>());
 
-        Abilities = new TypedStorage<IAbilityTypeRef>(
-            AssetLoader.LoadObjectsOfType<IAbilityTypeRef>("AB", AbilityNames));
+        Abilities = new GenericDoubleStorage<IAbilityTypeRef, ABILITY_IDS>(
+            AssetLoader.LoadDoubleStandard<IAbilityTypeRef, ABILITY_IDS>("AB"));
+        Weapons = new GenericDoubleStorage<WeaponID, WEAPON_IDS>(
+            AssetLoader.LoadDoubleStandard<WeaponID, WEAPON_IDS>("WE"));
+        WeaponMemories = new GenericDoubleStorage<WeaponMemoryID, WEAPON_MEMORY_IDS>(
+            AssetLoader.LoadDoubleStandard<WeaponMemoryID, WEAPON_MEMORY_IDS>("WM"));
 
-        Weapons = new TypedStorage<WeaponID>(
-            AssetLoader.LoadObjectsOfType<WeaponID>("WE", WeaponNames));
-        WeaponMemories = new TypedStorage<WeaponMemoryID>(
-            AssetLoader.LoadObjectsOfType<WeaponMemoryID>("WM"));
-
-        MainStats = new TypedStorage<MainStatID>(
-            AssetLoader.LoadObjectsOfType<MainStatID>());
-        ValueStats = new TypedStorage<ValueStatID>(
-            AssetLoader.LoadObjectsOfType<ValueStatID>());
-        RangeStats = new TypedStorage<RangeStatID>(
-            AssetLoader.LoadObjectsOfType<RangeStatID>());
-        BonusStats = new TypedStorage<BonuseableValueStatID>(
-            AssetLoader.LoadObjectsOfType<BonuseableValueStatID>());
-        ModifiableStats = new TypedStorage<ModifiableStatID>(
-            AssetLoader.LoadObjectsOfType<ModifiableStatID>());
+        MainStats = new GenericSingleStorage<MainStatID>(
+            AssetLoader.LoadSingleStandard<MainStatID>());
+        ValueStats = new GenericSingleStorage<ValueStatID>(
+            AssetLoader.LoadSingleStandard<ValueStatID>());
+        RangeStats = new GenericSingleStorage<RangeStatID>(
+            AssetLoader.LoadSingleStandard<RangeStatID>());
+        BonusStats = new GenericSingleStorage<BonuseableValueStatID>(
+            AssetLoader.LoadSingleStandard<BonuseableValueStatID>());
+        ModifiableStats = new GenericSingleStorage<ModifiableStatID>(
+            AssetLoader.LoadSingleStandard<ModifiableStatID>());
     }
 
     /// <summary>
@@ -82,13 +80,13 @@ public static class AssetStorage
     /// </summary>
     internal static void LocalizeAllItems()
     {
-        foreach (var bead in Beads.AllAssets)
+        foreach (var bead in Beads)
             LocalizeItem(bead.Value);
-        foreach (var prayer in Prayers.AllAssets)
+        foreach (var prayer in Prayers)
             LocalizeItem(prayer.Value);
-        foreach (var figure in Figures.AllAssets)
+        foreach (var figure in Figures)
             LocalizeItem(figure.Value);
-        foreach (var questItem in QuestItems.AllAssets)
+        foreach (var questItem in QuestItems)
             LocalizeItem(questItem.Value);
 
         static void LocalizeItem(ItemID item)
@@ -124,62 +122,4 @@ public static class AssetStorage
             return _playerStats;
         }
     }
-
-    private static string[] AbilityNames => new string[]
-    {
-        "AirDashTypeRef",
-        "AirJumpTypeRef",
-        "AirRecoveryTypeRef",
-        "ApplyDirectionalImpulseAbilityTypeRef",
-        "AttackAbilityTypeRef",
-        "BladeBerserkModeActivatorTypeRef",
-        "BladeParryTypeRef",
-        "CenserChargedAttackAbilityTypeRef",
-        "CenserIgniterTypeRef",
-        "ChangeWeaponTypeRef",
-        "CharacterFacingDirectionOnAirTypeRef",
-        "CharacterFacingDirectionRef",
-        "CrouchTypeRef",
-        "DashTypeRef",
-        "DragAbilityTypeRef",
-        "EtherealLeversUseTypeRef",
-        "ExecutionAbilityTypeRef",
-        "FacingDirectionTypeRef",
-        "FastPrayerTypeRef",
-        "FlaskUseTypeRef",
-        "FullPrayerTypeRef",
-        "GhostClimbAbilityTypeRef",
-        "GravityTypeRef",
-        "HardLandingTypeRef",
-        "HorizontalImpulseAbilityTypeRef",
-        "HorizontalMovementAbilityTypeRef",
-        "HorizontalMovementOnAirTypeRef",
-        "InstadeathAbilityTypeRef",
-        "InteractableUseTypeRef",
-        "JumpDownTypeRef",
-        "JumpTypeRef",
-        "LadderClimbTypeRef",
-        "LedgeClimbTypeRef",
-        "LedgeWallClimbTypeRef",
-        "MagicRingClimbTypeRef",
-        "RapierParryTypeRef",
-        "RapierTeleportTypeRef",
-        "StaggerTypeRef",
-        "SuperArmorAbilityRefType",
-        "ThrowObjectAbilityTypeRef",
-        "ThrowObjectDirectionAbilityRef",
-        "ThrowObjectToTargetAbilityRef",
-        "VerticalImpulseAbilityTypeRef",
-        "WallClimbAbilityTypeRef",
-        "WallJumpTypeRef",
-        "ZipLineSlideTypeRef",
-        "GroundRecoveryTypeRef",
-    };
-
-    private static string[] WeaponNames => new string[]
-    {
-        "Censer",
-        "RosaryBlade",
-        "Rapier",
-    };
 }
