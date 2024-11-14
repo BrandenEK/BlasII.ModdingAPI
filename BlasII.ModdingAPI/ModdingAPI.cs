@@ -1,8 +1,12 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
+using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
+using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using UnityEngine;
@@ -18,6 +22,17 @@ internal class ModdingAPI : BlasIIMod
     {
         AssetStorage.Initialize();
         InputStorage.Initialize();
+
+        foreach (string path in Directory.GetFiles(Path.Combine(FileHandler.ModdingFolder, "data", "Modding API")))
+        {
+            string file = Path.GetFileName(path);
+            ModLog.Warn("Loaded sprite: " + file);
+            FileHandler.LoadDataAsSprite(file, out Sprite s, new Files.SpriteImportOptions()
+            {
+                Pivot = new Vector2(0.5f, 0)
+            });
+            _sprites.Add(Path.GetFileNameWithoutExtension(path), s);
+        }
     }
 
     protected internal override void OnSceneLoaded(string sceneName)
@@ -29,6 +44,67 @@ internal class ModdingAPI : BlasIIMod
             if (VersionHelper.GameVersion == "Unknown")
                 FindGameVersion();
         }
+    }
+
+    private Dictionary<string, SpriteInfo> _spriteInfos = new();
+    private Dictionary<string, Sprite> _sprites = new();
+
+    protected internal override void OnLateUpdate()
+    {
+        if (!SceneHelper.GameSceneLoaded)
+            return;
+
+        var sr = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>().First(x => x.name == "armor");
+        var sprite = sr.sprite;
+
+        if (sprite == null)
+            return;
+
+        if (!_spriteInfos.ContainsKey(sprite.name))
+        {
+            ModLog.Info("New sprite: " + sprite.name);
+            _spriteInfos.Add(sprite.name, new SpriteInfo()
+            {
+                Name = sprite.name,
+                PixelsPerUnit = sprite.pixelsPerUnit,
+                Size = new V2()
+                {
+                    X = sprite.rect.width,
+                    Y = sprite.rect.height
+                },
+                Pivot = new V2()
+                {
+                    X = sprite.pivot.x,
+                    Y = sprite.pivot.y
+                }
+            });
+        }
+
+        if (_sprites.ContainsKey(sprite.name))
+        {
+            ModLog.Error("Replacing sprite: " + sprite.name);
+            sr.sprite = _sprites[sprite.name];
+        }
+        
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            string path = Path.Combine(FileHandler.ContentFolder, "sprites");
+            File.WriteAllText(path, JsonConvert.SerializeObject(_spriteInfos.Values, Formatting.Indented));
+        }
+    }
+
+    class SpriteInfo
+    {
+        public string Name { get; init; }
+        public float PixelsPerUnit { get; init; }
+        public V2 Size { get; init; }
+        public V2 Pivot { get; init; }
+    }
+
+    class V2
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 
     private void DisplayModListOnMenu()
