@@ -25,7 +25,7 @@ internal class ModdingAPI : BlasIIMod
         AssetStorage.Initialize();
         InputStorage.Initialize();
 
-        Import();
+        ImportAll();
     }
 
     protected internal override void OnSceneLoaded(string sceneName)
@@ -73,22 +73,31 @@ internal class ModdingAPI : BlasIIMod
         }
     }
 
-    private void Import()
+    private void ImportAll()
     {
         ModLog.Warn("Starting Import...");
 
+        string dir = Path.Combine(FileHandler.ModdingFolder, "data", "Modding API");
+        foreach (var file in Directory.GetFiles(dir, "*.json", SearchOption.TopDirectoryOnly))
+        {
+            Import(Path.GetFileNameWithoutExtension(file));
+        }
+    }
+
+    private void Import(string animation)
+    {
         // Load info list from file
-        FileHandler.LoadDataAsJson("TPO_idle_wieldingLightWeapon.json", out SpriteInfo[] infos);
+        FileHandler.LoadDataAsJson($"{animation}.json", out SpriteInfo[] infos);
 
         // Load each sprite from the texture based on its info
         int idx = 0;
         foreach (var info in infos)
         {
-            string name = $"TPO_idle_wieldingLightWeapon_{idx++}";
+            string name = $"{animation}_{idx++}";
             ModLog.Info($"Importing {name}");
 
             Rect[] rects = [ new Rect(info.Position, 0, info.Width, info.Height) ];
-            FileHandler.LoadDataAsVariableSpritesheet("TPO_idle_wieldingLightWeapon.png", rects, out Sprite[] output, new SpriteImportOptions()
+            FileHandler.LoadDataAsVariableSpritesheet($"{animation}.png", rects, out Sprite[] output, new SpriteImportOptions()
             {
                 PixelsPerUnit = info.PixelsPerUnit,
                 Pivot = new Vector2(info.Pivot, 0),
