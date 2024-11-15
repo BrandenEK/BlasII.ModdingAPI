@@ -75,7 +75,7 @@ internal class ModdingAPI : BlasIIMod
 
     private void Import()
     {
-        ModLog.Warn("Importing");
+        ModLog.Warn("Starting Import...");
 
         // Load info list from file
         FileHandler.LoadDataAsJson("TPO_idle_wieldingLightWeapon.json", out SpriteInfo[] infos);
@@ -84,23 +84,24 @@ internal class ModdingAPI : BlasIIMod
         int idx = 0;
         foreach (var info in infos)
         {
-            Rect[] rects = [ new Rect(info.Position, 0, info.Width, info.Height) ];
+            string name = $"TPO_idle_wieldingLightWeapon_{idx++}";
+            ModLog.Info($"Importing {name}");
 
+            Rect[] rects = [ new Rect(info.Position, 0, info.Width, info.Height) ];
             FileHandler.LoadDataAsVariableSpritesheet("TPO_idle_wieldingLightWeapon.png", rects, out Sprite[] output, new SpriteImportOptions()
             {
                 PixelsPerUnit = info.PixelsPerUnit,
                 Pivot = new Vector2(info.Pivot, 0),
             });
 
-            string name = $"TPO_idle_wieldingLightWeapon_{idx++}";
             _spriteImports.Add(name, output[0]);
         }
     }
 
     private void Export()
     {
-        ModLog.Warn("Exporting");
-        var sprites = _spriteExports.Values.OrderBy(x => x.name);
+        ModLog.Warn("Starting Export...");
+        var sprites = _spriteExports.Values.OrderBy(x => int.Parse(x.name[(x.name.LastIndexOf('_') + 1)..]));
 
         // Create entire animation texture
         int width = (int)sprites.Sum(x => x.rect.width);
@@ -119,6 +120,7 @@ internal class ModdingAPI : BlasIIMod
         int x = 0, idx = 0;
         foreach (var sprite in sprites)
         {
+            ModLog.Info($"Exporting {sprite.name}");
             int w = (int)sprite.rect.width;
             int h = (int)sprite.rect.height;
             Graphics.CopyTexture(sprite.GetSlicedTexture(), 0, 0, 0, 0, w, h, tex, 0, 0, x, 0);
