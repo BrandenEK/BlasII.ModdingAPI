@@ -50,11 +50,11 @@ internal class ModdingAPI : BlasIIMod
         var sr = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>().First(x => x.name == "armor");
         var sprite = sr.sprite;
 
-        if (sprite == null)
+        if (sprite == null || sprite.name == "2x2_transparent")
             return;
 
         // When finding new sprite, add it to export
-        if (sprite.name.StartsWith("TPO_idle_wieldingLightWeapon") && !_spriteExports.ContainsKey(sprite.name))
+        if (!_spriteExports.ContainsKey(sprite.name))
         {
             ModLog.Info("New sprite: " + sprite.name);
             _spriteExports.Add(sprite.name, sprite);
@@ -63,13 +63,13 @@ internal class ModdingAPI : BlasIIMod
         // When on an imported sprite, replace it
         if (_spriteImports.TryGetValue(sprite.name, out Sprite output))
         {
-            ModLog.Error("Replacing sprite: " + sprite.name);
+            //ModLog.Error("Replacing sprite: " + sprite.name);
             sr.sprite = output;
         }
         
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
         {
-            Export();
+            ExportAll();
         }
     }
 
@@ -107,11 +107,24 @@ internal class ModdingAPI : BlasIIMod
         }
     }
 
-    private void Export()
+    private void ExportAll()
     {
         ModLog.Warn("Starting Export...");
-        var sprites = _spriteExports.Values.OrderBy(x => int.Parse(x.name[(x.name.LastIndexOf('_') + 1)..]));
 
+        var names = _spriteExports.Keys.Select(x => x[0..x.LastIndexOf('_')]).Distinct();
+        foreach (var name in names)
+        {
+            var sprites = _spriteExports
+                .Where(x => x.Key.StartsWith(name))
+                .OrderBy(x => int.Parse(x.Key[(x.Key.LastIndexOf('_') + 1)..]))
+                .Select(x => x.Value);
+
+            Export(name, sprites);
+        }
+    }
+
+    private void Export(string animation, IEnumerable<Sprite> sprites)
+    {
         // Create entire animation texture
         int width = (int)sprites.Sum(x => x.rect.width);
         int height = (int)sprites.Max(x => x.rect.height);
@@ -148,11 +161,11 @@ internal class ModdingAPI : BlasIIMod
         }
 
         // Save texture to file
-        string texturePath = Path.Combine(FileHandler.ContentFolder, "TPO_idle_wieldingLightWeapon.png");
+        string texturePath = Path.Combine(FileHandler.ContentFolder, $"{animation}.png");
         File.WriteAllBytes(texturePath, tex.EncodeToPNG());
 
         // Save info list to file
-        string infoPath = Path.Combine(FileHandler.ContentFolder, "TPO_idle_wieldingLightWeapon.json");
+        string infoPath = Path.Combine(FileHandler.ContentFolder, $"{animation}.json");
         File.WriteAllText(infoPath, JsonConvert.SerializeObject(infos, Formatting.Indented));
     }
 
