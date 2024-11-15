@@ -107,16 +107,48 @@ internal class ModdingAPI : BlasIIMod
         
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
         {
-            ModLog.Warn("Exporting");
-            foreach (var s in _spriteInfos.Values.Select(x => x.Sprite))
-            {
-                string p = Path.Combine(FileHandler.ContentFolder, $"{s.name}.png");
-                File.WriteAllBytes(p, s.GetSlicedTexture().EncodeToPNG());
-            }
-
-            string path = Path.Combine(FileHandler.ContentFolder, "sprites.json");
-            File.WriteAllText(path, JsonConvert.SerializeObject(_spriteInfos.Values, Formatting.Indented));
+            Export();
         }
+    }
+
+    private void Export()
+    {
+        ModLog.Warn("Exporting");
+        var sprites = _spriteInfos.Values.OrderBy(x => x.Name).Select(x => x.Sprite);
+
+        // Create entire animation texture
+        int width = (int)sprites.Sum(x => x.rect.width);
+        int height = (int)sprites.Max(x => x.rect.height);
+        Texture2D tex = new Texture2D(width, height);
+
+        // Fill transparent
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
+                tex.SetPixel(i, j, new Color32(0, 0, 0, 0));
+
+        // Copy each sprite to the texture
+        int x = 0;
+        foreach (var sprite in sprites)
+        {
+            int w = (int)sprite.rect.width;
+            int h = (int)sprite.rect.height;
+            Graphics.CopyTexture(sprite.GetSlicedTexture(), 0, 0, 0, 0, w, h, tex, 0, 0, x, 0);
+
+            x += w;
+        }
+
+        // Save texture to file
+        string path = Path.Combine(FileHandler.ContentFolder, "TPO_idle_wieldingLightWeapon.png");
+        File.WriteAllBytes(path, tex.EncodeToPNG());
+
+        //foreach (var s in sprites.Select(x => x.Sprite))
+        //{
+        //    string p = Path.Combine(FileHandler.ContentFolder, $"{s.name}.png");
+        //    File.WriteAllBytes(p, s.GetSlicedTexture().EncodeToPNG());
+        //}
+
+        //string path = Path.Combine(FileHandler.ContentFolder, "sprites.json");
+        //File.WriteAllText(path, JsonConvert.SerializeObject(_spriteInfos.Values, Formatting.Indented));
     }
 
     class SpriteInfo
