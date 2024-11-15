@@ -1,4 +1,6 @@
 ﻿using BlasII.ModdingAPI.Assets;
+using BlasII.ModdingAPI.Extensions;
+using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
 using Il2CppTGK.Game;
@@ -23,16 +25,30 @@ internal class ModdingAPI : BlasIIMod
         AssetStorage.Initialize();
         InputStorage.Initialize();
 
-        foreach (string path in Directory.GetFiles(Path.Combine(FileHandler.ModdingFolder, "data", "Modding API")))
+        FileHandler.LoadDataAsJson("sprites.json", out SpriteInfo[] infos);
+        foreach (var info in infos)
         {
-            string file = Path.GetFileName(path);
-            ModLog.Warn("Loaded sprite: " + file);
-            FileHandler.LoadDataAsSprite(file, out Sprite s, new Files.SpriteImportOptions()
+            ModLog.Warn("Loading " + info.Name);
+            bool result = FileHandler.LoadDataAsSprite($"{info.Name}.png", out Sprite s, new SpriteImportOptions()
             {
-                Pivot = new Vector2(0.5f, 0)
+                PixelsPerUnit = (int)info.PixelsPerUnit,
+                Pivot = new Vector2(info.XPivot, info.YPivot),
             });
-            _sprites.Add(Path.GetFileNameWithoutExtension(path), s);
+
+            ModLog.Info("REsult: " + result);
+            _sprites.Add(info.Name, s);
         }
+
+        //foreach (string path in Directory.GetFiles(Path.Combine(FileHandler.ModdingFolder, "data", "Modding API")))
+        //{
+        //    string file = Path.GetFileName(path);
+        //    ModLog.Warn("Loaded sprite: " + file);
+        //    FileHandler.LoadDataAsSprite(file, out Sprite s, new Files.SpriteImportOptions()
+        //    {
+        //        Pivot = new Vector2(0.5f, 0)
+        //    });
+        //    _sprites.Add(Path.GetFileNameWithoutExtension(path), s);
+        //}
     }
 
     protected internal override void OnSceneLoaded(string sceneName)
@@ -60,23 +76,26 @@ internal class ModdingAPI : BlasIIMod
         if (sprite == null)
             return;
 
-        if (!_spriteInfos.ContainsKey(sprite.name))
+        if (sprite.name.StartsWith("TPO_idle_wieldingLightWeapon") && !_spriteInfos.ContainsKey(sprite.name))
         {
             ModLog.Info("New sprite: " + sprite.name);
             _spriteInfos.Add(sprite.name, new SpriteInfo()
             {
                 Name = sprite.name,
                 PixelsPerUnit = sprite.pixelsPerUnit,
-                Size = new V2()
-                {
-                    X = sprite.rect.width,
-                    Y = sprite.rect.height
-                },
-                Pivot = new V2()
-                {
-                    X = sprite.pivot.x,
-                    Y = sprite.pivot.y
-                }
+                XPivot = sprite.pivot.x / sprite.rect.width,
+                YPivot = sprite.pivot.y / sprite.rect.height,
+                Sprite = sprite,
+                //Size = new V2()
+                //{
+                //    X = sprite.rect.width,
+                //    Y = sprite.rect.height
+                //},
+                //Pivot = new V2()
+                //{
+                //    X = sprite.pivot.x,
+                //    Y = sprite.pivot.y
+                //}
             });
         }
 
@@ -88,7 +107,14 @@ internal class ModdingAPI : BlasIIMod
         
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
         {
-            string path = Path.Combine(FileHandler.ContentFolder, "sprites");
+            ModLog.Warn("Exporting");
+            foreach (var s in _spriteInfos.Values.Select(x => x.Sprite))
+            {
+                string p = Path.Combine(FileHandler.ContentFolder, $"{s.name}.png");
+                File.WriteAllBytes(p, s.GetSlicedTexture().EncodeToPNG());
+            }
+
+            string path = Path.Combine(FileHandler.ContentFolder, "sprites.json");
             File.WriteAllText(path, JsonConvert.SerializeObject(_spriteInfos.Values, Formatting.Indented));
         }
     }
@@ -97,9 +123,20 @@ internal class ModdingAPI : BlasIIMod
     {
         public string Name { get; init; }
         public float PixelsPerUnit { get; init; }
-        public V2 Size { get; init; }
-        public V2 Pivot { get; init; }
+        public float XPivot { get; init; }
+        public float YPivot { get; init; }
+
+        [JsonIgnore]
+        public Sprite Sprite { get; init; }
     }
+
+    //class SpriteInfo
+    //{
+    //    public string Name { get; init; }
+    //    public float PixelsPerUnit { get; init; }
+    //    public V2 Size { get; init; }
+    //    public V2 Pivot { get; init; }
+    //}
 
     class V2
     {
