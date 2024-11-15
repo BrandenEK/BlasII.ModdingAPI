@@ -126,20 +126,37 @@ internal class ModdingAPI : BlasIIMod
             for (int j = 0; j < height; j++)
                 tex.SetPixel(i, j, new Color32(0, 0, 0, 0));
 
-        // Copy each sprite to the texture
-        int x = 0;
+        // Create empty info list
+        SpriteExportInfo[] infos = new SpriteExportInfo[sprites.Count()];
+
+        // Copy each sprite to the texture and save info
+        int x = 0, idx = 0;
         foreach (var sprite in sprites)
         {
             int w = (int)sprite.rect.width;
             int h = (int)sprite.rect.height;
             Graphics.CopyTexture(sprite.GetSlicedTexture(), 0, 0, 0, 0, w, h, tex, 0, 0, x, 0);
 
+            infos[idx] = new SpriteExportInfo()
+            {
+                PixelsPerUnit = sprite.pixelsPerUnit,
+                Position = x,
+                Width = w,
+                Height = h,
+                Pivot = sprite.pivot.x / w,
+            };
+
             x += w;
+            idx++;
         }
 
         // Save texture to file
-        string path = Path.Combine(FileHandler.ContentFolder, "TPO_idle_wieldingLightWeapon.png");
-        File.WriteAllBytes(path, tex.EncodeToPNG());
+        string texturePath = Path.Combine(FileHandler.ContentFolder, "TPO_idle_wieldingLightWeapon.png");
+        File.WriteAllBytes(texturePath, tex.EncodeToPNG());
+
+        // Save info list to file
+        string infoPath = Path.Combine(FileHandler.ContentFolder, "TPO_idle_wieldingLightWeapon.json");
+        File.WriteAllText(infoPath, JsonConvert.SerializeObject(infos, Formatting.Indented));
 
         //foreach (var s in sprites.Select(x => x.Sprite))
         //{
@@ -149,6 +166,15 @@ internal class ModdingAPI : BlasIIMod
 
         //string path = Path.Combine(FileHandler.ContentFolder, "sprites.json");
         //File.WriteAllText(path, JsonConvert.SerializeObject(_spriteInfos.Values, Formatting.Indented));
+    }
+
+    class SpriteExportInfo
+    {
+        public float PixelsPerUnit { get; init; }
+        public int Position { get; init; }
+        public int Width { get; init; }
+        public int Height { get; init; }
+        public float Pivot { get; init; }
     }
 
     class SpriteInfo
