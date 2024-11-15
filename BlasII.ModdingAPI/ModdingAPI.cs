@@ -39,8 +39,8 @@ internal class ModdingAPI : BlasIIMod
         }
     }
 
-    private Dictionary<string, SpriteInfo> _spriteInfos = new();
-    private Dictionary<string, Sprite> _sprites = new();
+    private readonly Dictionary<string, Sprite> _spriteImports = new();
+    private readonly Dictionary<string, Sprite> _spriteExports = new();
 
     protected internal override void OnLateUpdate()
     {
@@ -53,33 +53,18 @@ internal class ModdingAPI : BlasIIMod
         if (sprite == null)
             return;
 
-        if (sprite.name.StartsWith("TPO_idle_wieldingLightWeapon") && !_spriteInfos.ContainsKey(sprite.name))
+        // When finding new sprite, add it to export
+        if (sprite.name.StartsWith("TPO_idle_wieldingLightWeapon") && !_spriteExports.ContainsKey(sprite.name))
         {
             ModLog.Info("New sprite: " + sprite.name);
-            _spriteInfos.Add(sprite.name, new SpriteInfo()
-            {
-                Name = sprite.name,
-                PixelsPerUnit = sprite.pixelsPerUnit,
-                XPivot = sprite.pivot.x / sprite.rect.width,
-                YPivot = sprite.pivot.y / sprite.rect.height,
-                Sprite = sprite,
-                //Size = new V2()
-                //{
-                //    X = sprite.rect.width,
-                //    Y = sprite.rect.height
-                //},
-                //Pivot = new V2()
-                //{
-                //    X = sprite.pivot.x,
-                //    Y = sprite.pivot.y
-                //}
-            });
+            _spriteExports.Add(sprite.name, sprite);
         }
 
-        if (_sprites.ContainsKey(sprite.name))
+        // When on an imported sprite, replace it
+        if (_spriteImports.TryGetValue(sprite.name, out Sprite output))
         {
             ModLog.Error("Replacing sprite: " + sprite.name);
-            sr.sprite = _sprites[sprite.name];
+            sr.sprite = output;
         }
         
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
@@ -93,7 +78,7 @@ internal class ModdingAPI : BlasIIMod
         ModLog.Warn("Importing");
 
         // Load info list from file
-        FileHandler.LoadDataAsJson("TPO_idle_wieldingLightWeapon.json", out SpriteExportInfo[] infos);
+        FileHandler.LoadDataAsJson("TPO_idle_wieldingLightWeapon.json", out SpriteInfo[] infos);
 
         // Load each sprite from the texture based on its info
         int idx = 0;
@@ -108,14 +93,14 @@ internal class ModdingAPI : BlasIIMod
             });
 
             string name = $"TPO_idle_wieldingLightWeapon_{idx++}";
-            _sprites.Add(name, output[0]);
+            _spriteImports.Add(name, output[0]);
         }
     }
 
     private void Export()
     {
         ModLog.Warn("Exporting");
-        var sprites = _spriteInfos.Values.OrderBy(x => x.Name).Select(x => x.Sprite);
+        var sprites = _spriteExports.Values.OrderBy(x => x.name);
 
         // Create entire animation texture
         int width = (int)sprites.Sum(x => x.rect.width);
@@ -128,7 +113,7 @@ internal class ModdingAPI : BlasIIMod
                 tex.SetPixel(i, j, new Color32(0, 0, 0, 0));
 
         // Create empty info list
-        SpriteExportInfo[] infos = new SpriteExportInfo[sprites.Count()];
+        SpriteInfo[] infos = new SpriteInfo[sprites.Count()];
 
         // Copy each sprite to the texture and save info
         int x = 0, idx = 0;
@@ -138,7 +123,7 @@ internal class ModdingAPI : BlasIIMod
             int h = (int)sprite.rect.height;
             Graphics.CopyTexture(sprite.GetSlicedTexture(), 0, 0, 0, 0, w, h, tex, 0, 0, x, 0);
 
-            infos[idx] = new SpriteExportInfo()
+            infos[idx] = new SpriteInfo()
             {
                 PixelsPerUnit = (int)sprite.pixelsPerUnit,
                 Position = x,
@@ -160,24 +145,13 @@ internal class ModdingAPI : BlasIIMod
         File.WriteAllText(infoPath, JsonConvert.SerializeObject(infos, Formatting.Indented));
     }
 
-    class SpriteExportInfo
+    class SpriteInfo
     {
         public int PixelsPerUnit { get; init; }
         public int Position { get; init; }
         public int Width { get; init; }
         public int Height { get; init; }
         public float Pivot { get; init; }
-    }
-
-    class SpriteInfo
-    {
-        public string Name { get; init; }
-        public float PixelsPerUnit { get; init; }
-        public float XPivot { get; init; }
-        public float YPivot { get; init; }
-
-        [JsonIgnore]
-        public Sprite Sprite { get; init; }
     }
 
     private void DisplayModListOnMenu()
