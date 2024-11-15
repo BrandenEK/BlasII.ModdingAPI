@@ -25,30 +25,7 @@ internal class ModdingAPI : BlasIIMod
         AssetStorage.Initialize();
         InputStorage.Initialize();
 
-        FileHandler.LoadDataAsJson("sprites.json", out SpriteInfo[] infos);
-        foreach (var info in infos)
-        {
-            ModLog.Warn("Loading " + info.Name);
-            bool result = FileHandler.LoadDataAsSprite($"{info.Name}.png", out Sprite s, new SpriteImportOptions()
-            {
-                PixelsPerUnit = (int)info.PixelsPerUnit,
-                Pivot = new Vector2(info.XPivot, info.YPivot),
-            });
-
-            ModLog.Info("REsult: " + result);
-            _sprites.Add(info.Name, s);
-        }
-
-        //foreach (string path in Directory.GetFiles(Path.Combine(FileHandler.ModdingFolder, "data", "Modding API")))
-        //{
-        //    string file = Path.GetFileName(path);
-        //    ModLog.Warn("Loaded sprite: " + file);
-        //    FileHandler.LoadDataAsSprite(file, out Sprite s, new Files.SpriteImportOptions()
-        //    {
-        //        Pivot = new Vector2(0.5f, 0)
-        //    });
-        //    _sprites.Add(Path.GetFileNameWithoutExtension(path), s);
-        //}
+        Import();
     }
 
     protected internal override void OnSceneLoaded(string sceneName)
@@ -111,6 +88,30 @@ internal class ModdingAPI : BlasIIMod
         }
     }
 
+    private void Import()
+    {
+        ModLog.Warn("Importing");
+
+        // Load info list from file
+        FileHandler.LoadDataAsJson("TPO_idle_wieldingLightWeapon.json", out SpriteExportInfo[] infos);
+
+        // Load each sprite from the texture based on its info
+        int idx = 0;
+        foreach (var info in infos)
+        {
+            Rect[] rects = [ new Rect(info.Position, 0, info.Width, info.Height) ];
+
+            FileHandler.LoadDataAsVariableSpritesheet("TPO_idle_wieldingLightWeapon.png", rects, out Sprite[] output, new SpriteImportOptions()
+            {
+                PixelsPerUnit = info.PixelsPerUnit,
+                Pivot = new Vector2(info.Pivot, 0),
+            });
+
+            string name = $"TPO_idle_wieldingLightWeapon_{idx++}";
+            _sprites.Add(name, output[0]);
+        }
+    }
+
     private void Export()
     {
         ModLog.Warn("Exporting");
@@ -139,7 +140,7 @@ internal class ModdingAPI : BlasIIMod
 
             infos[idx] = new SpriteExportInfo()
             {
-                PixelsPerUnit = sprite.pixelsPerUnit,
+                PixelsPerUnit = (int)sprite.pixelsPerUnit,
                 Position = x,
                 Width = w,
                 Height = h,
@@ -157,20 +158,11 @@ internal class ModdingAPI : BlasIIMod
         // Save info list to file
         string infoPath = Path.Combine(FileHandler.ContentFolder, "TPO_idle_wieldingLightWeapon.json");
         File.WriteAllText(infoPath, JsonConvert.SerializeObject(infos, Formatting.Indented));
-
-        //foreach (var s in sprites.Select(x => x.Sprite))
-        //{
-        //    string p = Path.Combine(FileHandler.ContentFolder, $"{s.name}.png");
-        //    File.WriteAllBytes(p, s.GetSlicedTexture().EncodeToPNG());
-        //}
-
-        //string path = Path.Combine(FileHandler.ContentFolder, "sprites.json");
-        //File.WriteAllText(path, JsonConvert.SerializeObject(_spriteInfos.Values, Formatting.Indented));
     }
 
     class SpriteExportInfo
     {
-        public float PixelsPerUnit { get; init; }
+        public int PixelsPerUnit { get; init; }
         public int Position { get; init; }
         public int Width { get; init; }
         public int Height { get; init; }
@@ -186,20 +178,6 @@ internal class ModdingAPI : BlasIIMod
 
         [JsonIgnore]
         public Sprite Sprite { get; init; }
-    }
-
-    //class SpriteInfo
-    //{
-    //    public string Name { get; init; }
-    //    public float PixelsPerUnit { get; init; }
-    //    public V2 Size { get; init; }
-    //    public V2 Pivot { get; init; }
-    //}
-
-    class V2
-    {
-        public float X { get; set; }
-        public float Y { get; set; }
     }
 
     private void DisplayModListOnMenu()
