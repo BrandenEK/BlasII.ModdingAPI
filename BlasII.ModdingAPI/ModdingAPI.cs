@@ -90,11 +90,9 @@ internal class ModdingAPI : BlasIIMod
         FileHandler.LoadDataAsJson($"{animation}.json", out SpriteInfo[] infos);
 
         // Load each sprite from the texture based on its info
-        int idx = 0;
         foreach (var info in infos)
         {
-            string name = $"{animation}_{idx++}";
-            ModLog.Info($"Importing {name}");
+            ModLog.Info($"Importing {info.Name}");
 
             Rect[] rects = [ new Rect(info.Position, 0, info.Width, info.Height) ];
             FileHandler.LoadDataAsVariableSpritesheet($"{animation}.png", rects, out Sprite[] output, new SpriteImportOptions()
@@ -103,7 +101,7 @@ internal class ModdingAPI : BlasIIMod
                 Pivot = new Vector2(info.Pivot, 0),
             });
 
-            _spriteImports.Add(name, output[0]);
+            _spriteImports.Add(info.Name, output[0]);
         }
     }
 
@@ -149,6 +147,7 @@ internal class ModdingAPI : BlasIIMod
 
             infos[idx] = new SpriteInfo()
             {
+                Name = sprite.name,
                 PixelsPerUnit = (int)sprite.pixelsPerUnit,
                 Position = x,
                 Width = w,
@@ -171,6 +170,7 @@ internal class ModdingAPI : BlasIIMod
 
     class SpriteInfo
     {
+        public string Name { get; init; }
         public int PixelsPerUnit { get; init; }
         public int Position { get; init; }
         public int Width { get; init; }
