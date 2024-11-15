@@ -42,9 +42,22 @@ internal class ModdingAPI : BlasIIMod
     private readonly Dictionary<string, Sprite> _spriteImports = new();
     private readonly Dictionary<string, Sprite> _spriteExports = new();
 
-    protected internal override void OnLateUpdate()
+    private readonly List<int> _states = new List<int>()
+    {
+        -965558939, // Idle
+        -1574991317, // Talking start
+        521498251, // Talking
+        -1969186395, // Running start
+        1160887219, // Running
+        1884254511, // Running stop
+    };
+
+    protected internal override void OnUpdate()
     {
         if (!SceneHelper.GameSceneLoaded)
+            return;
+
+        if (!_isPlaying)
             return;
 
         var sr = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>().First(x => x.name == "armor");
@@ -59,6 +72,31 @@ internal class ModdingAPI : BlasIIMod
             ModLog.Info("New sprite: " + sprite.name);
             _spriteExports.Add(sprite.name, sprite);
         }
+    }
+
+    protected internal override void OnLateUpdate()
+    {
+        if (!SceneHelper.GameSceneLoaded)
+            return;
+
+        var sr = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>().First(x => x.name == "armor");
+        var sprite = sr.sprite;
+
+        if (sprite == null || string.IsNullOrEmpty(sprite.name) || sprite.name == "2x2_transparent")
+            return;
+
+        // When playing, force the anim
+        if (_isPlaying)
+        {
+            Play();
+        }
+
+        // When finding new sprite, add it to export
+        //if (!_spriteExports.ContainsKey(sprite.name))
+        //{
+        //    ModLog.Info("New sprite: " + sprite.name);
+        //    _spriteExports.Add(sprite.name, sprite);
+        //}
 
         // When on an imported sprite, replace it
         if (_spriteImports.TryGetValue(sprite.name, out Sprite output))
@@ -70,6 +108,45 @@ internal class ModdingAPI : BlasIIMod
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
         {
             ExportAll();
+        }
+
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad2))
+        {
+            var anim = sr.GetComponent<Animator>();
+            ModLog.Error("Current anim state: " + anim.GetCurrentAnimatorStateInfo(0).nameHash);
+        }
+
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            ModLog.Warn("Starting load...");
+
+            InputHandler.InputBlocked = true;
+            _isPlaying = true;
+        }
+    }
+
+    private bool _isPlaying = false;
+    private int _currentState = 0;
+    private float _currentTime = 0f;
+
+    private const float ANIM_STEP = 0.02f;
+
+    private void Play()
+    {
+        var anim = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<Animator>().First(x => x.name == "armor");
+        anim.Play(_states[_currentState], 0, _currentTime);
+
+        _currentTime += ANIM_STEP;
+        if (_currentTime >= 1)
+        {
+            _currentTime = 0f;
+            _currentState++;
+            if (_currentState >= _states.Count)
+            {
+                _currentState = 0;
+                InputHandler.InputBlocked = false;
+                _isPlaying = false;
+            }
         }
     }
 
