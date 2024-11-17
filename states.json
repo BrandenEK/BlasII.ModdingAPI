@@ -1,0 +1,354 @@
+[
+    {
+        "name": "Idle",
+        "hash": -965558939
+    },
+    {
+        "name": "Cherub spawn start",
+        "hash": -1341103351
+    },
+    {
+        "name": "Cherub spawn land",
+        "hash": 2102019093
+    },
+    {
+        "name": "Running 1",
+        "hash": -1969186395
+    },
+    {
+        "name": "Running 2",
+        "hash": 1160887219
+    },
+    {
+        "name": "Running 3",
+        "hash": 1884254511
+    },
+    {
+        "name": "Running 4",
+        "hash": -1741718004
+    },
+    {
+        "name": "Jumping start",
+        "hash": -1055548534
+    },
+    {
+        "name": "Jumping peak",
+        "hash": 316124436
+    },
+    {
+        "name": "Falling start",
+        "hash": 1364215553
+    },
+    {
+        "name": "Landing",
+        "hash": 190891962
+    },
+    {
+        "name": "Jumping from idle",
+        "hash": -666724154
+    },
+    {
+        "name": "Jumping from idle 2",
+        "hash": 1344875586
+    },
+    {
+        "name": "Jumping from running",
+        "hash": -197255440
+    },
+    {
+        "name": "Jumping from running 2",
+        "hash": -1657082747
+    },
+    {
+        "name": "Dodging",
+        "hash": -78817938
+    },
+    {
+        "name": "Dodging 2",
+        "hash": -1116883639
+    },
+    {
+        "name": "Dodging 3",
+        "hash": -1168809726
+    },
+    {
+        "name": "Hard landing",
+        "hash": -1489403762
+    },
+    {
+        "name": "Hard landing recovery",
+        "hash": -811522261
+    },
+    {
+        "name": "Kneeling start",
+        "hash": -820934891
+    },
+    {
+        "name": "Kneeling loop",
+        "hash": 1863830285
+    },
+    {
+        "name": "Kneeling stop",
+        "hash": 921958248
+    },
+    {
+        "name": "Grab ledge start",
+        "hash": 2135127909
+    },
+    {
+        "name": "Grab ledge impulse",
+        "hash": 1872861103
+    },
+    {
+        "name": "Grab ledge loop",
+        "hash": 1204140895
+    },
+    {
+        "name": "Ring grab start",
+        "hash": -1559019114
+    },
+    {
+        "name": "Ring grab loop",
+        "hash": -970041185
+    },
+    {
+        "name": "Ring grab turn",
+        "hash": -1705067078
+    },
+    {
+        "name": "Air dash 1",
+        "hash": 940539841
+    },
+    {
+        "name": "Air dash 2",
+        "hash": 1687024386
+    },
+    {
+        "name": "Air dash 3",
+        "hash": -1802108607
+    },
+    {
+        "name": "Basin 1",
+        "hash": -1407809867
+    },
+    {
+        "name": "Basin 2",
+        "hash": 1639842896
+    },
+    {
+        "name": "Basin 3",
+        "hash": -536788853
+    },
+    {
+        "name": "Talking 1",
+        "hash": -1574991317
+    },
+    {
+        "name": "Talking 2",
+        "hash": 521498251
+    },
+    {
+        "name": "Crouching",
+        "hash": -1652870109
+    },
+    {
+        "name": "Crouching 2",
+        "hash": 1435908912
+    },
+    {
+        "name": "Crouching 3",
+        "hash": 396542985
+    },
+    {
+        "name": "Pick up ground",
+        "hash": 1584921307
+    },
+    {
+        "name": "Mirror water up",
+        "hash": 959540078
+    },
+    {
+        "name": "Mirror water up 2",
+        "hash": 1810284056
+    },
+    {
+        "name": "Mirror water down",
+        "hash": 1433182958
+    },
+    {
+        "name": "Mirror water down 2",
+        "hash": 2011591555
+    },
+    {
+        "name": "Wall climb",
+        "hash": 277177667
+    },
+    {
+        "name": "Wall climb 2",
+        "hash": 677185526
+    },
+    {
+        "name": "Wall climb 3",
+        "hash": -775042264
+    },
+    {
+        "name": "Wall climb 4",
+        "hash": -1255547580
+    },
+    {
+        "name": "Wall climb 5",
+        "hash": 1545786076
+    },
+    {
+        "name": "Wall climb 6",
+        "hash": -856950872
+    },
+    {
+        "name": "Wall climb 7",
+        "hash": -280190650
+    },
+    {
+        "name": "Chest 1",
+        "hash": 1843242898
+    },
+    {
+        "name": "Chest 2",
+        "hash": -1663665191
+    },
+    {
+        "name": "Chest 3",
+        "hash": -880650314
+    },
+    {
+        "name": "Talking 1",
+        "hash": 373928660
+    },
+    {
+        "name": "Talking 2",
+        "hash": 1116972663
+    },
+    {
+        "name": "Talking 3",
+        "hash": -1353926599
+    },
+    {
+        "name": "Ladder 1",
+        "hash": 225233054
+    },
+    {
+        "name": "Ladder 2",
+        "hash": 662598860
+    },
+    {
+        "name": "Ladder 3",
+        "hash": 235898204
+    },
+    {
+        "name": "Ladder 4",
+        "hash": 1258987835
+    },
+    {
+        "name": "Prie dieu 1",
+        "hash": 939468433
+    },
+    {
+        "name": "Prie dieu 2",
+        "hash": 1700073786
+    },
+    {
+        "name": "Door 1",
+        "hash": -788998747
+    },
+    {
+        "name": "Door 2",
+        "hash": 1422992836
+    },
+    {
+        "name": "Door 3",
+        "hash": -305693716
+    },
+    {
+        "name": "Statue 1",
+        "hash": 650168867
+    },
+    {
+        "name": "Statue 2",
+        "hash": 1790574103
+    },
+    {
+        "name": "Statue 3",
+        "hash": 1848693433
+    },
+    {
+        "name": "Statue 4",
+        "hash": -710476409
+    },
+    {
+        "name": "Statue 5",
+        "hash": 448991620
+    },
+    {
+        "name": "Prayer 1",
+        "hash": -1997139740
+    },
+    {
+        "name": "Prayer 2",
+        "hash": 930242805
+    },
+    {
+        "name": "Prayer 3",
+        "hash": 288675018
+    },
+    {
+        "name": "Verse 1",
+        "hash": 1536816291
+    },
+    {
+        "name": "Verse 2",
+        "hash": -1622075205
+    },
+    {
+        "name": "Healing 1",
+        "hash": 1675385181
+    },
+    {
+        "name": "Pushback 1",
+        "hash": -467404025
+    },
+    {
+        "name": "Pushback 2",
+        "hash": 921023956
+    },
+    {
+        "name": "Knockback 1",
+        "hash": 418494349
+    },
+    {
+        "name": "Knockback 2",
+        "hash": 1758700812
+    },
+    {
+        "name": "Knockback 3",
+        "hash": 1121005773
+    },
+    {
+        "name": "Knockback 4",
+        "hash": -933650646
+    },
+    {
+        "name": "Teleport 1",
+        "hash": 1736850132
+    },
+    {
+        "name": "Teleport 2",
+        "hash": 542084182
+    },
+    {
+        "name": "Teleport 3",
+        "hash": 1741224308
+    },
+    {
+        "name": "Teleport 4",
+        "hash": -1838785089
+    }
+]
