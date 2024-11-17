@@ -77,6 +77,19 @@ internal class ModdingAPI : BlasIIMod
         if (!SceneHelper.GameSceneLoaded)
             return;
 
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
+        {
+            ExportAll();
+        }
+
+        if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad3))
+        {
+            ModLog.Warn("Starting load...");
+
+            InputHandler.InputBlocked = true;
+            _isPlaying = true;
+        }
+
         var sr = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>().First(x => x.name == "armor");
         var sprite = sr.sprite;
 
@@ -112,22 +125,9 @@ internal class ModdingAPI : BlasIIMod
             _foundStates.Add(state);
         }
         
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
-        {
-            ExportAll();
-        }
-
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad2))
         {
             ModLog.Warn($"Current anim state: {state} ({sprite.name})");
-        }
-
-        if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad3))
-        {
-            ModLog.Warn("Starting load...");
-
-            InputHandler.InputBlocked = true;
-            _isPlaying = true;
         }
     }
 
