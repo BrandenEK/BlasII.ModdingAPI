@@ -26,6 +26,11 @@ internal class ModdingAPI : BlasIIMod
         InputStorage.Initialize();
 
         ImportAll();
+
+        // Load already known states
+        FileHandler.LoadDataAsJson("states.json", out _loadedStates);
+        _foundStates.AddRange(_loadedStates.Select(x => x.Hash));
+        ModLog.Info($"Loaded {_loadedStates.Length} states");
     }
 
     protected internal override void OnSceneLoaded(string sceneName)
@@ -42,15 +47,8 @@ internal class ModdingAPI : BlasIIMod
     private readonly Dictionary<string, Sprite> _spriteImports = new();
     private readonly Dictionary<string, Sprite> _spriteExports = new();
 
-    private readonly List<int> _states = new List<int>()
-    {
-        -965558939, // Idle
-        -1574991317, // Talking start
-        521498251, // Talking
-        -1969186395, // Running start
-        1160887219, // Running
-        1884254511, // Running stop
-    };
+    private StateInfo[] _loadedStates;
+    private readonly List<int> _foundStates = new();
 
     protected internal override void OnUpdate()
     {
@@ -104,6 +102,15 @@ internal class ModdingAPI : BlasIIMod
             //ModLog.Error("Replacing sprite: " + sprite.name);
             sr.sprite = output;
         }
+
+        var anim = sr.GetComponent<Animator>();
+        int state = anim.GetCurrentAnimatorStateInfo(0).nameHash;
+
+        if (!_foundStates.Contains(state))
+        {
+            ModLog.Error($"Found new anim state: {state} ({sprite.name})");
+            _foundStates.Add(state);
+        }
         
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad1))
         {
@@ -112,8 +119,7 @@ internal class ModdingAPI : BlasIIMod
 
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad2))
         {
-            var anim = sr.GetComponent<Animator>();
-            ModLog.Error("Current anim state: " + anim.GetCurrentAnimatorStateInfo(0).nameHash);
+            ModLog.Warn($"Current anim state: {state} ({sprite.name})");
         }
 
         if (UnityEngine.Input.GetKeyDown(KeyCode.Keypad3))
@@ -134,14 +140,20 @@ internal class ModdingAPI : BlasIIMod
     private void Play()
     {
         var anim = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<Animator>().First(x => x.name == "armor");
-        anim.Play(_states[_currentState], 0, _currentTime);
+        anim.Play(_loadedStates[_currentState].Hash, 0, _currentTime);
+
+        if (_currentTime == 0)
+        {
+            ModLog.Info("Playing state: " + _loadedStates[_currentState].Name);
+        }
 
         _currentTime += ANIM_STEP;
         if (_currentTime >= 1)
         {
             _currentTime = 0f;
             _currentState++;
-            if (_currentState >= _states.Count)
+
+            if (_currentState >= _loadedStates.Length)
             {
                 _currentState = 0;
                 InputHandler.InputBlocked = false;
@@ -257,6 +269,12 @@ internal class ModdingAPI : BlasIIMod
         public int Width { get; init; }
         public int Height { get; init; }
         public float Pivot { get; init; }
+    }
+
+    class StateInfo
+    {
+        public string Name { get; init; }
+        public int Hash { get; init; }
     }
 
     private void DisplayModListOnMenu()
