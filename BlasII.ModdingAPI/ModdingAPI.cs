@@ -108,6 +108,18 @@ internal class ModdingAPI : BlasIIMod
 
             InputHandler.InputBlocked = true;
             _isPlaying = true;
+        }      
+
+        var sr = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>().First(x => x.name == "armor");
+        var sprite = sr.sprite;
+
+        if (sprite == null || string.IsNullOrEmpty(sprite.name) || sprite.name == "2x2_transparent")
+            return;
+
+        // When playing, force the anim
+        if (_isPlaying)
+        {
+            Play();
         }
 
         // Replace all TPO sprites that were loaded
@@ -120,18 +132,6 @@ internal class ModdingAPI : BlasIIMod
                 continue;
 
             renderer.sprite = customSprite;
-        }
-
-        var sr = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>().First(x => x.name == "armor");
-        var sprite = sr.sprite;
-
-        if (sprite == null || string.IsNullOrEmpty(sprite.name) || sprite.name == "2x2_transparent")
-            return;
-
-        // When playing, force the anim
-        if (_isPlaying)
-        {
-            Play();
         }
 
         // When finding new sprite, add it to export
