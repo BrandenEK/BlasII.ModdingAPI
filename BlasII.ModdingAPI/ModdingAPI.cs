@@ -3,6 +3,7 @@ using BlasII.ModdingAPI.Extensions;
 using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
+using HarmonyLib;
 using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
@@ -15,6 +16,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI;
+
+//[HarmonyPatch(typeof(SpriteRenderer), nameof(SpriteRenderer.sprite), MethodType.Setter)]
+//class t
+//{
+//    public static void Prefix(ref Sprite value)
+//    {
+//        //ModLog.Error("Changing sprite to " + (value?.name));
+//        if (value == null || string.IsNullOrEmpty(value.name))
+//            return;
+
+//        if (!Main.ModdingAPI.TryGetSprite(value.name, out Sprite sprite))
+//            return;
+
+//        ModLog.Warn("Chaning sprite for " + value.name);
+//        value = sprite;
+//    }
+//}
 
 internal class ModdingAPI : BlasIIMod
 {
@@ -49,6 +67,8 @@ internal class ModdingAPI : BlasIIMod
 
     private StateInfo[] _loadedStates;
     private readonly List<int> _foundStates = new();
+
+    public bool TryGetSprite(string name, out Sprite sprite) => _spriteImports.TryGetValue(name, out sprite);
 
     protected internal override void OnUpdate()
     {
