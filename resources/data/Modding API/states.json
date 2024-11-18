@@ -350,5 +350,441 @@
     {
         "name": "Teleport 4",
         "hash": -1838785089
+    },
+	{
+        "name": "Rapier grounded 1",
+        "hash": -799862537
+    },
+	{
+        "name": "Rapier air 1",
+        "hash": 1121649447
+    },
+	{
+        "name": "Rapier crouched 1",
+        "hash": 1824089835
+    },
+	{
+        "name": "Rapier air 2",
+        "hash": 1475039079
+    },
+	{
+        "name": "Rapier air 3",
+        "hash": -1196584020
+    },
+	{
+        "name": "Rapier grounded 2",
+        "hash": -1967979776
+    },
+	{
+        "name": "Rapier grounded 3",
+        "hash": 464022639
+    },
+	{
+        "name": "Rapier teleport 1",
+        "hash": -479777969
+    },
+	{
+        "name": "Rapier lunge 1",
+        "hash": -684243127
+    },
+	{
+        "name": "Rapier lunge 2",
+        "hash": -1911378618
+    },
+	{
+        "name": "Rapier lunge 3",
+        "hash": 1413120270
+    },
+	{
+        "name": "Rapier parry 1",
+        "hash": -2055325639
+    },
+	{
+        "name": "Rapier parry 2",
+        "hash": -1369884377
+    },
+	{
+        "name": "Rapier parry 3",
+        "hash": 1411549578
+    },
+	{
+        "name": "Rapier parry 4",
+        "hash": -1494843292
+    },
+	{
+        "name": "Rapier counter 1",
+        "hash": 1549054873
+    },
+	{
+        "name": "Rapier counter 2",
+        "hash": 1630365164
+    },
+	{
+        "name": "Rapier cross slash 1",
+        "hash": -679898066
+    },
+	{
+        "name": "Rapier sword storm 1",
+        "hash": -1353919575
+    },
+	{
+        "name": "Rapier sword storm 2",
+        "hash": -1630534747
+    },
+	{
+        "name": "Rapier sword storm 3",
+        "hash": -991875446
+    },
+	{
+        "name": "Rapier grounded 4",
+        "hash": -1621352921
+    },
+	{
+        "name": "Rapier lunge Lightning? 1",
+        "hash": 1813125097
+    },
+	{
+        "name": "Rapier lunge Lightning? 2",
+        "hash": -1998872660
+    },
+	{
+        "name": "Censer grounded 1",
+        "hash": 1597756011
+    },
+	{
+        "name": "Censer grounded 2",
+        "hash": 357080068
+    },
+	{
+        "name": "Censer grounded 3",
+        "hash": 589100478
+    },
+	{
+        "name": "Censer grounded 4",
+        "hash": 1035977213
+    },
+	{
+        "name": "Censer charging 1",
+        "hash": -1566712795 
+    },
+	{
+        "name": "Censer charging 2",
+        "hash": -1863362124 
+    },
+	{
+        "name": "Censer charged idle 1",
+        "hash": 540884370
+    },
+	{
+        "name": "Censer charged idle 2",
+        "hash": 1608740875
+    },
+	{
+        "name": "Censer charged walking 1",
+        "hash": -1292975773
+    },
+	{
+        "name": "Censer charged walking 2",
+        "hash": -885272137
+    },
+	{
+        "name": "Censer charged walking 3",
+        "hash": 1147977910
+    },
+	{
+        "name": "Censer charged attack 1",
+        "hash": -156841796
+    },
+	{
+        "name": "Censer air 1",
+        "hash": -2119692470
+    },
+	{
+        "name": "Censer air 2",
+        "hash": 2147340194
+    },
+	{
+        "name": "Censer air 3",
+        "hash": -638114936
+    },
+	{
+        "name": "Censer air 4",
+        "hash": 499390963
+    },
+	{
+        "name": "Censer ignition grounded 1",
+        "hash": 698794261
+    },
+	{
+        "name": "Censer charged attack 2",
+        "hash": 539088644
+    },
+	{
+        "name": "Censer charged landing 1",
+        "hash": -1106375907
+    },
+	{
+        "name": "Censer typhoon 1",
+        "hash": 404970459
+    },
+	{
+        "name": "Censer typhoon 2",
+        "hash": -144600212
+    },
+	{
+        "name": "Censer typhoon 3",
+        "hash": 1388976069
+    },
+	{
+        "name": "Censer typhoon 4",
+        "hash": 145210186
+    },
+	{
+        "name": "Censer charged attack 3",
+        "hash": -2134612022
+    },
+	{
+        "name": "Censer typhoon lit 1",
+        "hash": -1416075951
+    },
+	{
+        "name": "Censer typhoon lit 2",
+        "hash": -1482913320
+    },
+	{
+        "name": "Censer typhoon lit 3",
+        "hash": 788649470
+    },
+	{
+        "name": "Censer typhoon lit 4",
+        "hash": 1970043249
+    },
+	{
+        "name": "Censer ignition strike 1",
+        "hash": 1106329124
+    },
+	{
+        "name": "Censer ignition strike 2",
+        "hash": -1330482777
+    },
+	{
+        "name": "Censer ignition air 1",
+        "hash": -198270023
+    },
+	{
+        "name": "Censer crouched 1",
+        "hash": -680400023
+    },
+	{
+        "name": "Censer crouched 2",
+        "hash": -1197472192
+    },
+	{
+        "name": "Censer crouched 3",
+        "hash": 1155675188
+    },
+	{
+        "name": "Blade grounded 1",
+        "hash": -1254246104
+    },
+	{
+        "name": "Blade grounded 2",
+        "hash": -1428101081
+    },
+	{
+        "name": "Blade grounded 3",
+        "hash": 150233380
+    },
+	{
+        "name": "Blade grounded 4",
+        "hash": 1098112984
+    },
+	{
+        "name": "Blade grounded combo 1",
+        "hash": 741664914
+    },
+	{
+        "name": "Blade grounded combo 2",
+        "hash": -771855676
+    },
+	{
+        "name": "Blade grounded combo 3",
+        "hash": 428411741
+    },
+	{
+        "name": "Blade grounded combo 4",
+        "hash": 317293660
+    },
+	{
+        "name": "Blade crouched 1",
+        "hash": 604782523
+    },
+	{
+        "name": "Blade crouched 2",
+        "hash": -1690304656
+    },
+	{
+        "name": "Blade crouched 3",
+        "hash": -743104996
+    },
+	{
+        "name": "Blade crouched 4",
+        "hash": -1772694321
+    },
+	{
+        "name": "Blade air 1",
+        "hash": -1229361850
+    },
+	{
+        "name": "Blade air 2",
+        "hash": 1198930894
+    },
+	{
+        "name": "Blade air 3",
+        "hash": -590810653
+    },
+	{
+        "name": "Blade air 4",
+        "hash": 902289705
+    },
+	{
+        "name": "Blade air combo 1",
+        "hash": 800079100
+    },
+	{
+        "name": "Blade air combo 2",
+        "hash": 1013496109
+    },
+	{
+        "name": "Blade air combo 3",
+        "hash": -843736166
+    },
+	{
+        "name": "Blade air combo 4",
+        "hash": 1717404333
+    },
+	{
+        "name": "Blade grounded 5",
+        "hash": -619496897
+    },
+	{
+        "name": "Blade plunge low 1",
+        "hash": 1081505222
+    },
+	{
+        "name": "Blade plunge low 2",
+        "hash": 368908825
+    },
+	{
+        "name": "Blade plunge low 3",
+        "hash": -1115684180
+    },
+	{
+        "name": "Blade plunge high 1",
+        "hash": -1004369694
+    },
+	{
+        "name": "Blade plunge high 2",
+        "hash": 1910962893
+    },
+	{
+        "name": "Blade plunge high 3",
+        "hash": 1589482009
+    },
+	{
+        "name": "Blade parry 1",
+        "hash": 1322638913
+    },
+	{
+        "name": "Blade parry 2",
+        "hash": 1678560663
+    },
+	{
+        "name": "Blade parry 3",
+        "hash": -1156271237
+    },
+	{
+        "name": "Blade counter 1",
+        "hash": -220476287
+    },
+	{
+        "name": "Blade counter 2",
+        "hash": -2106510479
+    },
+	{
+        "name": "Blade counter 3",
+        "hash": 2107677767
+    },
+	{
+        "name": "Blade combo double 1",
+        "hash": 1530124292
+    },
+	{
+        "name": "Blade combo double 2",
+        "hash": 1311041882
+    },
+	{
+        "name": "Blade combo double 3",
+        "hash": -1603088203
+    },
+	{
+        "name": "Blade combo double 4",
+        "hash": -1789964513
+    },
+	{
+        "name": "Blade combo down 1",
+        "hash": 987826278
+    },
+	{
+        "name": "Blade combo down 2",
+        "hash": 623169832
+    },
+	{
+        "name": "Blade combo up 1",
+        "hash": 1306933488
+    },
+	{
+        "name": "Blade combo up 2",
+        "hash": 1157550076
+    },
+	{
+        "name": "Blade combo up 3",
+        "hash": -1663104320
+    },
+	{
+        "name": "Blade combo triple 1",
+        "hash": 997449647
+    },
+	{
+        "name": "Blade combo triple 2",
+        "hash": 1629942453
+    },
+	{
+        "name": "Blade plunge wave 1",
+        "hash": -1968471221
+    },
+	{
+        "name": "Blade plunge wave 2",
+        "hash": 2130776604
+    },
+	{
+        "name": "Blade plunge wave 3",
+        "hash": -1859942959
+    },
+	{
+        "name": "Blade counter strike 1",
+        "hash": -110120558
+    },
+	{
+        "name": "Blade counter strike 2",
+        "hash": 1826485822
+    },
+	{
+        "name": "Blade berserk trigger 1",
+        "hash": 891116307
+    },
+	{
+        "name": "Blade berserk slash 1",
+        "hash": -760908268
     }
 ]
