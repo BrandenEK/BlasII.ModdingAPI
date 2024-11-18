@@ -110,6 +110,18 @@ internal class ModdingAPI : BlasIIMod
             _isPlaying = true;
         }
 
+        // Replace all TPO sprites that were loaded
+        foreach (var renderer in CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>())
+        {
+            if (renderer.sprite == null || string.IsNullOrEmpty(renderer.sprite.name))
+                continue;
+
+            if (!_spriteImports.TryGetValue(renderer.sprite.name, out Sprite customSprite))
+                continue;
+
+            renderer.sprite = customSprite;
+        }
+
         var sr = CoreCache.PlayerSpawn.PlayerInstance.GetComponentsInChildren<SpriteRenderer>().First(x => x.name == "armor");
         var sprite = sr.sprite;
 
@@ -128,13 +140,6 @@ internal class ModdingAPI : BlasIIMod
         //    ModLog.Info("New sprite: " + sprite.name);
         //    _spriteExports.Add(sprite.name, sprite);
         //}
-
-        // When on an imported sprite, replace it
-        if (_spriteImports.TryGetValue(sprite.name, out Sprite output))
-        {
-            //ModLog.Error("Replacing sprite: " + sprite.name);
-            sr.sprite = output;
-        }
 
         var anim = sr.GetComponent<Animator>();
         int state = anim.GetCurrentAnimatorStateInfo(0).nameHash;
