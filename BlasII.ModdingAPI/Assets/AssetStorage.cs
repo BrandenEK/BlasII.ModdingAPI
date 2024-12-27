@@ -1,4 +1,5 @@
-﻿using Il2CppLightbug.Kinematic2D.Implementation;
+﻿using HarmonyLib;
+using Il2CppLightbug.Kinematic2D.Implementation;
 using Il2CppTGK.Framework.Localization;
 using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.Attack.Data;
@@ -7,8 +8,24 @@ using Il2CppTGK.Game.Components.StatsSystem;
 using Il2CppTGK.Game.Components.StatsSystem.Data;
 using Il2CppTGK.Game.WeaponMemory;
 using Il2CppTGK.Inventory;
+using System.Linq;
 
 namespace BlasII.ModdingAPI.Assets;
+
+//[HarmonyPatch(typeof(AltarPieceOrder), nameof(AltarPieceOrder.CacheAll))]
+//class y
+//{
+//    public static void Postfix(AltarPieceOrder __instance)
+//    {
+//        ModLog.Info("Caching groups");
+//        __instance.categories[0].pieces.Add(AssetStorage.Figure);
+//        //foreach (var categaory in __instance.categories)
+//        //{
+//        //    ModLog.Warn("Category " + categaory.categoryId.name);
+//        //    categaory.pieces.Add(AssetStorage.Figure);
+//        //}
+//    }
+//}
 
 /// <summary>
 /// Loads and stores a variety of useful data objects
@@ -42,19 +59,34 @@ public static class AssetStorage
     /// <summary> Stores all ModifiableStatID assets (NAME) </summary>
     public static GenericSingleStorage<ModifiableStatID> ModifiableStats { get; private set; }
 
+    private static FigureItemID figure;
+
+    public static FigureItemID Figure => figure;
+
     /// <summary>
     /// Initializes and loads all tracked assets
     /// </summary>
     internal static void Initialize()
     {
+        //figure = UnityEngine.ScriptableObject.CreateInstance<FigureItemID>();
+        //figure.name = "FG401";
+        //figure.caption = "Figure name";
+        //figure.description = "Figure description";
+        //figure.lore = "Figure lore";
+        //figure.effectText = "Figure effect";
+        //figure.image = null;
+        //figure.figureImage = null;
+        //figure.resonanceImage = null;
+        //figure.ignoreInCompletion = true;
+
         Beads = new GenericSingleStorage<RosaryBeadItemID>(
-            AssetLoader.LoadSingleItem<RosaryBeadItemID>());
+            AssetLoader.LoadSingleItem<RosaryBeadItemID>().ToArray());
         Prayers = new GenericSingleStorage<PrayerItemID>(
-            AssetLoader.LoadSingleItem<PrayerItemID>());
+            AssetLoader.LoadSingleItem<PrayerItemID>().ToArray());
         Figures = new GenericSingleStorage<FigureItemID>(
-            AssetLoader.LoadSingleItem<FigureItemID>());
+            AssetLoader.LoadSingleItem<FigureItemID>().ToArray());
         QuestItems = new GenericSingleStorage<QuestItemID>(
-            AssetLoader.LoadSingleItem<QuestItemID>());
+            AssetLoader.LoadSingleItem<QuestItemID>().ToArray());
 
         Abilities = new GenericDoubleStorage<IAbilityTypeRef, ABILITY_IDS>(
             AssetLoader.LoadDoubleStandard<IAbilityTypeRef, ABILITY_IDS>("AB"));
