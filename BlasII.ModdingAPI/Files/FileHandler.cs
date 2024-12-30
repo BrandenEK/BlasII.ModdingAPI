@@ -1,3 +1,4 @@
+using Il2CppTGK.Game;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -25,6 +26,11 @@ public class FileHandler
     /// The full path of the game's modding folder
     /// </summary>
     public string ModdingFolder { get; } = Path.Combine(Directory.GetCurrentDirectory(), "Modding");
+
+    /// <summary>
+    /// The full path of the game's savegames folder
+    /// </summary>
+    public string SavegamesFolder => CoreCache.StorageManager.BuildPath("Savegames");
 
     /// <summary>
     /// The full path of this mod's content folder

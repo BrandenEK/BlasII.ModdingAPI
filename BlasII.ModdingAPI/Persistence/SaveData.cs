@@ -1,5 +1,4 @@
-﻿using Il2CppTGK.Game;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -113,6 +112,6 @@ public abstract class SaveData
     /// </summary>
     private static string GetPathForSlot(int slot)
     {
-        return $"{CoreCache.StorageManager.BuildPath("Savegames/")}savegame_{slot}_modded.bin";
+        return Path.Combine(Main.ModdingAPI.FileHandler.SavegamesFolder, $"savegame_{slot}_modded.bin");
     }
 }
