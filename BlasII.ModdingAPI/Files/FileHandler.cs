@@ -1,4 +1,4 @@
-using BlasII.ModdingAPI.Helpers;
+using Il2CppTGK.Game;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -26,6 +26,11 @@ public class FileHandler
     /// The full path of the game's modding folder
     /// </summary>
     public string ModdingFolder { get; } = Path.Combine(Directory.GetCurrentDirectory(), "Modding");
+
+    /// <summary>
+    /// The full path of the game's savegames folder
+    /// </summary>
+    public string SavegamesFolder => CoreCache.StorageManager.BuildPath("Savegames");
 
     /// <summary>
     /// The full path of this mod's content folder
@@ -152,8 +157,9 @@ public class FileHandler
         output = new Texture2D(2, 2, TextureFormat.RGBA32, false);
         output.LoadImage(bytes, false);
 
+        // Might be able to just skip this and use HideFlags for the texture object
         var sprite = Sprite.Create(output, new Rect(0, 0, output.width, output.height), Vector2.zero);
-        RegisterSpriteOnObject(sprite);
+        sprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
 
         return true;
     }
@@ -177,7 +183,7 @@ public class FileHandler
 
         var rect = new Rect(0, 0, texture.width, texture.height);
         output = Sprite.Create(texture, rect, options.Pivot, options.PixelsPerUnit, 0, options.MeshType, options.Border);
-        RegisterSpriteOnObject(output);
+        output.hideFlags = HideFlags.DontUnloadUnusedAsset;
 
         return true;
     }
@@ -215,7 +221,7 @@ public class FileHandler
                 throw new Exception($"Invalid rect for {fileName}: {rect}");
 
             Sprite sprite = Sprite.Create(texture, rect, options.Pivot, options.PixelsPerUnit, 0, options.MeshType, options.Border);
-            RegisterSpriteOnObject(sprite);
+            sprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
             output[i] = sprite;
         }
 
@@ -254,7 +260,7 @@ public class FileHandler
             {
                 var rect = new Rect(x, y, singleWidth, singleHeight);
                 Sprite sprite = Sprite.Create(texture, rect, options.Pivot, options.PixelsPerUnit, 0, options.MeshType, options.Border);
-                RegisterSpriteOnObject(sprite);
+                sprite.hideFlags = HideFlags.DontUnloadUnusedAsset;
                 output[count++] = sprite;
             }
         }
@@ -267,19 +273,6 @@ public class FileHandler
     /// </summary>
     public bool LoadDataAsFixedSpritesheet(string fileName, Vector2 size, out Sprite[] output) =>
         LoadDataAsFixedSpritesheet(fileName, size, out output, new SpriteImportOptions());
-
-    /// <summary>
-    /// Whenever a sprite is created, it gets dereferenced in the next scene, so add it to a persistent object to keep it around in memory
-    /// </summary>
-    private void RegisterSpriteOnObject(Sprite sprite)
-    {
-        var obj = new GameObject(sprite?.name ?? "Empty");
-        obj.transform.SetParent(ObjectHelper.ModObject.transform);
-
-        var sr = obj.AddComponent<SpriteRenderer>();
-        sr.sprite = sprite;
-        sr.enabled = false;
-    }
 
     // Config
 
