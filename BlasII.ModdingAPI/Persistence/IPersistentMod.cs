@@ -9,12 +9,12 @@ public interface IPersistentMod
     /// <summary>
     /// Saves an object containing the mod's persistent data
     /// </summary>
-    public SlotSaveData SaveGame();
+    public SaveData SaveGame();
 
     /// <summary>
     /// Loads an object containing the mod's persistent data
     /// </summary>
-    public void LoadGame(SlotSaveData data);
+    public void LoadGame(SaveData data);
 
     /// <summary>
     /// Resets the mod's persistent data

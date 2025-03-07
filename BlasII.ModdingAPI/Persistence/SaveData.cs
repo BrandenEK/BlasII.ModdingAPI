@@ -9,7 +9,7 @@ namespace BlasII.ModdingAPI.Persistence;
 /// <summary>
 /// Used to save and load persistent data for a mod
 /// </summary>
-public abstract class SlotSaveData
+public abstract class SaveData
 {
     /// <summary>
     /// Resets game progress for each mod
@@ -31,7 +31,7 @@ public abstract class SlotSaveData
     internal static void Save(int slot)
     {
         ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
-        var data = new Dictionary<string, SlotSaveData>();
+        var data = new Dictionary<string, SaveData>();
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -59,12 +59,12 @@ public abstract class SlotSaveData
     internal static void Load(int slot)
     {
         ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
-        var data = new Dictionary<string, SlotSaveData>();
+        var data = new Dictionary<string, SaveData>();
 
         try
         {
             string json = File.ReadAllText(GetPathForSlot(slot));
-            data = JsonConvert.DeserializeObject<Dictionary<string, SlotSaveData>>(json, new JsonSerializerSettings
+            data = JsonConvert.DeserializeObject<Dictionary<string, SaveData>>(json, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
@@ -76,7 +76,7 @@ public abstract class SlotSaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SlotSaveData save))
+            if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
                 persistentMod.LoadGame(save);
         });
     }

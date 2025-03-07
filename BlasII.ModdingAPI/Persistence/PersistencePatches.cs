@@ -9,7 +9,7 @@ class SaveDataManager_ResetPersistence_Patch
 {
     public static void Postfix()
     {
-        SlotSaveData.Reset();
+        SaveData.Reset();
     }
 }
 
@@ -18,7 +18,7 @@ class SaveDataManager_SaveGame1_Patch
 {
     public static void Postfix()
     {
-        SlotSaveData.Save(CoreCache.SaveData.CurrentSaveSlot);
+        SaveData.Save(CoreCache.SaveData.CurrentSaveSlot);
     }
 }
 
@@ -27,7 +27,7 @@ class SaveDataManager_SaveGame2_Patch
 {
     public static void Postfix(int slot)
     {
-        SlotSaveData.Save(slot);
+        SaveData.Save(slot);
     }
 }
 
@@ -36,7 +36,7 @@ class SaveDataManager_SaveGameInEnding_Patch
 {
     public static void Postfix()
     {
-        SlotSaveData.Save(CoreCache.SaveData.CurrentSaveSlot);
+        SaveData.Save(CoreCache.SaveData.CurrentSaveSlot);
     }
 }
 
@@ -45,7 +45,7 @@ class SaveDataManager_LoadGame_Patch
 {
     public static void Postfix(int slot)
     {
-        SlotSaveData.Load(slot);
+        SaveData.Load(slot);
     }
 }
 
@@ -54,7 +54,7 @@ class SaveDataManager_LoadGameWithoutReset_Patch
 {
     public static void Postfix(int slot)
     {
-        SlotSaveData.Load(slot);
+        SaveData.Load(slot);
     }
 }
 
@@ -63,7 +63,7 @@ class SaveDataManager_DeleteSlot_Patch
 {
     public static void Postfix(int slot)
     {
-        SlotSaveData.Delete(slot);
+        SaveData.Delete(slot);
     }
 }
 
@@ -72,6 +72,6 @@ class SaveDataManager_CopySlot_Patch
 {
     public static void Postfix(int slotSrc, int slotDest)
     {
-        SlotSaveData.Copy(slotSrc, slotDest);
+        SaveData.Copy(slotSrc, slotDest);
     }
 }
