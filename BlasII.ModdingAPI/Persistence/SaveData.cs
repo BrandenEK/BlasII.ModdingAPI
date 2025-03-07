@@ -108,7 +108,9 @@ public abstract class SaveData
 
         try
         {
-
+            string pathSrc = GetPathForSlot(slotSrc);
+            string pathDest = GetPathForSlot(slotDest);
+            File.Copy(pathSrc, pathDest, true);
         }
         catch (Exception e)
         {
