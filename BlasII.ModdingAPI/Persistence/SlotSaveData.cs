@@ -8,7 +8,7 @@ namespace BlasII.ModdingAPI.Persistence;
 /// <summary>
 /// Used to save and load persistent data for a mod
 /// </summary>
-public abstract class SaveData
+public abstract class SlotSaveData
 {
     /// <summary>
     /// Resets game progress for each mod
@@ -30,7 +30,7 @@ public abstract class SaveData
     internal static void SaveGame(int slot)
     {
         ModLog.Warn("OLd save");
-        var data = new Dictionary<string, SaveData>();
+        var data = new Dictionary<string, SlotSaveData>();
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -44,7 +44,7 @@ public abstract class SaveData
     /// <summary>
     /// After collecting save data for all persistent mods, serialize it and save to a file
     /// </summary>
-    private static void SaveDataToFile(int slot, Dictionary<string, SaveData> data)
+    private static void SaveDataToFile(int slot, Dictionary<string, SlotSaveData> data)
     {
         try
         {
@@ -70,7 +70,7 @@ public abstract class SaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
+            if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SlotSaveData save))
                 persistentMod.LoadGame(save);
         });
     }
@@ -78,12 +78,12 @@ public abstract class SaveData
     /// <summary>
     /// Load and deserialize save data for all persistent mods, then give it to them
     /// </summary>
-    private static Dictionary<string, SaveData> LoadDataFromFile(int slot)
+    private static Dictionary<string, SlotSaveData> LoadDataFromFile(int slot)
     {
         try
         {
             string json = File.ReadAllText(GetPathForSlot(slot));
-            return JsonConvert.DeserializeObject<Dictionary<string, SaveData>>(json, new JsonSerializerSettings
+            return JsonConvert.DeserializeObject<Dictionary<string, SlotSaveData>>(json, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
@@ -91,7 +91,7 @@ public abstract class SaveData
         catch (Exception)
         {
             ModLog.Error("Failed to load data for slot " + slot);
-            return new Dictionary<string, SaveData>();
+            return new Dictionary<string, SlotSaveData>();
         }
     }
 
