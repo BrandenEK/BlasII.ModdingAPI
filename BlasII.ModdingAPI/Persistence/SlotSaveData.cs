@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 
 namespace BlasII.ModdingAPI.Persistence;
@@ -13,9 +14,9 @@ public abstract class SlotSaveData
     /// <summary>
     /// Resets game progress for each mod
     /// </summary>
-    internal static void ResetGame()
+    internal static void Reset()
     {
-        ModLog.Warn("OLd reset");
+        ModLog.Custom($"Resetting data for all slots", Color.Blue);
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -27,9 +28,9 @@ public abstract class SlotSaveData
     /// <summary>
     /// Saves game progress for each mod
     /// </summary>
-    internal static void SaveGame(int slot)
+    internal static void Save(int slot)
     {
-        ModLog.Warn("OLd save");
+        ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
         var data = new Dictionary<string, SlotSaveData>();
 
         Main.ModLoader.ProcessModFunction(mod =>
@@ -38,14 +39,6 @@ public abstract class SlotSaveData
                 data.Add(mod.Id, persistentMod.SaveGame());
         });
 
-        SaveDataToFile(slot, data);
-    }
-
-    /// <summary>
-    /// After collecting save data for all persistent mods, serialize it and save to a file
-    /// </summary>
-    private static void SaveDataToFile(int slot, Dictionary<string, SlotSaveData> data)
-    {
         try
         {
             string json = JsonConvert.SerializeObject(data, new JsonSerializerSettings
@@ -56,17 +49,30 @@ public abstract class SlotSaveData
         }
         catch (Exception)
         {
-            ModLog.Error("Failed to save data for slot " + slot);
+            ModLog.Error($"Failed to save data for slot {slot}");
         }
     }
 
     /// <summary>
     /// Loads game progress for each mod
     /// </summary>
-    internal static void LoadGame(int slot)
+    internal static void Load(int slot)
     {
-        ModLog.Warn("OLd load");
-        var data = LoadDataFromFile(slot);
+        ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
+        var data = new Dictionary<string, SlotSaveData>();
+
+        try
+        {
+            string json = File.ReadAllText(GetPathForSlot(slot));
+            data = JsonConvert.DeserializeObject<Dictionary<string, SlotSaveData>>(json, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto
+            });
+        }
+        catch (Exception)
+        {
+            ModLog.Error($"Failed to load data for slot {slot}");
+        }
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -76,31 +82,12 @@ public abstract class SlotSaveData
     }
 
     /// <summary>
-    /// Load and deserialize save data for all persistent mods, then give it to them
-    /// </summary>
-    private static Dictionary<string, SlotSaveData> LoadDataFromFile(int slot)
-    {
-        try
-        {
-            string json = File.ReadAllText(GetPathForSlot(slot));
-            return JsonConvert.DeserializeObject<Dictionary<string, SlotSaveData>>(json, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            });
-        }
-        catch (Exception)
-        {
-            ModLog.Error("Failed to load data for slot " + slot);
-            return new Dictionary<string, SlotSaveData>();
-        }
-    }
-
-    /// <summary>
     /// Deletes the modded save data when the main save file is deleted
     /// </summary>
-    internal static void DeleteDataFromFile(int slot)
+    internal static void Delete(int slot)
     {
-        ModLog.Warn("OLd delete");
+        ModLog.Custom($"Deleting data for slot {slot}", Color.Blue);
+
         try
         {
             string path = GetPathForSlot(slot);
@@ -108,8 +95,16 @@ public abstract class SlotSaveData
         }
         catch (Exception)
         {
-            ModLog.Error("Failed to delete data for slot " + slot);
+            ModLog.Error($"Failed to delete data for slot {slot}");
         }
+    }
+
+    /// <summary>
+    /// Copies the modded save data when the main save file is copied
+    /// </summary>
+    internal static void Copy(int slotSrc, int slotDest)
+    {
+        ModLog.Custom($"Copying data for slot {slotSrc} to slot {slotDest}", Color.Blue);
     }
 
     /// <summary>
