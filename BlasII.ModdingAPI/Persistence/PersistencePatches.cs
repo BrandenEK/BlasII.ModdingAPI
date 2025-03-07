@@ -46,7 +46,7 @@ class Mod_Delete_Patch
 [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.SaveGame), [])]
 class SaveDataManager_SaveGame1_Patch
 {
-    public static void Prefix()
+    public static void Postfix()
     {
         int slot = CoreCache.SaveData.CurrentSaveSlot;
         ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
@@ -56,7 +56,7 @@ class SaveDataManager_SaveGame1_Patch
 [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.SaveGame), typeof(int))]
 class SaveDataManager_SaveGame2_Patch
 {
-    public static void Prefix(int slot)
+    public static void Postfix(int slot)
     {
         ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
     }
@@ -65,7 +65,7 @@ class SaveDataManager_SaveGame2_Patch
 [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.SaveGameInEnding))]
 class SaveDataManager_SaveGameInEnding_Patch
 {
-    public static void Prefix()
+    public static void Postfix()
     {
         int slot = CoreCache.SaveData.CurrentSaveSlot;
         ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
@@ -75,7 +75,7 @@ class SaveDataManager_SaveGameInEnding_Patch
 [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.LoadGame))]
 class SaveDataManager_LoadGame_Patch
 {
-    public static void Prefix(int slot)
+    public static void Postfix(int slot)
     {
         ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
     }
@@ -84,7 +84,7 @@ class SaveDataManager_LoadGame_Patch
 [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.LoadGameWithoutReset))]
 class SaveDataManager_LoadGameWithoutReset_Patch
 {
-    public static void Prefix(int slot)
+    public static void Postfix(int slot)
     {
         ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
     }
@@ -93,7 +93,7 @@ class SaveDataManager_LoadGameWithoutReset_Patch
 [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.DeleteSlot))]
 class SaveDataManager_DeleteSlot_Patch
 {
-    public static void Prefix(int slot)
+    public static void Postfix(int slot)
     {
         ModLog.Custom($"Deleting data for slot {slot}", Color.Blue);
     }
@@ -102,26 +102,17 @@ class SaveDataManager_DeleteSlot_Patch
 [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.CopySlot))]
 class SaveDataManager_CopySlot_Patch
 {
-    public static void Prefix(int slotSrc, int slotDest)
+    public static void Postfix(int slotSrc, int slotDest)
     {
-        ModLog.Custom($"Copy data for slot {slotSrc} to slot {slotDest}", Color.Blue);
-    }
-}
-
-[HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.ResetSlot))]
-class SaveDataManager_ResetSlot_Patch
-{
-    public static void Prefix()
-    {
-        ModLog.Custom($"Resetting data for all slots", Color.Blue);
+        ModLog.Custom($"Copying data for slot {slotSrc} to slot {slotDest}", Color.Blue);
     }
 }
 
 [HarmonyPatch(typeof(SaveDataManager), nameof(SaveDataManager.ResetPersistence))]
 class SaveDataManager_ResetPersistence_Patch
 {
-    public static void Prefix()
+    public static void Postfix()
     {
-        ModLog.Custom($"Resetting data for all slots perseieiss", Color.Blue);
+        ModLog.Custom($"Resetting data for all slots", Color.Blue);
     }
 }

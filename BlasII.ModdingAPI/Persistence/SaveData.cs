@@ -15,6 +15,8 @@ public abstract class SaveData
     /// </summary>
     internal static void ResetGame()
     {
+        ModLog.Warn("OLd reset");
+
         Main.ModLoader.ProcessModFunction(mod =>
         {
             if (mod is IPersistentMod persistentMod)
@@ -27,6 +29,7 @@ public abstract class SaveData
     /// </summary>
     internal static void SaveGame(int slot)
     {
+        ModLog.Warn("OLd save");
         var data = new Dictionary<string, SaveData>();
 
         Main.ModLoader.ProcessModFunction(mod =>
@@ -62,6 +65,7 @@ public abstract class SaveData
     /// </summary>
     internal static void LoadGame(int slot)
     {
+        ModLog.Warn("OLd load");
         var data = LoadDataFromFile(slot);
 
         Main.ModLoader.ProcessModFunction(mod =>
@@ -96,6 +100,7 @@ public abstract class SaveData
     /// </summary>
     internal static void DeleteDataFromFile(int slot)
     {
+        ModLog.Warn("OLd delete");
         try
         {
             string path = GetPathForSlot(slot);
