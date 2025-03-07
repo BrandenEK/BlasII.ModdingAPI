@@ -47,9 +47,9 @@ public abstract class SaveData
             });
             File.WriteAllText(GetPathForSlot(slot), json);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            ModLog.Error($"Failed to save data for slot {slot}");
+            ModLog.Error($"Failed to save data for slot {slot}: {e.GetType()}");
         }
     }
 
@@ -69,9 +69,9 @@ public abstract class SaveData
                 TypeNameHandling = TypeNameHandling.Auto
             });
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            ModLog.Error($"Failed to load data for slot {slot}");
+            ModLog.Error($"Failed to load data for slot {slot}: {e.GetType()}");
         }
 
         Main.ModLoader.ProcessModFunction(mod =>
@@ -93,9 +93,9 @@ public abstract class SaveData
             string path = GetPathForSlot(slot);
             File.Delete(path);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            ModLog.Error($"Failed to delete data for slot {slot}");
+            ModLog.Error($"Failed to delete data for slot {slot}: {e.GetType()}");
         }
     }
 
@@ -105,6 +105,15 @@ public abstract class SaveData
     internal static void Copy(int slotSrc, int slotDest)
     {
         ModLog.Custom($"Copying data for slot {slotSrc} to slot {slotDest}", Color.Blue);
+
+        try
+        {
+
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to copy data for slot {slotSrc} to slot {slotDest}: {e.GetType()}");
+        }
     }
 
     /// <summary>
