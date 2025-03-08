@@ -1,4 +1,6 @@
 ﻿
+using System;
+
 namespace BlasII.ModdingAPI.Persistence;
 
 //public interface IGlobalPersistentMod<T> where T : GlobalSaveData
@@ -34,23 +36,27 @@ namespace BlasII.ModdingAPI.Persistence;
 //}
 
 
-public interface IGlobalPersistentMod<T> where T : GlobalSaveData
+public interface IGlobalPersistentMod
 {
-    public T Save();
+    public Type GlobalDataType { get; }
 
-    public void Load(T data);
+    public GlobalSaveData Save();
+
+    public void Load(GlobalSaveData data);
 }
 
-public class TestMod : IGlobalPersistentMod<TestGlobalSaveData>
+public class TestMod : IGlobalPersistentMod
 {
-    public void Load(TestGlobalSaveData data)
+    public Type GlobalDataType { get; } = typeof(TestGlobalSaveData);
+
+    public void Load(GlobalSaveData data)
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 
-    public TestGlobalSaveData Save()
+    public GlobalSaveData Save()
     {
-        throw new System.NotImplementedException();
+        throw new NotImplementedException();
     }
 }
 
