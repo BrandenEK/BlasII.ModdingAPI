@@ -6,7 +6,6 @@ using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,10 +27,10 @@ internal class ModdingAPI : BlasIIMod, IGlobalPersistentMod
 
     public GlobalSaveData Save()
     {
-        ModLog.Info("Saved global: 10");
+        ModLog.Info("Saved global: " + Time.frameCount);
         return new TestGlobalSaveData()
         {
-            Number = 10
+            Number = Time.frameCount
         };
     }
 
@@ -46,54 +45,6 @@ internal class ModdingAPI : BlasIIMod, IGlobalPersistentMod
         if (SceneHelper.MenuSceneLoaded)
         {
             DisplayModListOnMenu();
-
-            //var dict = new Dictionary<string, GlobalSaveData>();
-
-            //foreach (var mod in ModHelper.LoadedMods)
-            //{
-            //    ModLog.Error(mod.Id);
-
-            //    if (mod is not IGlobalPersistentMod globalMod)
-            //        continue;
-
-            //    ModLog.Warn("Global mod");
-            //    globalMod.
-            //}
-
-            var dict = new Dictionary<string, string>();
-
-            // Save
-            foreach (var mod in ModHelper.LoadedMods)
-            {
-                ModLog.Error(mod.Id);
-
-                if (mod is not IGlobalPersistentMod pMod)
-                    continue;
-
-                dict.Add(mod.Id, Newtonsoft.Json.JsonConvert.SerializeObject(pMod.Save()));
-            }
-
-            // Test
-            foreach (var kvp in dict)
-            {
-                ModLog.Info(kvp.Key);
-                ModLog.Warn(kvp.Value);
-            }
-
-            // Load
-            foreach(var mod in ModHelper.LoadedMods)
-            {
-                ModLog.Error(mod.Id);
-
-                if (mod is not IGlobalPersistentMod pMod)
-                    continue;
-
-                if (!dict.TryGetValue(mod.Id, out string json))
-                    continue;
-
-                GlobalSaveData data = (GlobalSaveData)Newtonsoft.Json.JsonConvert.DeserializeObject(json, pMod.GlobalDataType);
-                pMod.Load(data);
-            }
 
             if (VersionHelper.GameVersion == "Unknown")
                 FindGameVersion();

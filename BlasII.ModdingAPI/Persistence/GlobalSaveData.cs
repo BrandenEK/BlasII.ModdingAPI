@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Text;
 
 namespace BlasII.ModdingAPI.Persistence;
 
@@ -12,46 +13,53 @@ public class GlobalSaveData
     internal static void Save()
     {
         ModLog.Custom($"Saving global data", Color.Blue);
-        var data = new Dictionary<string, GlobalSaveData>();
+        var sb = new StringBuilder();
 
-        //Main.ModLoader.ProcessModFunction(mod =>
-        //{
-        //    if (mod is IGlobalPersistentMod persistentMod)
-        //        data.Add(mod.Id, persistentMod.Save());
-        //});
+        Main.ModLoader.ProcessModFunction(mod =>
+        {
+            if (mod is IGlobalPersistentMod persistentMod)
+            {
+                sb.AppendLine(mod.Id);
+                sb.AppendLine(JsonConvert.SerializeObject(persistentMod.Save()));
+            }
+        });
+
+        try
+        {
+            File.WriteAllText(GetGlobalDataPath(), sb.ToString());
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to save global data: {e.GetType()}");
+        }
     }
 
     internal static void Load()
     {
         ModLog.Custom($"Loading global data", Color.Blue);
-        //var data = new Dictionary<string, GlobalSaveData>();
+        var datas = new Dictionary<string, string>();
 
-        //try
-        //{
-        //    string json = string.Empty;
-        //    data = JsonConvert.DeserializeObject<Dictionary<string, GlobalSaveData>>(json, new JsonSerializerSettings
-        //    {
-        //        TypeNameHandling = TypeNameHandling.Auto
-        //    });
-        //}
-        //catch (Exception e)
-        //{
-        //    ModLog.Error($"Failed to global load data: {e.GetType()}");
-        //}
+        try
+        {
+            string[] lines = File.ReadAllLines(GetGlobalDataPath());
+            for (int i = 0; i < lines.Length - 1; i += 2)
+            {
+                datas.Add(lines[0], lines[1]);
+            }
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to load global data: {e.GetType()}");
+        }
 
-        //Main.ModLoader.ProcessModFunction(mod =>
-        //{
-        //    if (mod.GetType().IsAssignableFrom(typeof(IGlobalPersistentMod<>)))
-        //    {
-        //        mod.GetType().gener
-        //    }
-
-        //    if (mod is IGlobalPersistentMod persistentMod && data.TryGetValue(mod.Id, out GlobalSaveData save))
-        //        persistentMod.Load(save);
-        //});
-
-        ModLog.Info(CoreCache.GlobalSaveData.GetDataGameFilePath());
-        ModLog.Warn(CoreCache.StorageManager.BuildPath("GlobalData_modded.data"));
+        Main.ModLoader.ProcessModFunction(mod =>
+        {
+            if (mod is IGlobalPersistentMod persistentMod && datas.TryGetValue(mod.Id, out string json))
+            {
+                GlobalSaveData data = JsonConvert.DeserializeObject(json, persistentMod.GlobalDataType) as GlobalSaveData;
+                persistentMod.Load(data);
+            }
+        });
     }
 
     internal static void Delete()
@@ -65,7 +73,7 @@ public class GlobalSaveData
         }
         catch (Exception e)
         {
-            ModLog.Error($"Failed to delete global data for slot: {e.GetType()}");
+            ModLog.Error($"Failed to delete global data: {e.GetType()}");
         }
     }
 
