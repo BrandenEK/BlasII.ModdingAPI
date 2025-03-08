@@ -16,23 +16,25 @@ public class GlobalSaveData
         ModLog.Custom($"Saving global data", Color.Blue);
         var sb = new StringBuilder();
 
-        Main.ModLoader.ProcessModFunction(mod =>
-        {
-            if (mod is IGlobalPersistentMod persistentMod)
-            {
-                sb.AppendLine(mod.Id);
-                sb.AppendLine(JsonConvert.SerializeObject(persistentMod.Save()));
-            }
-        });
+        // Do load first
 
-        try
-        {
-            File.WriteAllText(GetGlobalDataPath(), sb.ToString());
-        }
-        catch (Exception e)
-        {
-            ModLog.Error($"Failed to save global data: {e.GetType()}");
-        }
+        //Main.ModLoader.ProcessModFunction(mod =>
+        //{
+        //    if (mod is IGlobalPersistentMod persistentMod)
+        //    {
+        //        sb.AppendLine(mod.Id);
+        //        sb.AppendLine(JsonConvert.SerializeObject(persistentMod.Save()));
+        //    }
+        //});
+
+        //try
+        //{
+        //    File.WriteAllText(GetGlobalDataPath(), sb.ToString());
+        //}
+        //catch (Exception e)
+        //{
+        //    ModLog.Error($"Failed to save global data: {e.GetType()}");
+        //}
     }
 
     internal static void Load()
@@ -57,18 +59,14 @@ public class GlobalSaveData
         {
             ModLog.Info(mod.Id);
 
-            if (mod is not IGlobalPersistentMod persistentMod)
-                return;
-
             Type modType = mod.GetType().GetInterfaces()
                 .Where(i => i.IsGenericType)
                 .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)));
 
             if (modType == null)
-            {
-                ModLog.Warn($"Mod {mod.Id} implements {nameof(IGlobalPersistentMod)} but does not specify the generic data type!");
                 return;
-            }
+
+            Type dataType = modType.GetGenericArguments()[0];
 
             if (!datas.TryGetValue(mod.Id, out string json))
             {
@@ -76,8 +74,10 @@ public class GlobalSaveData
                 return;
             }
 
-            GlobalSaveData data = JsonConvert.DeserializeObject(json, modType.GetGenericArguments()[0]) as GlobalSaveData;
-            persistentMod.Load(data);
+            GlobalSaveData data = JsonConvert.DeserializeObject(json, dataType) as GlobalSaveData;
+
+            var load = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.LoadGlobal), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            load.Invoke(mod, [data]);
         });
     }
 
