@@ -18,14 +18,12 @@ internal class ModdingAPI : BlasIIMod, IGlobalPersistentMod<TestGlobalSaveData>
 
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
-    public void Load(GlobalSaveData data)
+    public void LoadGlobal(TestGlobalSaveData data)
     {
-        TestGlobalSaveData testData = data as TestGlobalSaveData;
-
-        ModLog.Info("Loaded global: " + testData.Number);
+        ModLog.Info("Loaded global: " + data.Number);
     }
 
-    public GlobalSaveData Save()
+    public TestGlobalSaveData SaveGlobal()
     {
         ModLog.Info("Saved global: " + Time.frameCount);
         return new TestGlobalSaveData()

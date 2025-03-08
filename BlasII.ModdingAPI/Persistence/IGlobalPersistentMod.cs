@@ -5,26 +5,39 @@ namespace BlasII.ModdingAPI.Persistence;
 /// <summary>
 /// A mod that saves data with the global save file
 /// </summary>
-public interface IGlobalPersistentMod
-{
-    ///// <summary>
-    ///// The type of the serialized data
-    ///// </summary>
-    //public Type GlobalDataType { get; }
+//public interface IGlobalPersistentMod
+//{
+//    ///// <summary>
+//    ///// The type of the serialized data
+//    ///// </summary>
+//    //public Type GlobalDataType { get; }
 
+//    ///// <summary>
+//    ///// Saves the global data to an object
+//    ///// </summary>
+//    //public GlobalSaveData SaveGlobal();
+
+//    ///// <summary>
+//    ///// Loads the global data from an object
+//    ///// </summary>
+//    //public void LoadGlobal(GlobalSaveData data);
+//}
+
+/// <summary>
+/// A mod that saves data with the global save file
+/// </summary>
+public interface IGlobalPersistentMod<TData> where TData : GlobalSaveData
+{
     /// <summary>
     /// Saves the global data to an object
     /// </summary>
-    public GlobalSaveData Save();
+    public TData SaveGlobal();
 
     /// <summary>
     /// Loads the global data from an object
     /// </summary>
-    public void Load(GlobalSaveData data);
+    public void LoadGlobal(TData data);
 }
-
-/// <inheritdoc/>
-public interface IGlobalPersistentMod<T> : IGlobalPersistentMod where T : GlobalSaveData { }
 
 
 // TEMP !!!
