@@ -1,6 +1,7 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
+using BlasII.ModdingAPI.Persistence;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Linq;
@@ -10,7 +11,7 @@ using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI;
 
-internal class ModdingAPI : BlasIIMod
+internal class ModdingAPI : BlasIIMod, ISlotPersistentMod<ModdingAPI.TestSlotData>
 {
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
@@ -113,5 +114,31 @@ internal class ModdingAPI : BlasIIMod
 
         string color = mod == this || mod.Name.EndsWith("Framework") ? "7CA7BF" : "D3D3D3";
         return $"<color=#{color}>{line}</color>";
+    }
+
+    public TestSlotData SaveSlot()
+    {
+        ModLog.Warn("Saving slot data: " + Time.frameCount);
+        return new TestSlotData()
+        {
+            Number = Time.frameCount,
+            Text = System.DateTime.Now.ToString("MM/dd/yyyy")
+        };
+    }
+
+    public void LoadSlot(TestSlotData data)
+    {
+        ModLog.Warn($"Frame: {data.Number} Date: {data.Text}");
+    }
+
+    public void ResetSlot()
+    {
+        ModLog.Warn("Resetting slot data");
+    }
+
+    public class TestSlotData : SlotSaveData
+    {
+        public int Number { get; set; }
+        public string Text { get; set; }
     }
 }
