@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace BlasII.ModdingAPI.Persistence;
@@ -27,7 +28,7 @@ public class GlobalSaveData
             if (modType == null)
                 return;
 
-            var save = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.SaveGlobal), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            var save = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.SaveGlobal), BindingFlags.Instance | BindingFlags.Public);
             object data = save.Invoke(mod, []);
 
             sb.AppendLine(mod.Id);
@@ -81,7 +82,7 @@ public class GlobalSaveData
 
             GlobalSaveData data = JsonConvert.DeserializeObject(json, dataType) as GlobalSaveData;
 
-            var load = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.LoadGlobal), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            var load = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.LoadGlobal), BindingFlags.Instance | BindingFlags.Public);
             load.Invoke(mod, [data]);
         });
     }
