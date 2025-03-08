@@ -16,25 +16,34 @@ public class GlobalSaveData
         ModLog.Custom($"Saving global data", Color.Blue);
         var sb = new StringBuilder();
 
-        // Do load first
+        // Do load first and combine
 
-        //Main.ModLoader.ProcessModFunction(mod =>
-        //{
-        //    if (mod is IGlobalPersistentMod persistentMod)
-        //    {
-        //        sb.AppendLine(mod.Id);
-        //        sb.AppendLine(JsonConvert.SerializeObject(persistentMod.Save()));
-        //    }
-        //});
+        Main.ModLoader.ProcessModFunction(mod =>
+        {
+            ModLog.Warn(mod.Id);
 
-        //try
-        //{
-        //    File.WriteAllText(GetGlobalDataPath(), sb.ToString());
-        //}
-        //catch (Exception e)
-        //{
-        //    ModLog.Error($"Failed to save global data: {e.GetType()}");
-        //}
+            Type modType = mod.GetType().GetInterfaces()
+                .Where(i => i.IsGenericType)
+                .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)));
+
+            if (modType == null)
+                return;
+
+            var save = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.SaveGlobal), System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Public);
+            object data = save.Invoke(mod, []);
+
+            sb.AppendLine(mod.Id);
+            sb.AppendLine(JsonConvert.SerializeObject(data));
+        });
+
+        try
+        {
+            File.WriteAllText(GetGlobalDataPath(), sb.ToString());
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to save global data: {e.GetType()}");
+        }
     }
 
     internal static void Load()
