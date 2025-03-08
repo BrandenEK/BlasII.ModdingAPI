@@ -1,7 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using Il2CppTGK.Game;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 
 namespace BlasII.ModdingAPI.Persistence;
 
@@ -47,10 +49,31 @@ public class GlobalSaveData
         //    if (mod is IGlobalPersistentMod persistentMod && data.TryGetValue(mod.Id, out GlobalSaveData save))
         //        persistentMod.Load(save);
         //});
+
+        ModLog.Info(CoreCache.GlobalSaveData.GetDataGameFilePath());
+        ModLog.Warn(CoreCache.StorageManager.BuildPath("GlobalData_modded.data"));
     }
 
     internal static void Delete()
     {
         ModLog.Custom($"Deleting global data", Color.Blue);
+
+        try
+        {
+            string path = GetGlobalDataPath();
+            File.Delete(path);
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to delete global data for slot: {e.GetType()}");
+        }
+    }
+
+    /// <summary>
+    /// Returns the file path of the global save file
+    /// </summary>
+    private static string GetGlobalDataPath()
+    {
+        return CoreCache.StorageManager.BuildPath("GlobalData_modded.data");
     }
 }
