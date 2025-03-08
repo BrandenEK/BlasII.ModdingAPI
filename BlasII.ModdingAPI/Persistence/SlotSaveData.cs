@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace BlasII.ModdingAPI.Persistence;
 
@@ -16,13 +18,18 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Reset()
     {
-        //ModLog.Custom($"Resetting data for all slots", Color.Blue);
+        ModLog.Custom($"Resetting data for all slots", Color.Blue);
 
-        //Main.ModLoader.ProcessModFunction(mod =>
-        //{
-        //    if (mod is ISlotPersistentMod persistentMod)
-        //        persistentMod.ResetSlot();
-        //});
+        Main.ModLoader.ProcessModFunction(mod =>
+        {
+            Type modType = GetInterfaceType(mod);
+
+            if (modType == null)
+                return;
+
+            var reset = modType.GetMethod(nameof(ISlotPersistentMod<SlotSaveData>.ResetSlot), BindingFlags.Instance | BindingFlags.Public);
+            reset.Invoke(mod, []);
+        });
     }
 
     /// <summary>
@@ -56,7 +63,7 @@ public abstract class SlotSaveData
     /// <summary>
     /// Saves the json to the slot's save file
     /// </summary>
-    private static void SaveFile(Dictionary<string, string> datas)
+    private static void SaveFile(int slot, Dictionary<string, string> datas)
     {
 
     }
@@ -92,7 +99,7 @@ public abstract class SlotSaveData
     /// <summary>
     /// Loads the json from the slot's save file
     /// </summary>
-    private static Dictionary<string, string> LoadFile()
+    private static Dictionary<string, string> LoadFile(int slot)
     {
         return null;
     }
@@ -132,6 +139,16 @@ public abstract class SlotSaveData
         {
             ModLog.Error($"Failed to copy data for slot {slotSrc} to slot {slotDest}: {e.GetType()}");
         }
+    }
+
+    /// <summary>
+    /// Returns the interface type if the mod implements it
+    /// </summary>
+    private static Type GetInterfaceType(BlasIIMod mod)
+    {
+        return mod.GetType().GetInterfaces()
+            .Where(i => i.IsGenericType)
+            .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(ISlotPersistentMod<>)));
     }
 
     /// <summary>

@@ -26,9 +26,7 @@ public class GlobalSaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            Type modType = mod.GetType().GetInterfaces()
-                .Where(i => i.IsGenericType)
-                .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)));
+            Type modType = GetInterfaceType(mod);
 
             if (modType == null)
                 return;
@@ -76,9 +74,7 @@ public class GlobalSaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            Type modType = mod.GetType().GetInterfaces()
-                .Where(i => i.IsGenericType)
-                .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)));
+            Type modType = GetInterfaceType(mod);
 
             if (modType == null)
                 return;
@@ -137,6 +133,16 @@ public class GlobalSaveData
         {
             ModLog.Error($"Failed to delete global data: {e.GetType()}");
         }
+    }
+
+    /// <summary>
+    /// Returns the interface type if the mod implements it
+    /// </summary>
+    private static Type GetInterfaceType(BlasIIMod mod)
+    {
+        return mod.GetType().GetInterfaces()
+            .Where(i => i.IsGenericType)
+            .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)));
     }
 
     /// <summary>
