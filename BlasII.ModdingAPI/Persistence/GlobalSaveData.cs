@@ -10,8 +10,14 @@ using System.Text;
 
 namespace BlasII.ModdingAPI.Persistence;
 
+/// <summary>
+/// Used to store data with the global save file
+/// </summary>
 public class GlobalSaveData
 {
+    /// <summary>
+    /// Saves the global save file for all persistent mods
+    /// </summary>
     internal static void Save()
     {
         ModLog.Custom($"Saving global data", Color.Blue);
@@ -36,6 +42,9 @@ public class GlobalSaveData
         SaveFile(datas);
     }
 
+    /// <summary>
+    /// Saves the json to the global save file
+    /// </summary>
     private static void SaveFile(Dictionary<string, string> datas)
     {
         var sb = new StringBuilder();
@@ -56,6 +65,9 @@ public class GlobalSaveData
         }
     }
 
+    /// <summary>
+    /// Loads the global save file for all persistent mods
+    /// </summary>
     internal static void Load()
     {
         ModLog.Custom($"Loading global data", Color.Blue);
@@ -86,6 +98,9 @@ public class GlobalSaveData
         });
     }
 
+    /// <summary>
+    /// Loads the json from the global save file
+    /// </summary>
     private static Dictionary<string, string> LoadFile()
     {
         var datas = new Dictionary<string, string>();
@@ -106,6 +121,9 @@ public class GlobalSaveData
         return datas;
     }
 
+    /// <summary>
+    /// Deletes the modded global save file
+    /// </summary>
     internal static void Delete()
     {
         ModLog.Custom($"Deleting global data", Color.Blue);

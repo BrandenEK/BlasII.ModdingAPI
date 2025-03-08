@@ -1,7 +1,6 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
-using BlasII.ModdingAPI.Persistence;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Linq;
@@ -11,23 +10,9 @@ using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI;
 
-internal class ModdingAPI : BlasIIMod, IGlobalPersistentMod<TestGlobalSaveData>
+internal class ModdingAPI : BlasIIMod
 {
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
-
-    public void LoadGlobal(TestGlobalSaveData data)
-    {
-        ModLog.Info("Loaded global: " + data.Number);
-    }
-
-    public TestGlobalSaveData SaveGlobal()
-    {
-        ModLog.Info("Saved global: " + Time.frameCount);
-        return new TestGlobalSaveData()
-        {
-            Number = Time.frameCount
-        };
-    }
 
     protected internal override void OnInitialize()
     {

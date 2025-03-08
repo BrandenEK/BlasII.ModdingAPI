@@ -1,5 +1,4 @@
-﻿using BlasII.ModdingAPI.Persistence;
-using MelonLoader;
+﻿using MelonLoader;
 using System;
 using System.IO;
 using System.Reflection;
@@ -17,7 +16,6 @@ internal class Main : MelonMod
 
         ModLoader = new ModLoader();
         ModdingAPI = new ModdingAPI();
-        new TestMod();
     }
 
     public override void OnUpdate() => ModLoader.Update();
