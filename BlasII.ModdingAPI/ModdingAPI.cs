@@ -12,9 +12,9 @@ using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI;
 
-internal class ModdingAPI : BlasIIMod, IGlobalPersistentMod
+internal class ModdingAPI : BlasIIMod, IGlobalPersistentMod<TestGlobalSaveData>
 {
-    public System.Type GlobalDataType { get; } = typeof(TestGlobalSaveData);
+    //public System.Type GlobalDataType { get; } = typeof(TestGlobalSaveData);
 
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 

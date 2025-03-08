@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace BlasII.ModdingAPI.Persistence;
@@ -54,11 +55,29 @@ public class GlobalSaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            if (mod is IGlobalPersistentMod persistentMod && datas.TryGetValue(mod.Id, out string json))
+            ModLog.Info(mod.Id);
+
+            if (mod is not IGlobalPersistentMod persistentMod)
+                return;
+
+            Type modType = mod.GetType().GetInterfaces()
+                .Where(i => i.IsGenericType)
+                .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)));
+
+            if (modType == null)
             {
-                GlobalSaveData data = JsonConvert.DeserializeObject(json, persistentMod.GlobalDataType) as GlobalSaveData;
-                persistentMod.Load(data);
+                ModLog.Warn($"Mod {mod.Id} implements {nameof(IGlobalPersistentMod)} but does not specify the generic data type!");
+                return;
             }
+
+            if (!datas.TryGetValue(mod.Id, out string json))
+            {
+                ModLog.Warn($"No global data could be found for mod {mod.Id}");
+                return;
+            }
+
+            GlobalSaveData data = JsonConvert.DeserializeObject(json, modType.GetGenericArguments()[0]) as GlobalSaveData;
+            persistentMod.Load(data);
         });
     }
 

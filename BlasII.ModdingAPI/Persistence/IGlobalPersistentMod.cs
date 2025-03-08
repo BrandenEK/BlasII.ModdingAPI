@@ -7,10 +7,10 @@ namespace BlasII.ModdingAPI.Persistence;
 /// </summary>
 public interface IGlobalPersistentMod
 {
-    /// <summary>
-    /// The type of the serialized data
-    /// </summary>
-    public Type GlobalDataType { get; }
+    ///// <summary>
+    ///// The type of the serialized data
+    ///// </summary>
+    //public Type GlobalDataType { get; }
 
     /// <summary>
     /// Saves the global data to an object
@@ -22,6 +22,9 @@ public interface IGlobalPersistentMod
     /// </summary>
     public void Load(GlobalSaveData data);
 }
+
+/// <inheritdoc/>
+public interface IGlobalPersistentMod<T> : IGlobalPersistentMod where T : GlobalSaveData { }
 
 
 // TEMP !!!
