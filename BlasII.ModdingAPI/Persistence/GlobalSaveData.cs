@@ -15,9 +15,8 @@ public class GlobalSaveData
     internal static void Save()
     {
         ModLog.Custom($"Saving global data", Color.Blue);
-        var sb = new StringBuilder();
 
-        // Do load first and combine
+        var datas = LoadFile();
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -31,8 +30,7 @@ public class GlobalSaveData
             var save = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.SaveGlobal), BindingFlags.Instance | BindingFlags.Public);
             object data = save.Invoke(mod, []);
 
-            sb.AppendLine(mod.Id);
-            sb.AppendLine(JsonConvert.SerializeObject(data));
+            datas[mod.Id] = JsonConvert.SerializeObject(data);
         });
 
         SaveFile(datas);
