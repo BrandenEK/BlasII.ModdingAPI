@@ -10,14 +10,19 @@ using System.Text;
 
 namespace BlasII.ModdingAPI.Persistence;
 
+/// <summary>
+/// Used to store data with the global save file
+/// </summary>
 public class GlobalSaveData
 {
+    /// <summary>
+    /// Saves the global save file for all persistent mods
+    /// </summary>
     internal static void Save()
     {
         ModLog.Custom($"Saving global data", Color.Blue);
-        var sb = new StringBuilder();
 
-        // Do load first and combine
+        var datas = LoadFile();
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -31,9 +36,24 @@ public class GlobalSaveData
             var save = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.SaveGlobal), BindingFlags.Instance | BindingFlags.Public);
             object data = save.Invoke(mod, []);
 
-            sb.AppendLine(mod.Id);
-            sb.AppendLine(JsonConvert.SerializeObject(data));
+            datas[mod.Id] = JsonConvert.SerializeObject(data);
         });
+
+        SaveFile(datas);
+    }
+
+    /// <summary>
+    /// Saves the json to the global save file
+    /// </summary>
+    private static void SaveFile(Dictionary<string, string> datas)
+    {
+        var sb = new StringBuilder();
+
+        foreach (var kvp in datas)
+        {
+            sb.AppendLine(kvp.Key);
+            sb.AppendLine(kvp.Value);
+        }
 
         try
         {
@@ -45,23 +65,14 @@ public class GlobalSaveData
         }
     }
 
+    /// <summary>
+    /// Loads the global save file for all persistent mods
+    /// </summary>
     internal static void Load()
     {
         ModLog.Custom($"Loading global data", Color.Blue);
-        var datas = new Dictionary<string, string>();
 
-        try
-        {
-            string[] lines = File.ReadAllLines(GetGlobalDataPath());
-            for (int i = 0; i < lines.Length - 1; i += 2)
-            {
-                datas.Add(lines[i], lines[i + 1]);
-            }
-        }
-        catch (Exception e)
-        {
-            ModLog.Error($"Failed to load global data: {e.GetType()}");
-        }
+        var datas = LoadFile();
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -87,6 +98,32 @@ public class GlobalSaveData
         });
     }
 
+    /// <summary>
+    /// Loads the json from the global save file
+    /// </summary>
+    private static Dictionary<string, string> LoadFile()
+    {
+        var datas = new Dictionary<string, string>();
+
+        try
+        {
+            string[] lines = File.ReadAllLines(GetGlobalDataPath());
+            for (int i = 0; i < lines.Length - 1; i += 2)
+            {
+                datas.Add(lines[i], lines[i + 1]);
+            }
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to load global data: {e.GetType()}");
+        }
+
+        return datas;
+    }
+
+    /// <summary>
+    /// Deletes the modded global save file
+    /// </summary>
     internal static void Delete()
     {
         ModLog.Custom($"Deleting global data", Color.Blue);
