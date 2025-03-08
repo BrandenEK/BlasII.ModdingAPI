@@ -1,18 +1,35 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
+using BlasII.ModdingAPI.Persistence;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace BlasII.ModdingAPI;
 
-internal class ModdingAPI : BlasIIMod
+internal class ModdingAPI : BlasIIMod, IGlobalPersistentMod<TestGlobalSaveData>
 {
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
+
+    public void Load(TestGlobalSaveData data)
+    {
+        ModLog.Info("Loaded global: " + data.Number);
+    }
+
+    public TestGlobalSaveData Save()
+    {
+        ModLog.Info("Saved global: 10");
+        return new TestGlobalSaveData()
+        {
+            Number = 10
+        };
+    }
 
     protected internal override void OnInitialize()
     {
@@ -26,8 +43,103 @@ internal class ModdingAPI : BlasIIMod
         {
             DisplayModListOnMenu();
 
+            //var dict = new Dictionary<string, GlobalSaveData>();
+
+            //foreach (var mod in ModHelper.LoadedMods)
+            //{
+            //    ModLog.Error(mod.Id);
+
+            //    if (mod is not IGlobalPersistentMod globalMod)
+            //        continue;
+
+            //    ModLog.Warn("Global mod");
+            //    globalMod.
+            //}
+
+            var dict = new Dictionary<string, GlobalSaveData>();
+
+            foreach (var mod in ModHelper.LoadedMods)
+            {
+                ModLog.Error(mod.Id);
+
+                foreach (var @interface in mod.GetType().GetInterfaces())
+                {
+                    if (!@interface.IsGenericType || !@interface.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)))
+                        continue;
+
+                    // This mod implements the interface and this is the type of save data
+                    System.Type dataType = @interface.GetGenericArguments()[0];
+                    ModLog.Warn(dataType.Name);
+
+                    // Need to cast the mod to the generic bound interface to call the Save method and get the GlobalSaveData object
+                    System.Type bound = typeof(IGlobalPersistentMod<>).MakeGenericType(dataType);
+                    ModLog.Warn(bound.Name);
+
+                    dynamic globalMod = System.Convert.ChangeType(mod, bound);
+                    GlobalSaveData data = globalMod.Save();
+
+                    ModLog.Info(data.GetType().Name);
+                }
+
+
+                //typeof(IGlobalPersistentMod<>).MakeGenericType()
+                //GlobalSaveData data = ((IGlobalPersistentMod<>)mod).Save();
+            }
+
             if (VersionHelper.GameVersion == "Unknown")
                 FindGameVersion();
+        }
+    }
+
+    void old()
+    {
+        var dict = new Dictionary<string, GlobalSaveData>();
+
+        foreach (var mod in ModHelper.LoadedMods)
+        {
+            ModLog.Error(mod.Id);
+            //foreach (var x in mod.GetType().GetInterfaces())
+            //{
+            //    ModLog.Info(x.Name);
+            //    ModLog.Warn(x.GetGenericTypeDefinition());
+            //    ModLog.Warn(x.GetGenericArguments()[0].Name);
+            //}
+
+            foreach (var @interface in mod.GetType().GetInterfaces())
+            {
+                if (!@interface.IsGenericType || !@interface.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)))
+                    continue;
+
+                // This mod implements the interface and this is the type of save data
+                System.Type dataType = @interface.GetGenericArguments()[0];
+                ModLog.Warn(dataType.Name);
+
+
+            }
+
+            //System.Type globalMod = mod.GetType().GetInterfaces()
+            //    .Where(i => i.IsGenericType)
+            //    .Select(i => i.GetGenericTypeDefinition())
+            //    .FirstOrDefault(i => i.IsAssignableFrom(typeof(IGlobalPersistentMod<>)));
+
+            //bool isGlobal = globalMod != null;
+            //ModLog.Info("IS gloval: " + isGlobal);
+
+            //if (isGlobal)
+            //{
+            //    ModLog.Warn("savedata type: " + globalMod.GetGenericArguments()[0].Name);
+
+            //    ModLog.Warn("Global mod: " + mod.Id);
+            //    foreach (var x in mod.GetType().GenericTypeArguments)
+            //        ModLog.Info(x.Name);
+            //}
+
+            //if (mod != this)
+            ////if (!mod.GetType().GetInterfaces().Contains(typeof(IGlobalPersistentMod<>)))
+            //    continue;
+
+            //typeof(IGlobalPersistentMod<>).MakeGenericType()
+            //GlobalSaveData data = ((IGlobalPersistentMod<>)mod).Save();
         }
     }
 
