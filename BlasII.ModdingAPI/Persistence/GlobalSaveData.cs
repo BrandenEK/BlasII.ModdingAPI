@@ -35,6 +35,19 @@ public class GlobalSaveData
             sb.AppendLine(JsonConvert.SerializeObject(data));
         });
 
+        SaveFile(datas);
+    }
+
+    private static void SaveFile(Dictionary<string, string> datas)
+    {
+        var sb = new StringBuilder();
+
+        foreach (var kvp in datas)
+        {
+            sb.AppendLine(kvp.Key);
+            sb.AppendLine(kvp.Value);
+        }
+
         try
         {
             File.WriteAllText(GetGlobalDataPath(), sb.ToString());
@@ -48,20 +61,8 @@ public class GlobalSaveData
     internal static void Load()
     {
         ModLog.Custom($"Loading global data", Color.Blue);
-        var datas = new Dictionary<string, string>();
 
-        try
-        {
-            string[] lines = File.ReadAllLines(GetGlobalDataPath());
-            for (int i = 0; i < lines.Length - 1; i += 2)
-            {
-                datas.Add(lines[i], lines[i + 1]);
-            }
-        }
-        catch (Exception e)
-        {
-            ModLog.Error($"Failed to load global data: {e.GetType()}");
-        }
+        var datas = LoadFile();
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -85,6 +86,26 @@ public class GlobalSaveData
             var load = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.LoadGlobal), BindingFlags.Instance | BindingFlags.Public);
             load.Invoke(mod, [data]);
         });
+    }
+
+    private static Dictionary<string, string> LoadFile()
+    {
+        var datas = new Dictionary<string, string>();
+
+        try
+        {
+            string[] lines = File.ReadAllLines(GetGlobalDataPath());
+            for (int i = 0; i < lines.Length - 1; i += 2)
+            {
+                datas.Add(lines[i], lines[i + 1]);
+            }
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to load global data: {e.GetType()}");
+        }
+
+        return datas;
     }
 
     internal static void Delete()
