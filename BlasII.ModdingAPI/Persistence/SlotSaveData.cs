@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 
 namespace BlasII.ModdingAPI.Persistence;
 
@@ -37,27 +38,23 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Save(int slot)
     {
-        //ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
-        //var data = new Dictionary<string, SlotSaveData>();
+        ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
+        var datas = new Dictionary<string, string>();
 
-        //Main.ModLoader.ProcessModFunction(mod =>
-        //{
-        //    if (mod is ISlotPersistentMod persistentMod)
-        //        data.Add(mod.Id, persistentMod.SaveSlot());
-        //});
+        Main.ModLoader.ProcessModFunction(mod =>
+        {
+            Type modType = GetInterfaceType(mod);
 
-        //try
-        //{
-        //    string json = JsonConvert.SerializeObject(data, new JsonSerializerSettings
-        //    {
-        //        TypeNameHandling = TypeNameHandling.Auto
-        //    });
-        //    File.WriteAllText(GetPathForSlot(slot), json);
-        //}
-        //catch (Exception e)
-        //{
-        //    ModLog.Error($"Failed to save data for slot {slot}: {e.GetType()}");
-        //}
+            if (modType == null)
+                return;
+
+            var save = modType.GetMethod(nameof(ISlotPersistentMod<SlotSaveData>.SaveSlot), BindingFlags.Instance | BindingFlags.Public);
+            object data = save.Invoke(mod, []);
+
+            datas[mod.Id] = JsonConvert.SerializeObject(data);
+        });
+
+        SaveFile(slot, datas);
     }
 
     /// <summary>
@@ -65,7 +62,22 @@ public abstract class SlotSaveData
     /// </summary>
     private static void SaveFile(int slot, Dictionary<string, string> datas)
     {
+        var sb = new StringBuilder();
 
+        foreach (var kvp in datas)
+        {
+            sb.AppendLine(kvp.Key);
+            sb.AppendLine(kvp.Value);
+        }
+
+        try
+        {
+            File.WriteAllText(GetSlotDataPath(slot), sb.ToString());
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to save data for slot {slot}: {e.GetType()}");
+        }
     }
 
     /// <summary>
@@ -113,7 +125,7 @@ public abstract class SlotSaveData
 
         try
         {
-            string path = GetPathForSlot(slot);
+            string path = GetSlotDataPath(slot);
             File.Delete(path);
         }
         catch (Exception e)
@@ -131,8 +143,8 @@ public abstract class SlotSaveData
 
         try
         {
-            string pathSrc = GetPathForSlot(slotSrc);
-            string pathDest = GetPathForSlot(slotDest);
+            string pathSrc = GetSlotDataPath(slotSrc);
+            string pathDest = GetSlotDataPath(slotDest);
             File.Copy(pathSrc, pathDest, true);
         }
         catch (Exception e)
@@ -154,7 +166,7 @@ public abstract class SlotSaveData
     /// <summary>
     /// Returns the file path of the slot's save file
     /// </summary>
-    private static string GetPathForSlot(int slot)
+    private static string GetSlotDataPath(int slot)
     {
         return Path.Combine(Main.ModdingAPI.FileHandler.SavegamesFolder, $"savegame_{slot}_modded.bin");
     }
