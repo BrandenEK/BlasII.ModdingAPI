@@ -20,8 +20,6 @@ public class GlobalSaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            ModLog.Warn(mod.Id);
-
             Type modType = mod.GetType().GetInterfaces()
                 .Where(i => i.IsGenericType)
                 .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)));
@@ -56,7 +54,7 @@ public class GlobalSaveData
             string[] lines = File.ReadAllLines(GetGlobalDataPath());
             for (int i = 0; i < lines.Length - 1; i += 2)
             {
-                datas.Add(lines[0], lines[1]);
+                datas.Add(lines[i], lines[i + 1]);
             }
         }
         catch (Exception e)
@@ -66,8 +64,6 @@ public class GlobalSaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            ModLog.Info(mod.Id);
-
             Type modType = mod.GetType().GetInterfaces()
                 .Where(i => i.IsGenericType)
                 .FirstOrDefault(i => i.GetGenericTypeDefinition().IsAssignableFrom(typeof(IGlobalPersistentMod<>)));

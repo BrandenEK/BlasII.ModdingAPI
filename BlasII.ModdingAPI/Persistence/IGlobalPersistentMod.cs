@@ -45,3 +45,24 @@ public class TestGlobalSaveData : GlobalSaveData
 {
     public int Number { get; set; }
 }
+
+public class TestMod : BlasIIMod, IGlobalPersistentMod<TestGlobalSaveData>
+{
+    public TestMod() : base("BlasII.Test", "Test mod", "None", "0.1.0")
+    {
+    }
+
+    public void LoadGlobal(TestGlobalSaveData data)
+    {
+        ModLog.Warn("Loaded test global data: " + data.Number);
+    }
+
+    public TestGlobalSaveData SaveGlobal()
+    {
+        return new TestGlobalSaveData()
+        {
+            Number = DateTime.Now.Minute
+        };
+    }
+}
+
