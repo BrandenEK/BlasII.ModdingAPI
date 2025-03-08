@@ -9,7 +9,7 @@ namespace BlasII.ModdingAPI.Persistence;
 /// <summary>
 /// Used to save and load persistent data for a mod
 /// </summary>
-public abstract class SaveData
+public abstract class SlotSaveData
 {
     /// <summary>
     /// Resets game progress for each mod
@@ -20,7 +20,7 @@ public abstract class SaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            if (mod is IPersistentMod persistentMod)
+            if (mod is ISlotPersistentMod persistentMod)
                 persistentMod.ResetGame();
         });
     }
@@ -31,11 +31,11 @@ public abstract class SaveData
     internal static void Save(int slot)
     {
         ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
-        var data = new Dictionary<string, SaveData>();
+        var data = new Dictionary<string, SlotSaveData>();
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            if (mod is IPersistentMod persistentMod)
+            if (mod is ISlotPersistentMod persistentMod)
                 data.Add(mod.Id, persistentMod.SaveGame());
         });
 
@@ -59,12 +59,12 @@ public abstract class SaveData
     internal static void Load(int slot)
     {
         ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
-        var data = new Dictionary<string, SaveData>();
+        var data = new Dictionary<string, SlotSaveData>();
 
         try
         {
             string json = File.ReadAllText(GetPathForSlot(slot));
-            data = JsonConvert.DeserializeObject<Dictionary<string, SaveData>>(json, new JsonSerializerSettings
+            data = JsonConvert.DeserializeObject<Dictionary<string, SlotSaveData>>(json, new JsonSerializerSettings
             {
                 TypeNameHandling = TypeNameHandling.Auto
             });
@@ -76,7 +76,7 @@ public abstract class SaveData
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
-            if (mod is IPersistentMod persistentMod && data.TryGetValue(mod.Id, out SaveData save))
+            if (mod is ISlotPersistentMod persistentMod && data.TryGetValue(mod.Id, out SlotSaveData save))
                 persistentMod.LoadGame(save);
         });
     }
