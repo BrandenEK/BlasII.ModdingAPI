@@ -1,7 +1,7 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace BlasII.ModdingAPI.Persistence;
 
@@ -9,6 +9,7 @@ public class GlobalSaveData
 {
     internal static void Save()
     {
+        ModLog.Custom($"Saving global data", Color.Blue);
         var data = new Dictionary<string, GlobalSaveData>();
 
         //Main.ModLoader.ProcessModFunction(mod =>
@@ -20,6 +21,7 @@ public class GlobalSaveData
 
     internal static void Load()
     {
+        ModLog.Custom($"Loading global data", Color.Blue);
         //var data = new Dictionary<string, GlobalSaveData>();
 
         //try
@@ -45,5 +47,10 @@ public class GlobalSaveData
         //    if (mod is IGlobalPersistentMod persistentMod && data.TryGetValue(mod.Id, out GlobalSaveData save))
         //        persistentMod.Load(save);
         //});
+    }
+
+    internal static void Delete()
+    {
+        ModLog.Custom($"Deleting global data", Color.Blue);
     }
 }
