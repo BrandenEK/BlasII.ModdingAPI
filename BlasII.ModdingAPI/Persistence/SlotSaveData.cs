@@ -7,82 +7,98 @@ using System.IO;
 namespace BlasII.ModdingAPI.Persistence;
 
 /// <summary>
-/// Used to save and load persistent data for a mod
+/// Used to store data with a slot's save file
 /// </summary>
 public abstract class SlotSaveData
 {
     /// <summary>
-    /// Resets game progress for each mod
+    /// Resets the slot's save file for all persistent mods
     /// </summary>
     internal static void Reset()
     {
-        ModLog.Custom($"Resetting data for all slots", Color.Blue);
+        //ModLog.Custom($"Resetting data for all slots", Color.Blue);
 
-        Main.ModLoader.ProcessModFunction(mod =>
-        {
-            if (mod is ISlotPersistentMod persistentMod)
-                persistentMod.ResetSlot();
-        });
+        //Main.ModLoader.ProcessModFunction(mod =>
+        //{
+        //    if (mod is ISlotPersistentMod persistentMod)
+        //        persistentMod.ResetSlot();
+        //});
     }
 
     /// <summary>
-    /// Saves game progress for each mod
+    /// Saves the slot's save file for all persistent mods
     /// </summary>
     internal static void Save(int slot)
     {
-        ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
-        var data = new Dictionary<string, SlotSaveData>();
+        //ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
+        //var data = new Dictionary<string, SlotSaveData>();
 
-        Main.ModLoader.ProcessModFunction(mod =>
-        {
-            if (mod is ISlotPersistentMod persistentMod)
-                data.Add(mod.Id, persistentMod.SaveSlot());
-        });
+        //Main.ModLoader.ProcessModFunction(mod =>
+        //{
+        //    if (mod is ISlotPersistentMod persistentMod)
+        //        data.Add(mod.Id, persistentMod.SaveSlot());
+        //});
 
-        try
-        {
-            string json = JsonConvert.SerializeObject(data, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            });
-            File.WriteAllText(GetPathForSlot(slot), json);
-        }
-        catch (Exception e)
-        {
-            ModLog.Error($"Failed to save data for slot {slot}: {e.GetType()}");
-        }
+        //try
+        //{
+        //    string json = JsonConvert.SerializeObject(data, new JsonSerializerSettings
+        //    {
+        //        TypeNameHandling = TypeNameHandling.Auto
+        //    });
+        //    File.WriteAllText(GetPathForSlot(slot), json);
+        //}
+        //catch (Exception e)
+        //{
+        //    ModLog.Error($"Failed to save data for slot {slot}: {e.GetType()}");
+        //}
     }
 
     /// <summary>
-    /// Loads game progress for each mod
+    /// Saves the json to the slot's save file
+    /// </summary>
+    private static void SaveFile(Dictionary<string, string> datas)
+    {
+
+    }
+
+    /// <summary>
+    /// Loads the slot's save file for all persistent mods
     /// </summary>
     internal static void Load(int slot)
     {
-        ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
-        var data = new Dictionary<string, SlotSaveData>();
+        //ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
+        //var data = new Dictionary<string, SlotSaveData>();
 
-        try
-        {
-            string json = File.ReadAllText(GetPathForSlot(slot));
-            data = JsonConvert.DeserializeObject<Dictionary<string, SlotSaveData>>(json, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Auto
-            });
-        }
-        catch (Exception e)
-        {
-            ModLog.Error($"Failed to load data for slot {slot}: {e.GetType()}");
-        }
+        //try
+        //{
+        //    string json = File.ReadAllText(GetPathForSlot(slot));
+        //    data = JsonConvert.DeserializeObject<Dictionary<string, SlotSaveData>>(json, new JsonSerializerSettings
+        //    {
+        //        TypeNameHandling = TypeNameHandling.Auto
+        //    });
+        //}
+        //catch (Exception e)
+        //{
+        //    ModLog.Error($"Failed to load data for slot {slot}: {e.GetType()}");
+        //}
 
-        Main.ModLoader.ProcessModFunction(mod =>
-        {
-            if (mod is ISlotPersistentMod persistentMod && data.TryGetValue(mod.Id, out SlotSaveData save))
-                persistentMod.LoadSlot(save);
-        });
+        //Main.ModLoader.ProcessModFunction(mod =>
+        //{
+        //    if (mod is ISlotPersistentMod persistentMod && data.TryGetValue(mod.Id, out SlotSaveData save))
+        //        persistentMod.LoadSlot(save);
+        //});
     }
 
     /// <summary>
-    /// Deletes the modded save data when the main save file is deleted
+    /// Loads the json from the slot's save file
+    /// </summary>
+    private static Dictionary<string, string> LoadFile()
+    {
+        return null;
+    }
+
+    /// <summary>
+    /// Deletes the slot's save file
     /// </summary>
     internal static void Delete(int slot)
     {
@@ -100,7 +116,7 @@ public abstract class SlotSaveData
     }
 
     /// <summary>
-    /// Copies the modded save data when the main save file is copied
+    /// Copies the slot's save file
     /// </summary>
     internal static void Copy(int slotSrc, int slotDest)
     {
@@ -119,7 +135,7 @@ public abstract class SlotSaveData
     }
 
     /// <summary>
-    /// Based on the slot number, calculates the file path for the modded save data
+    /// Returns the file path of the slot's save file
     /// </summary>
     private static string GetPathForSlot(int slot)
     {

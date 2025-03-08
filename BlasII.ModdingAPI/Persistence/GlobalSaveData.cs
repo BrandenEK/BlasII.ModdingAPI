@@ -122,7 +122,7 @@ public class GlobalSaveData
     }
 
     /// <summary>
-    /// Deletes the modded global save file
+    /// Deletes the global save file
     /// </summary>
     internal static void Delete()
     {
