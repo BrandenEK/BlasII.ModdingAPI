@@ -39,7 +39,8 @@ public abstract class SlotSaveData
     internal static void Save(int slot)
     {
         ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
-        var datas = new Dictionary<string, string>();
+        
+        var datas = LoadFile(slot);
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -85,27 +86,30 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Load(int slot)
     {
-        //ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
-        //var data = new Dictionary<string, SlotSaveData>();
+        ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
 
-        //try
-        //{
-        //    string json = File.ReadAllText(GetPathForSlot(slot));
-        //    data = JsonConvert.DeserializeObject<Dictionary<string, SlotSaveData>>(json, new JsonSerializerSettings
-        //    {
-        //        TypeNameHandling = TypeNameHandling.Auto
-        //    });
-        //}
-        //catch (Exception e)
-        //{
-        //    ModLog.Error($"Failed to load data for slot {slot}: {e.GetType()}");
-        //}
+        var datas = LoadFile(slot);
 
-        //Main.ModLoader.ProcessModFunction(mod =>
-        //{
-        //    if (mod is ISlotPersistentMod persistentMod && data.TryGetValue(mod.Id, out SlotSaveData save))
-        //        persistentMod.LoadSlot(save);
-        //});
+        Main.ModLoader.ProcessModFunction(mod =>
+        {
+            Type modType = GetInterfaceType(mod);
+
+            if (modType == null)
+                return;
+
+            Type dataType = modType.GetGenericArguments()[0];
+
+            if (!datas.TryGetValue(mod.Id, out string json))
+            {
+                ModLog.Warn($"No slot data could be found for mod {mod.Id}");
+                return;
+            }
+
+            SlotSaveData data = JsonConvert.DeserializeObject(json, dataType) as SlotSaveData;
+
+            var load = modType.GetMethod(nameof(ISlotPersistentMod<SlotSaveData>.LoadSlot), BindingFlags.Instance | BindingFlags.Public);
+            load.Invoke(mod, [data]);
+        });
     }
 
     /// <summary>
@@ -113,7 +117,22 @@ public abstract class SlotSaveData
     /// </summary>
     private static Dictionary<string, string> LoadFile(int slot)
     {
-        return null;
+        var datas = new Dictionary<string, string>();
+
+        try
+        {
+            string[] lines = File.ReadAllLines(GetSlotDataPath(slot));
+            for (int i = 0; i < lines.Length - 1; i += 2)
+            {
+                datas.Add(lines[i], lines[i + 1]);
+            }
+        }
+        catch (Exception e)
+        {
+            ModLog.Error($"Failed to load data for slot {slot}: {e.GetType()}");
+        }
+
+        return datas;
     }
 
     /// <summary>
