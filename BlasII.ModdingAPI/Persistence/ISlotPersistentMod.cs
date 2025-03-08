@@ -2,22 +2,22 @@
 namespace BlasII.ModdingAPI.Persistence;
 
 /// <summary>
-/// Allows a mod to save and load persistent data with the game files
+/// A mod that saves data with a slot's save file
 /// </summary>
-public interface ISlotPersistentMod
+public interface ISlotPersistentMod<TData> where TData : SlotSaveData
 {
     /// <summary>
-    /// Saves an object containing the mod's persistent data
+    /// Saves the slot data to an object
     /// </summary>
-    public SlotSaveData SaveGame();
+    public TData SaveSlot();
 
     /// <summary>
-    /// Loads an object containing the mod's persistent data
+    /// Loads the slot data from an object
     /// </summary>
-    public void LoadGame(SlotSaveData data);
+    public void LoadSlot(TData data);
 
     /// <summary>
-    /// Resets the mod's persistent data
+    /// Resets the slot data
     /// </summary>
-    public void ResetGame();
+    public void ResetSlot();
 }

@@ -21,7 +21,7 @@ public abstract class SlotSaveData
         Main.ModLoader.ProcessModFunction(mod =>
         {
             if (mod is ISlotPersistentMod persistentMod)
-                persistentMod.ResetGame();
+                persistentMod.ResetSlot();
         });
     }
 
@@ -36,7 +36,7 @@ public abstract class SlotSaveData
         Main.ModLoader.ProcessModFunction(mod =>
         {
             if (mod is ISlotPersistentMod persistentMod)
-                data.Add(mod.Id, persistentMod.SaveGame());
+                data.Add(mod.Id, persistentMod.SaveSlot());
         });
 
         try
@@ -77,7 +77,7 @@ public abstract class SlotSaveData
         Main.ModLoader.ProcessModFunction(mod =>
         {
             if (mod is ISlotPersistentMod persistentMod && data.TryGetValue(mod.Id, out SlotSaveData save))
-                persistentMod.LoadGame(save);
+                persistentMod.LoadSlot(save);
         });
     }
 
