@@ -3,6 +3,8 @@ using BlasII.ModdingAPI.Files;
 using BlasII.ModdingAPI.Input;
 using BlasII.ModdingAPI.Localization;
 using BlasII.ModdingAPI.Messages;
+using System.Diagnostics;
+using System.Linq;
 
 namespace BlasII.ModdingAPI;
 
@@ -32,6 +34,11 @@ public abstract class BlasIIMod
     /// The file version of the mod
     /// </summary>
     public string Version { get; }
+
+    /// <summary>
+    /// Whether the mod is a developer build
+    /// </summary>
+    public bool IsDebug { get; }
 
     // Handlers
 
@@ -129,6 +136,7 @@ public abstract class BlasIIMod
         Name = name;
         Author = author;
         Version = version;
+        IsDebug = GetType().Assembly.GetCustomAttributes(false).OfType<DebuggableAttribute>().Any(x => x.IsJITTrackingEnabled);
 
         // Set handlers
         ConfigHandler = new ConfigHandler(this);
