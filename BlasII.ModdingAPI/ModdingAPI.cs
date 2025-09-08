@@ -108,6 +108,9 @@ internal class ModdingAPI : BlasIIMod
     {
         string line = $"{mod.Name} v{mod.Version}";
 
+        if (mod.IsDebug)
+            line += " (dev)";
+
         if (!addColor)
             return line;
 
