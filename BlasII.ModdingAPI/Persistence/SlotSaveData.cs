@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -41,6 +42,13 @@ public abstract class SlotSaveData
         ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
         
         var datas = LoadFile(slot);
+        var settings = new JsonSerializerSettings()
+        {
+            ContractResolver = new DefaultContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy(false, true)
+            },
+        };
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -52,7 +60,7 @@ public abstract class SlotSaveData
             var save = modType.GetMethod(nameof(ISlotPersistentMod<SlotSaveData>.SaveSlot), BindingFlags.Instance | BindingFlags.Public);
             object data = save.Invoke(mod, []);
 
-            datas[mod.Id] = JsonConvert.SerializeObject(data);
+            datas[mod.Id] = JsonConvert.SerializeObject(data, settings);
         });
 
         SaveFile(slot, datas);

@@ -1,5 +1,6 @@
 ﻿using Il2CppTGK.Game;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -23,6 +24,13 @@ public class GlobalSaveData
         ModLog.Custom($"Saving global data", Color.Blue);
 
         var datas = LoadFile();
+        var settings = new JsonSerializerSettings()
+        {
+            ContractResolver = new DefaultContractResolver()
+            {
+                NamingStrategy = new CamelCaseNamingStrategy(false, true)
+            },
+        };
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -34,7 +42,7 @@ public class GlobalSaveData
             var save = modType.GetMethod(nameof(IGlobalPersistentMod<GlobalSaveData>.SaveGlobal), BindingFlags.Instance | BindingFlags.Public);
             object data = save.Invoke(mod, []);
 
-            datas[mod.Id] = JsonConvert.SerializeObject(data);
+            datas[mod.Id] = JsonConvert.SerializeObject(data, settings);
         });
 
         SaveFile(datas);
