@@ -29,6 +29,11 @@ internal class ModdingAPI : BlasIIMod
             if (VersionHelper.GameVersion == "Unknown")
                 FindGameVersion();
         }
+        else
+        {
+            var stat = AssetStorage.ModifiableStats["BladeBerserkDurationFactor"];
+            AssetStorage.PlayerStats.AddBonus(stat, "TEST", int.MaxValue, int.MaxValue);
+        }
     }
 
     private void DisplayModListOnMenu()
