@@ -1,8 +1,35 @@
 ﻿using HarmonyLib;
+using Il2CppTGK.Framework;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
 
 namespace BlasII.ModdingAPI;
+
+[HarmonyPatch(typeof(Core), nameof(Core.OnDestroy))]
+class Core_OnDestroy_Patch
+{
+    public static void Prefix() => Main.ModLoader.Dispose();
+
+    public static void Postfix() => ModLog.Warn("Core OnDestroy Post");
+}
+
+//[HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnInitialize))]
+//class tx
+//{
+//    public static void Postfix() => ModLog.Error("Manager OnInitialize");
+//}
+[HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnAllInitialized))]
+class ty
+{
+    public static void Postfix() => ModLog.Error("Manager OnAllInitialized");
+}
+[HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnDispose))]
+class tz
+{
+    public static void Postfix() => ModLog.Error("Manager OnDispose");
+}
+
+
 
 [HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnAllInitialized))]
 class Mod_AllInitialized_Patch
@@ -10,11 +37,11 @@ class Mod_AllInitialized_Patch
     public static void Postfix() => Main.ModLoader.Initialize();
 }
 
-[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnDispose))]
-class Mod_Dispose_Patch
-{
-    public static void Postfix() => Main.ModLoader.Dispose();
-}
+//[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnDispose))]
+//class Mod_Dispose_Patch
+//{
+//    public static void Postfix() => Main.ModLoader.Dispose();
+//}
 
 [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnGlobalRoomLoaded))]
 class Mod_SceneLoaded_Patch
