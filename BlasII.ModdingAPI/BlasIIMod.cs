@@ -70,6 +70,11 @@ public abstract class BlasIIMod
     // Events
 
     /// <summary>
+    /// Called when starting the game, before managers have initialized
+    /// </summary>
+    protected internal virtual void OnPreInitialize() { }
+
+    /// <summary>
     /// Called when starting the game, at the same time as other managers
     /// </summary>
     protected internal virtual void OnInitialize() { }

@@ -47,7 +47,11 @@ class tb
 {
     //public static void Prefix() => ModLog.Info("Core CreateManagers Pre");
 
-    public static void Postfix() => Main.ModLoader.NewTempInitialize();
+    public static void Postfix()
+    {
+        Main.ModLoader.Initialize();
+        Main.ModLoader.PostInitialize();
+    }
 }
 [HarmonyPatch(typeof(Core), nameof(Core.Initialize))]
 class tc
@@ -69,7 +73,7 @@ class td
 [HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnAllInitialized))]
 class Mod_AllInitialized_Patch
 {
-    public static void Postfix() => Main.ModLoader.Initialize();
+    //public static void Postfix() => Main.ModLoader.Initialize();
 }
 
 //[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnDispose))]

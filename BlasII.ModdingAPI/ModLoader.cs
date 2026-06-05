@@ -37,9 +37,16 @@ internal class ModLoader
         }
     }
 
+    /// <summary>
+    /// Preinitializes all mods
+    /// </summary>
     public void PreInitialize()
     {
-        ModLog.Error("Mod OnPreInitialize");
+        if (_initialized)
+            return;
+
+        ModLog.Info("Preinitializing mods...");
+        ProcessModFunction(mod => mod.OnPreInitialize());
     }
 
     /// <summary>
@@ -50,33 +57,54 @@ internal class ModLoader
         if (_initialized)
             return;
 
-        LogSpecial("Initialization");
         ObjectHelper.ModObject = new GameObject("Mod object");
         Object.DontDestroyOnLoad(ObjectHelper.ModObject);
 
         ModLog.Info("Initializing mods...");
         ProcessModFunction(mod => mod.OnInitialize());
         ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
+    }
+
+    /// <summary>
+    /// Postinitializes all mods
+    /// </summary>
+    public void PostInitialize()
+    {
+        if (_initialized)
+            return;
+
         ProcessModFunction(mod => mod.OnAllInitialized());
         ModLog.Info("All mods initialized!");
 
         _initialized = true;
     }
 
-    public void NewTempInitialize()
-    {
-        ModLog.Error("Mod OnInitialize");
-        ModLog.Error("Mod OnRegisterServices");
-        ModLog.Error("Mod OnAllInitialized");
-    }
+    /// <summary>
+    /// Initializes all mods
+    /// </summary>
+    //public void Initialize()
+    //{
+    //    if (_initialized)
+    //        return;
+
+    //    LogSpecial("Initialization");
+    //    ObjectHelper.ModObject = new GameObject("Mod object");
+    //    Object.DontDestroyOnLoad(ObjectHelper.ModObject);
+
+    //    ModLog.Info("Initializing mods...");
+    //    ProcessModFunction(mod => mod.OnInitialize());
+    //    ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
+    //    ProcessModFunction(mod => mod.OnAllInitialized());
+    //    ModLog.Info("All mods initialized!");
+
+    //    _initialized = true;
+    //}
 
     /// <summary>
     /// Disposes all mods
     /// </summary>
     public void Dispose()
     {
-        ModLog.Error("Mod OnDispose");
-
         ProcessModFunction(mod => mod.OnDispose());
         ModLog.Info("All mods disposed!");
     }
