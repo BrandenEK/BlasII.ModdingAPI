@@ -14,27 +14,10 @@ internal class ModdingAPI : BlasIIMod
 {
     public ModdingAPI() : base(ModInfo.MOD_ID, ModInfo.MOD_NAME, ModInfo.MOD_AUTHOR, ModInfo.MOD_VERSION) { }
 
-    protected internal override void OnDispose()
-    {
-        ModLog.Error("Mod OnDispose");
-    }
-
     protected internal override void OnInitialize()
     {
         AssetStorage.Initialize();
         InputStorage.Initialize();
-
-        ModLog.Error("Mod OnInitialize");
-    }
-
-    protected internal override void OnPreInitialize()
-    {
-        ModLog.Error("Mod OnPreInitialize");
-    }
-
-    protected internal override void OnAllInitialized()
-    {
-        ModLog.Error("Mod OnAllInitialized");
     }
 
     protected internal override void OnSceneLoaded(string sceneName)

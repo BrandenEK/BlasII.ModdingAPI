@@ -80,27 +80,6 @@ internal class ModLoader
     }
 
     /// <summary>
-    /// Initializes all mods
-    /// </summary>
-    //public void Initialize()
-    //{
-    //    if (_initialized)
-    //        return;
-
-    //    LogSpecial("Initialization");
-    //    ObjectHelper.ModObject = new GameObject("Mod object");
-    //    Object.DontDestroyOnLoad(ObjectHelper.ModObject);
-
-    //    ModLog.Info("Initializing mods...");
-    //    ProcessModFunction(mod => mod.OnInitialize());
-    //    ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
-    //    ProcessModFunction(mod => mod.OnAllInitialized());
-    //    ModLog.Info("All mods initialized!");
-
-    //    _initialized = true;
-    //}
-
-    /// <summary>
     /// Disposes all mods
     /// </summary>
     public void Dispose()
