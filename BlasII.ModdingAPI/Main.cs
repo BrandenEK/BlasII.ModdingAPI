@@ -1,4 +1,5 @@
-﻿using MelonLoader;
+﻿using BlasII.ModdingAPI.Persistence;
+using MelonLoader;
 using System;
 using System.IO;
 using System.Reflection;
@@ -23,6 +24,8 @@ internal class Main : MelonMod
     public override void OnLateUpdate() => ModLoader.LateUpdate();
 
     public override void OnSceneWasLoaded(int _, string sceneName) => ModLoader.UnitySceneLoaded(sceneName);
+
+    public override void OnApplicationQuit() => GlobalSaveData.Save();
 
     private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
     {

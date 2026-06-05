@@ -38,6 +38,18 @@ internal class ModLoader
     }
 
     /// <summary>
+    /// Preinitializes all mods
+    /// </summary>
+    public void PreInitialize()
+    {
+        if (_initialized)
+            return;
+
+        ModLog.Info("Preinitializing mods...");
+        ProcessModFunction(mod => mod.OnPreInitialize());
+    }
+
+    /// <summary>
     /// Initializes all mods
     /// </summary>
     public void Initialize()
@@ -45,13 +57,22 @@ internal class ModLoader
         if (_initialized)
             return;
 
-        LogSpecial("Initialization");
         ObjectHelper.ModObject = new GameObject("Mod object");
         Object.DontDestroyOnLoad(ObjectHelper.ModObject);
 
         ModLog.Info("Initializing mods...");
         ProcessModFunction(mod => mod.OnInitialize());
         ProcessModFunction(mod => mod.OnRegisterServices(new ModServiceProvider(mod)));
+    }
+
+    /// <summary>
+    /// Postinitializes all mods
+    /// </summary>
+    public void PostInitialize()
+    {
+        if (_initialized)
+            return;
+
         ProcessModFunction(mod => mod.OnAllInitialized());
         ModLog.Info("All mods initialized!");
 

@@ -80,29 +80,11 @@ class SaveDataManager_CopySlot_Patch
 
 // Global patches
 
-[HarmonyPatch(typeof(GlobalSaveDataManager), nameof(GlobalSaveDataManager.SaveData))]
-class GlobalSaveDataManager_SaveData_Patch
-{
-    public static void Postfix()
-    {
-        GlobalSaveData.Save();
-    }
-}
-
 [HarmonyPatch(typeof(GlobalSaveDataManager), nameof(GlobalSaveDataManager.LoadData))]
 class GlobalSaveDataManager_LoadData_Patch
 {
     public static void Postfix()
     {
         GlobalSaveData.Load();
-    }
-}
-
-[HarmonyPatch(typeof(GlobalSaveDataManager), nameof(GlobalSaveDataManager.DeleteData))]
-class GlobalSaveDataManager_DeleteData_Patch
-{
-    public static void Postfix()
-    {
-        GlobalSaveData.Delete();
     }
 }

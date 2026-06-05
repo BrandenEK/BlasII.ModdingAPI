@@ -1,19 +1,30 @@
 ﻿using HarmonyLib;
+using Il2CppTGK.Framework;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
 
 namespace BlasII.ModdingAPI;
 
-[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnAllInitialized))]
-class Mod_AllInitialized_Patch
+[HarmonyPatch(typeof(Core), nameof(Core.Awake))]
+class Core_Awake_Patch
 {
-    public static void Postfix() => Main.ModLoader.Initialize();
+    public static void Postfix() => Main.ModLoader.PreInitialize();
 }
 
-[HarmonyPatch(typeof(AchievementsManager), nameof(AchievementsManager.OnDispose))]
-class Mod_Dispose_Patch
+[HarmonyPatch(typeof(Core), nameof(Core.CreateManagers))]
+class Core_CreateManagers_Patch
 {
-    public static void Postfix() => Main.ModLoader.Dispose();
+    public static void Postfix()
+    {
+        Main.ModLoader.Initialize();
+        Main.ModLoader.PostInitialize();
+    }
+}
+
+[HarmonyPatch(typeof(Core), nameof(Core.OnDestroy))]
+class Core_OnDestroy_Patch
+{
+    public static void Prefix() => Main.ModLoader.Dispose();
 }
 
 [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnGlobalRoomLoaded))]
