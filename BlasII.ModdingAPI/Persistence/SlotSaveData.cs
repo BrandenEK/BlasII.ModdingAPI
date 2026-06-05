@@ -2,7 +2,6 @@
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Reset()
     {
-        ModLog.Custom($"Resetting data for all slots", Color.Blue);
+        ModLog.Debug($"Resetting data for all slots");
 
         Main.ModLoader.ProcessModFunction(mod =>
         {
@@ -39,7 +38,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Save(int slot)
     {
-        ModLog.Custom($"Saving data for slot {slot}", Color.Blue);
+        ModLog.Debug($"Saving data for slot {slot}");
         
         var datas = LoadFile(slot);
         var settings = new JsonSerializerSettings()
@@ -94,7 +93,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Load(int slot)
     {
-        ModLog.Custom($"Loading data for slot {slot}", Color.Blue);
+        ModLog.Debug($"Loading data for slot {slot}");
 
         var datas = LoadFile(slot);
 
@@ -148,7 +147,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Delete(int slot)
     {
-        ModLog.Custom($"Deleting data for slot {slot}", Color.Blue);
+        ModLog.Debug($"Deleting data for slot {slot}");
 
         try
         {
@@ -166,7 +165,7 @@ public abstract class SlotSaveData
     /// </summary>
     internal static void Copy(int slotSrc, int slotDest)
     {
-        ModLog.Custom($"Copying data for slot {slotSrc} to slot {slotDest}", Color.Blue);
+        ModLog.Debug($"Copying data for slot {slotSrc} to slot {slotDest}");
 
         try
         {

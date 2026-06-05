@@ -3,7 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -21,7 +20,7 @@ public class GlobalSaveData
     /// </summary>
     internal static void Save()
     {
-        ModLog.Custom($"Saving global data", Color.Blue);
+        ModLog.Debug($"Saving global data");
 
         var datas = LoadFile();
         var settings = new JsonSerializerSettings()
@@ -76,7 +75,7 @@ public class GlobalSaveData
     /// </summary>
     internal static void Load()
     {
-        ModLog.Custom($"Loading global data", Color.Blue);
+        ModLog.Debug($"Loading global data");
 
         var datas = LoadFile();
 
@@ -130,7 +129,7 @@ public class GlobalSaveData
     /// </summary>
     internal static void Delete()
     {
-        ModLog.Custom($"Deleting global data", Color.Blue);
+        ModLog.Debug($"Deleting global data");
 
         try
         {
