@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Il2CppTGK.Framework;
+using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTGK.Game.Managers;
 
@@ -10,14 +11,19 @@ class Core_OnDestroy_Patch
 {
     public static void Prefix() => Main.ModLoader.Dispose();
 
-    public static void Postfix() => ModLog.Warn("Core OnDestroy Post");
+    //public static void Postfix() => ModLog.Warn("Core OnDestroy Post");
 }
 
+// Spams errors in console
 //[HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnInitialize))]
 //class tx
 //{
-//    public static void Postfix() => ModLog.Error("Manager OnInitialize");
+//    public static void Postfix()
+//    {
+//        ModLog.Error("Manager OnInitialize");
+//    }
 //}
+
 [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnAllInitialized))]
 class ty
 {
@@ -27,6 +33,35 @@ class ty
 class tz
 {
     public static void Postfix() => ModLog.Error("Manager OnDispose");
+}
+
+[HarmonyPatch(typeof(Core), nameof(Core.Awake))]
+class ta
+{
+    //public static void Prefix() => ModLog.Info("Core Awake Pre");
+
+    public static void Postfix() => Main.ModLoader.PreInitialize();
+}
+[HarmonyPatch(typeof(Core), nameof(Core.CreateManagers))]
+class tb
+{
+    //public static void Prefix() => ModLog.Info("Core CreateManagers Pre");
+
+    public static void Postfix() => Main.ModLoader.NewTempInitialize();
+}
+[HarmonyPatch(typeof(Core), nameof(Core.Initialize))]
+class tc
+{
+    //public static void Prefix() => ModLog.Info("Core Initialize Pre");
+
+    //public static void Postfix() => ModLog.Info("Core Initialize Post");
+}
+[HarmonyPatch(typeof(Core), nameof(Core.InitializeCoroutine))]
+class td
+{
+    //public static void Prefix() => ModLog.Info("Core InitializeCoroutine Pre");
+
+    //public static void Postfix() => ModLog.Info("Core InitializeCoroutine Post");
 }
 
 

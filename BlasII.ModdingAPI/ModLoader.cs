@@ -37,6 +37,11 @@ internal class ModLoader
         }
     }
 
+    public void PreInitialize()
+    {
+        ModLog.Error("Mod OnPreInitialize");
+    }
+
     /// <summary>
     /// Initializes all mods
     /// </summary>
@@ -58,11 +63,20 @@ internal class ModLoader
         _initialized = true;
     }
 
+    public void NewTempInitialize()
+    {
+        ModLog.Error("Mod OnInitialize");
+        ModLog.Error("Mod OnRegisterServices");
+        ModLog.Error("Mod OnAllInitialized");
+    }
+
     /// <summary>
     /// Disposes all mods
     /// </summary>
     public void Dispose()
     {
+        ModLog.Error("Mod OnDispose");
+
         ProcessModFunction(mod => mod.OnDispose());
         ModLog.Info("All mods disposed!");
     }
