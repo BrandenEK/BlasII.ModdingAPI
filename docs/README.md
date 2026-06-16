@@ -15,6 +15,8 @@
 
 No documentation yet, but it should be pretty similar to the [blas1 version](https://github.com/BrandenEK/Blasphemous.ModdingAPI/blob/main/documentation/main.md)
 
+Order of execution docs can be found [here](development/execution.md)
+
 To develop a mod for Blasphemous 2, run these commands to create a new template project:
 
 ```dotnet new install Blasphemous.Modding.Templates```
