@@ -25,7 +25,11 @@ internal class Main : MelonMod
 
     public override void OnSceneWasLoaded(int _, string sceneName) => ModLoader.UnitySceneLoaded(sceneName);
 
-    public override void OnApplicationQuit() => GlobalSaveData.Save();
+    public override void OnApplicationQuit()
+    {
+        GlobalSaveData.Save();
+        ModLoader.Dispose();
+    }
 
     private Assembly LoadMissingAssemblies(object send, ResolveEventArgs args)
     {

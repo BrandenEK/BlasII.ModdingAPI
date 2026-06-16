@@ -21,12 +21,6 @@ class Core_CreateManagers_Patch
     }
 }
 
-[HarmonyPatch(typeof(Core), nameof(Core.OnDestroy))]
-class Core_OnDestroy_Patch
-{
-    public static void Prefix() => Main.ModLoader.Dispose();
-}
-
 [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnGlobalRoomLoaded))]
 class Mod_SceneLoaded_Patch
 {
