@@ -1,6 +1,7 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
+using Il2CppTGK.Game;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Linq;
@@ -28,6 +29,33 @@ internal class ModdingAPI : BlasIIMod
 
             if (VersionHelper.GameVersion == "Unknown")
                 FindGameVersion();
+        }
+    }
+
+    protected internal override void OnUpdate()
+    {
+        if (!UnityEngine.Input.GetKeyDown(KeyCode.P))
+            return;
+
+        ModLog.Error("Familiar test");
+
+        var dict = CoreCache.PlayerFamiliarsManager.familiars;
+
+        foreach (var kvp in dict)
+        {
+            ModLog.Warn(kvp.key + ": " + kvp.Value.id.name);
+            ModLog.Info($"Order: {kvp.Value.currentOrder}, Level: {kvp.Value.currentLevel}, EXP: {kvp.Value.currentExp}");
+        }
+
+        var cache = CoreCache.PlayerFamiliarsManager.config.cachedEntries;
+
+        foreach (var kvp in cache)
+        {
+            ModLog.Warn(kvp.Key + ": " + kvp.Value.ID.name);
+
+            var array = kvp.Value.levels;
+            for (int i = 0; i < array.Length; i++)
+                ModLog.Info($"Level {i} exp needed: {array[i].expNeeded}");
         }
     }
 
