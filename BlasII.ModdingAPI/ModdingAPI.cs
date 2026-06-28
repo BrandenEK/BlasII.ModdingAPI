@@ -1,6 +1,8 @@
 ﻿using BlasII.ModdingAPI.Assets;
 using BlasII.ModdingAPI.Helpers;
 using BlasII.ModdingAPI.Input;
+using Il2CppTGK.Game.Components.Attack.Data;
+using Il2CppTGK.Game.Components.StatsSystem;
 using Il2CppTGK.Game.Components.UI;
 using Il2CppTMPro;
 using System.Linq;
@@ -30,6 +32,41 @@ internal class ModdingAPI : BlasIIMod
                 FindGameVersion();
         }
     }
+
+    protected internal override void OnUpdate()
+    {
+        if (!UnityEngine.Input.GetKeyDown(KeyCode.LeftBracket))
+            return;
+
+        ModLog.Warn("Logging all entities resistances");
+
+        var attacks = Resources.FindObjectsOfTypeAll<AttackTypeID>().ToDictionary(x => x.name, x => x);
+
+        //foreach (var attack in Resources.FindObjectsOfTypeAll<AttackTypeID>().OrderBy(x => x.name))
+        //    ModLog.Info(attack.name + ": " + attack.GetType().Name + " - " + attack.GetType().BaseType?.Name);
+
+        foreach (var comp in Object.FindObjectsOfType<StatsComponent>())
+        {
+            ModLog.Error(comp.gameObject.name);
+            ModLog.Info($"Health: {comp.GetCurrentValue(comp.healthId)}");
+            var sb = new StringBuilder();
+
+            foreach (string name in ATTACK_NAMES)
+            {
+                var attack = attacks[name];
+                ModLog.Info($"{name}: {comp.GetResistance(attack)}%");
+                sb.Append($"{comp.GetResistance(attack)},");
+            }
+            ModLog.Warn(sb.ToString());
+        }
+    }
+
+    private string[] ATTACK_NAMES =
+    {
+        "BluntDamage", "PierceDamage", "SacredDamage", "SlashDamage",
+        "Dark Attack", "Fire Attack", "Lightning Attack", "Miasma Attack", "Mystic Attack", "Sacred Attack",
+        "Global Attack", "Instadeath Attack",
+    };
 
     private void DisplayModListOnMenu()
     {
