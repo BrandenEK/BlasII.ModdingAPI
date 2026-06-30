@@ -48,7 +48,10 @@ internal class ModdingAPI : BlasIIMod
         foreach (var comp in Object.FindObjectsOfType<StatsComponent>())
         {
             ModLog.Error(comp.gameObject.name);
-            ModLog.Info($"Health: {comp.GetCurrentValue(comp.healthId)}");
+
+            var healthStat = AssetStorage.RangeStats["Health"];
+
+            ModLog.Info($"Health: {comp.GetCurrentValue(healthStat)}/{comp.GetMaxValue(healthStat)}");
             var sb = new StringBuilder();
 
             foreach (string name in ATTACK_NAMES)
