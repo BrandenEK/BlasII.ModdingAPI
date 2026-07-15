@@ -17,8 +17,22 @@ class Core_CreateManagers_Patch
     public static void Postfix()
     {
         Main.ModLoader.Initialize();
-        Main.ModLoader.PostInitialize();
     }
+}
+
+[HarmonyPatch(typeof(Core), nameof(Core.Update))]
+class Core_Update_Patch
+{
+    public static void Postfix(Core __instance)
+    {
+        if (_calledInit || !__instance.Ready)
+            return;
+
+        Main.ModLoader.PostInitialize();
+        _calledInit = true;
+    }
+
+    private static bool _calledInit = false;
 }
 
 [HarmonyPatch(typeof(GuiltManager), nameof(GuiltManager.OnGlobalRoomLoaded))]
