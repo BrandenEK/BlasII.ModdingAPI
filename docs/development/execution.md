@@ -7,20 +7,22 @@ A mod's core event methods are called at the same time as the game manager's cor
 ```mermaid
 graph LR
     A[Mod - OnPreInitialize]
-    B([Manager - Initialize])
+    B([Manager - OnInitialize])
     C[Mod - OnInitialize]
     D[Mod - OnRegisterServices]
+    F([Manager - OnAllInitialized])
     G[Mod - OnAllInitialized]
     H(GlobalData - Load)
     X(GlobalData - Save)
     Y[Mod - OnDispose]
-    Z([Manager - Dispose])
+    Z([Manager - OnDispose])
 
     subgraph Startup
     A-->B
     B-->C
     C-->D
-    D-->G
+    D-->F
+    F-->G
     G-->H
     end
     subgraph Shutdown
